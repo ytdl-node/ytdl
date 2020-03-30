@@ -1,0 +1,25 @@
+{
+  "name": "ytdl",
+  "version": "1.0.0",
+  "description": "A CLI written in javascript, which allows you to download videos from [YouTube](http://youtube.com) onto your system.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roerohan/ytdl.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/roerohan/ytdl/issues"
+  },
+  "homepage": "https://github.com/roerohan/ytdl#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "mocha": "^7.1.1"
+  }
+}
