@@ -3,7 +3,7 @@ const axios = require('axios');
 const querystring = require('querystring');
 
 function getVideoId(url) {
-    const urlRegex = /^(((https)|(http)):\/\/(www\.|)youtube\.com\/watch\?v=)[\w]*$/;
+    const urlRegex = /^(["']|)((((https)|(http)):\/\/|)(www\.|)youtube\.com\/watch\?v=)[\w]*(["']|)$/;
     if (!urlRegex.test(url)) {
         throw new Error('Invalid URL.');
     }
