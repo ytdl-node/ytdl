@@ -10,7 +10,8 @@ const {
 } = require('./videoData');
 
 async function runner() {
-    const downloadLink = await getDownloadLink();
+    // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
+    const downloadLink = process.argv[2] || await getDownloadLink();
     const videoId = getVideoId(downloadLink);
     const videoInfo = await getVideoInfo(videoId);
     const videoTitle = getVideoTitle(videoInfo);
