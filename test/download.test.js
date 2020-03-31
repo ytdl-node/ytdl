@@ -4,9 +4,9 @@ const sendRequest = require('../src/sendRequest');
 
 describe('Download', () => {
     it('Should run the download function', async () => {
-        assert.equal(await sendRequest('download'), undefined);
+        assert.equal(await sendRequest('download.json'), undefined);
     });
     it('Should download in data directory', () => {
-        assert.equal(fs.existsSync('./data/download'), true);
+        assert.equal(fs.existsSync('./data/download.json'), true);
     });
 });
