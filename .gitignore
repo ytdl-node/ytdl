@@ -117,4 +117,4 @@ dist
 # Folder to store sample downloads
 
 data/**/*
-!data/sample.txt
+!data/sample.*
