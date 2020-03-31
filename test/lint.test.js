@@ -17,7 +17,9 @@ describe('Lint', () => {
                     errorFiles.push(`\n\t${i.filePath}`);
                 }
             });
-            throw new Error(errorFiles);
+            const lintError = new Error(errorFiles);
+            lintError.name = 'LintError';
+            throw lintError;
         }
     });
 });
