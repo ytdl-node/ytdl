@@ -1,19 +1,19 @@
 const readline = require('readline');
 
-async function getFilename() {
+async function getDownloadLink() {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
     });
 
-    const filename = () => new Promise((resolve) => {
-        rl.question('Enter the filename: ', (name) => {
+    const downloadLink = () => new Promise((resolve) => {
+        rl.question('Enter the YouTube link: ', (name) => {
             rl.close();
             resolve(name);
         });
     });
 
-    return filename();
+    return downloadLink();
 }
 
-module.exports = getFilename;
+module.exports = getDownloadLink;
