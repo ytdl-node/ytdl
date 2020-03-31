@@ -1,27 +1,13 @@
 const fs = require('fs');
-const https = require('https');
+const axios = require('axios');
+const querystring = require('querystring');
 
 async function sendRequest(filename) {
-    const options = {
-        hostname: 'csivit.com',
-        port: 443,
-        path: '/',
-        method: 'GET',
-    };
-
-    const req = https.request(options, (res) => {
-        res.on('data', (data) => {
-            fs.appendFile(`./data/${filename}`, data, 'UTF-8', (err) => {
-                if (err) throw err;
-            });
-        });
+    const response = await axios.get('http://youtube.com/get_video_info?video_id=AmBQPfbM1mg');
+    const parsedResponse = querystring.parse(response.data);
+    fs.writeFile(`./data/${filename}`, parsedResponse.player_response, (err) => {
+        if (err) throw err;
     });
-
-    req.on('error', (err) => {
-        throw err;
-    });
-
-    req.end();
 }
 
 module.exports = sendRequest;

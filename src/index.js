@@ -3,7 +3,7 @@ const sendRequest = require('./sendRequest');
 
 async function runner() {
     const filename = await getFilename();
-    sendRequest(filename);
+    await sendRequest(filename);
 }
 
 runner();
