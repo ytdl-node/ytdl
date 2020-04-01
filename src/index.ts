@@ -3,7 +3,7 @@ import logger from './utils/logger';
 import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
 
-async function runner() {
+export default async function runner() {
     // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
     const downloadLink = process.argv[2] || await getDownloadLink();
     const {
@@ -20,5 +20,3 @@ async function runner() {
 }
 
 runner();
-
-module.exports = runner;

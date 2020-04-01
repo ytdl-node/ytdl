@@ -73,5 +73,3 @@ export default class VideoData {
         return parsedResponse as VideoInfo;
     }
 }
-
-module.exports = VideoData;
