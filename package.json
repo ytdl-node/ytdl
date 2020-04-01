@@ -8,6 +8,9 @@
     "lint": "eslint \"src/**/*.{ts,js,jsx}\"",
     "start": "node src/index.js"
   },
+  "bin": {
+    "ytdl": "bin/ytdl"
+  },
   "husky": {
     "hooks": {
       "pre-commit": "npm run lint"
@@ -32,6 +35,8 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "commander": "^5.0.0",
+    "esm": "^3.2.25",
     "winston": "^3.2.1"
   }
 }
