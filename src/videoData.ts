@@ -62,7 +62,7 @@ export default class VideoData {
             throw new Error('Invalid videoId.');
         }
         const response = await axios.get(`http://youtube.com/get_video_info?video_id=${videoId}`);
-        const parsedResponse = <unknown> Object.fromEntries(new URLSearchParams(response.data));
+        const parsedResponse: any = Object.fromEntries(new URLSearchParams(response.data));
         // TODO: Add functionality in logger to debug things to a file
         // if (filename) {
         //     fs.writeFile(`./data/${filename}`, parsedResponse.player_response, (err) => {
