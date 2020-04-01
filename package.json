@@ -4,7 +4,8 @@
     "description": "A CLI written in javascript, which allows you to download videos from [YouTube](http://youtube.com) onto your system.",
     "main": "index.js",
     "scripts": {
-        "build": "tsc",
+        "build": "npm run clean && tsc",
+        "clean": "rm -rf ./dist",
         "test": "mocha --opts test/mocha.opts",
         "lint": "eslint \"src/**/*.{ts,js,jsx}\" \"test/**/*.ts\"",
         "start": "ts-node src/index.ts"
