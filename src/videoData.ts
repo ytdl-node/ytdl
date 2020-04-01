@@ -1,10 +1,12 @@
 import axios from 'axios';
-import querystring from 'querystring';
+import { URLSearchParams } from 'url';
+
+import VideoInfo from './models/youtube';
 
 export default class VideoData {
     readonly videoId: string;
 
-    readonly videoInfo: any;
+    readonly videoInfo: VideoInfo;
 
     readonly videoTitle: string;
 
@@ -12,7 +14,7 @@ export default class VideoData {
 
     readonly videoDescription: string;
 
-    constructor(videoId: string, videoInfo: any) {
+    constructor(videoId: string, videoInfo: VideoInfo) {
         this.videoId = videoId;
         this.videoInfo = videoInfo;
         this.videoTitle = this.getVideoTitle();
@@ -37,7 +39,7 @@ export default class VideoData {
         return url.split('watch?v=')[1];
     }
 
-    private static validateParsedResponse(parsedResponse: any) {
+    private static validateParsedResponse(parsedResponse: VideoInfo) {
         if (!parsedResponse) { throw new Error('parsedResponse not provided.'); }
         if (!parsedResponse.player_response) { throw new Error('Invalid parsedResponse.'); }
     }
@@ -54,13 +56,13 @@ export default class VideoData {
         return JSON.parse(this.videoInfo.player_response).videoDetails.shortDescription;
     }
 
-    public static async getVideoInfo(videoId: string) {
+    public static async getVideoInfo(videoId: string): Promise<VideoInfo> {
         const videoIdRegex = /^[\w_-]+$/;
         if (!videoIdRegex.test(videoId)) {
             throw new Error('Invalid videoId.');
         }
         const response = await axios.get(`http://youtube.com/get_video_info?video_id=${videoId}`);
-        const parsedResponse = querystring.parse(response.data);
+        const parsedResponse = <unknown> Object.fromEntries(new URLSearchParams(response.data));
         // TODO: Add functionality in logger to debug things to a file
         // if (filename) {
         //     fs.writeFile(`./data/${filename}`, parsedResponse.player_response, (err) => {
@@ -68,7 +70,7 @@ export default class VideoData {
         //         return true;
         //     });
         // }
-        return parsedResponse;
+        return parsedResponse as VideoInfo;
     }
 }
 
