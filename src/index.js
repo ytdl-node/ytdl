@@ -1,22 +1,14 @@
 const logger = require('./utils/logger');
 
 const getDownloadLink = require('./getDownloadLink');
-const {
-    getVideoId,
-    getVideoInfo,
-    getVideoTitle,
-    getVideoTime,
-    getVideoDescription,
-} = require('./videoData');
+const VideoData = require('./videoData');
 
 async function runner() {
     // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
     const downloadLink = process.argv[2] || await getDownloadLink();
-    const videoId = getVideoId(downloadLink);
-    const videoInfo = await getVideoInfo(videoId);
-    const videoTitle = getVideoTitle(videoInfo);
-    const videoTime = getVideoTime(videoInfo);
-    const videoDescription = getVideoDescription(videoInfo);
+    const {
+        videoId, videoTitle, videoTime, videoDescription,
+    } = await VideoData.fromLink(downloadLink);
 
     logger.info(`Video ID: ${videoId}`);
     logger.info(`Video Title: ${videoTitle}`);
