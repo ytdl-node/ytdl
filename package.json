@@ -1,43 +1,54 @@
 {
-  "name": "ytdl",
-  "version": "1.0.0",
-  "description": "A CLI written in javascript, which allows you to download videos from [YouTube](http://youtube.com) onto your system.",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha",
-    "lint": "eslint \"src/**/*.{ts,js,jsx}\"",
-    "start": "node src/index.js"
-  },
-  "bin": {
-    "ytdl": "bin/ytdl"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
+    "name": "ytdl",
+    "version": "1.0.0",
+    "description": "A CLI written in javascript, which allows you to download videos from [YouTube](http://youtube.com) onto your system.",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "test": "mocha --opts test/mocha.opts",
+        "lint": "eslint \"src/**/*.{ts,js,jsx}\" \"test/**/*.ts\"",
+        "start": "ts-node src/index.ts"
+    },
+    "bin": {
+        "ytdl": "bin/ytdl"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "npm run lint"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/roerohan/ytdl.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/roerohan/ytdl/issues"
+    },
+    "homepage": "https://github.com/roerohan/ytdl#readme",
+    "devDependencies": {
+        "@types/axios": "^0.14.0",
+        "@types/chai": "^4.2.11",
+        "@types/commander": "^2.12.2",
+        "@types/eslint": "^6.1.9",
+        "@types/mocha": "^7.0.2",
+        "@types/node": "^13.9.8",
+        "@types/winston": "^2.4.4",
+        "@typescript-eslint/eslint-plugin": "^2.26.0",
+        "@typescript-eslint/parser": "^2.26.0",
+        "chai": "^4.2.0",
+        "eslint": "^6.8.0",
+        "eslint-config-airbnb-typescript": "^7.2.0",
+        "eslint-plugin-import": "^2.20.2",
+        "husky": "^4.2.3",
+        "mocha": "^7.1.1",
+        "ts-node": "^8.8.1",
+        "typescript": "^3.8.3"
+    },
+    "dependencies": {
+        "axios": "^0.19.2",
+        "commander": "^5.0.0",
+        "winston": "^3.2.1"
     }
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/roerohan/ytdl.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/roerohan/ytdl/issues"
-  },
-  "homepage": "https://github.com/roerohan/ytdl#readme",
-  "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2",
-    "husky": "^4.2.3",
-    "mocha": "^7.1.1",
-    "typescript": "^3.8.3"
-  },
-  "dependencies": {
-    "axios": "^0.19.2",
-    "commander": "^5.0.0",
-    "esm": "^3.2.25",
-    "winston": "^3.2.1"
-  }
 }

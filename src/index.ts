@@ -1,7 +1,7 @@
-const logger = require('./utils/logger');
+import logger from './utils/logger';
 
-const getDownloadLink = require('./getDownloadLink');
-const VideoData = require('./videoData');
+import getDownloadLink from './getDownloadLink';
+import VideoData from './videoData';
 
 async function runner() {
     // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
