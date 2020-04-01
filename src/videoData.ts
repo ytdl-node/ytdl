@@ -39,21 +39,26 @@ export default class VideoData {
         return url.split('watch?v=')[1];
     }
 
-    private static validateParsedResponse(parsedResponse: VideoInfo) {
-        if (!parsedResponse) { throw new Error('parsedResponse not provided.'); }
-        if (!parsedResponse.player_response) { throw new Error('Invalid parsedResponse.'); }
+    private static validateParsedResponse(videoInfo: VideoInfo) {
+        if (videoInfo.playabilityStatus.status === 'UNPLAYABLE') {
+            return new Error('Video Unplayable');
+        }
+        if (!videoInfo.streamingData) {
+            return new Error('Invalid videoInfo.streamingData');
+        }
+        return true;
     }
 
     private getVideoTitle(): string {
-        return JSON.parse(this.videoInfo.player_response).videoDetails.title;
+        return this.videoInfo.videoDetails.title;
     }
 
     private getVideoTime(): string {
-        return JSON.parse(this.videoInfo.player_response).videoDetails.lengthSeconds;
+        return this.videoInfo.videoDetails.lengthSeconds;
     }
 
     private getVideoDescription(): string {
-        return JSON.parse(this.videoInfo.player_response).videoDetails.shortDescription;
+        return this.videoInfo.videoDetails.shortDescription;
     }
 
     public static async getVideoInfo(videoId: string): Promise<VideoInfo> {
@@ -62,7 +67,7 @@ export default class VideoData {
             throw new Error('Invalid videoId.');
         }
         const response = await axios.get(`http://youtube.com/get_video_info?video_id=${videoId}`);
-        const parsedResponse: any = Object.fromEntries(new URLSearchParams(response.data));
+        const parsedResponse = Object.fromEntries(new URLSearchParams(response.data));
         // TODO: Add functionality in logger to debug things to a file
         // if (filename) {
         //     fs.writeFile(`./data/${filename}`, parsedResponse.player_response, (err) => {
@@ -70,6 +75,11 @@ export default class VideoData {
         //         return true;
         //     });
         // }
-        return parsedResponse as VideoInfo;
+
+        const jsonResponse = JSON.parse(parsedResponse.player_response);
+        const { playabilityStatus, videoDetails, streamingData } = jsonResponse;
+        const videoInfo = <VideoInfo> { playabilityStatus, videoDetails, streamingData };
+
+        return videoInfo;
     }
 }
