@@ -1,5 +1,3 @@
 #!/usr/bin/env node
 
-const req = require('esm')(module);
-
-req('../src/cli').cli(process.argv);
+require('../dist/cli').cli(process.argv);
