@@ -25,7 +25,7 @@ async function parseOptions(program: commander.Command) {
     }
 }
 
-export default async function cli(args: string[]) {
+async function cli(args: string[]) {
     const program = new Command();
     program.version('0.0.1');
 
@@ -33,3 +33,7 @@ export default async function cli(args: string[]) {
     program.parse(args);
     await parseOptions(program);
 }
+
+export = {
+    cli,
+};
