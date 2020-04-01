@@ -2,7 +2,7 @@ const assert = require('assert');
 const fs = require('fs');
 const VideoData = require('../src/videoData');
 
-const testVideoId = 'hrdwq_uLojk';
+const testVideoId = 'fJ9rUzIMcZQ';
 const testVideoInfoFile = 'download.json';
 
 describe('Download', () => {
