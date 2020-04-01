@@ -12,9 +12,9 @@ describe('Lint', () => {
             done();
         } catch (err) {
             const errorFiles = [];
-            report.results.forEach((i) => {
-                if (i.errorCount !== 0) {
-                    errorFiles.push(`\n\t${i.filePath}`);
+            report.results.forEach((result) => {
+                if (result.errorCount !== 0) {
+                    errorFiles.push(`\n\t${result.filePath}`);
                 }
             });
             const lintError = new Error(errorFiles);
