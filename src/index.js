@@ -17,3 +17,5 @@ async function runner() {
 }
 
 runner();
+
+module.exports = runner;
