@@ -5,7 +5,7 @@ A CLI written in javascript, which allows you to download videos from [YouTube](
 # Installation
 
 ```bash
-git clone https://github.com/roerohan/ytdl
+git clone https://github.com/roerohan/ytdl.git
 cd ytdl
 npm install
 npm run build
