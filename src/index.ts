@@ -1,13 +1,16 @@
-const logger = require('./utils/logger');
+import logger from './utils/logger';
 
-const getDownloadLink = require('./getDownloadLink');
-const VideoData = require('./videoData');
+import getDownloadLink from './getDownloadLink';
+import VideoData from './videoData';
 
-async function runner() {
+export default async function runner() {
     // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
     const downloadLink = process.argv[2] || await getDownloadLink();
     const {
-        videoId, videoTitle, videoTime, videoDescription,
+        videoId,
+        videoTitle,
+        videoTime,
+        videoDescription,
     } = await VideoData.fromLink(downloadLink);
 
     logger.info(`Video ID: ${videoId}`);
@@ -17,5 +20,3 @@ async function runner() {
 }
 
 runner();
-
-module.exports = runner;

@@ -4,30 +4,25 @@
         "es6": true,
         "node": true
     },
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
     "extends": [
-        "airbnb-base"
+        "airbnb-typescript/base"
     ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
-        "ecmaVersion": 2018
+        "project": "./tsconfig.json"
     },
     "rules": {
-        "indent": [
+        "@typescript-eslint/indent": [
             "error",
             4
         ]
-    },
-    "overrides": [
-        {
-            "files": [
-                "test/*.test.js"
-            ],
-            "env": {
-                "mocha": true
-            }
-        }
-    ]
+    }
 }

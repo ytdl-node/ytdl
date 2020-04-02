@@ -1,14 +1,15 @@
-const { Command } = require('commander');
-const logger = require('./utils/logger');
-const VideoData = require('./videoData');
+import commander, { Command } from 'commander';
 
-function setOptions(program) {
+import logger from './utils/logger';
+import VideoData from './videoData';
+
+function setOptions(program: commander.Command) {
     program
         .option('-d, --debug', 'output extra debugging')
         .option('-i, --info <url>', 'info about YouTube link');
 }
 
-async function parseOptions(program) {
+async function parseOptions(program: commander.Command) {
     if (program.debug) {
         logger.info(program.opts());
     }
@@ -24,7 +25,7 @@ async function parseOptions(program) {
     }
 }
 
-async function cli(args) {
+async function cli(args: string[]) {
     const program = new Command();
     program.version('0.0.1');
 
@@ -33,6 +34,6 @@ async function cli(args) {
     await parseOptions(program);
 }
 
-module.exports = {
+export = {
     cli,
 };
