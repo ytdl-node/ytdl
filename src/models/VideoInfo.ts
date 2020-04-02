@@ -33,6 +33,7 @@ interface AdaptiveFormats {
     readonly averageBitrate: Number;
     readonly approxDurationMs: string;
     readonly colorInfo?: object;
+    readonly cipher?: string;
 }
 
 interface StreamingData {

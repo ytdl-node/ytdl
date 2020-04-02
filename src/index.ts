@@ -2,6 +2,7 @@ import logger from './utils/logger';
 
 import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
+import { fetchLinks } from './videoDownloader';
 
 export default async function runner() {
     // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
@@ -11,12 +12,15 @@ export default async function runner() {
         videoTitle,
         videoTime,
         videoDescription,
+        videoInfo,
     } = await VideoData.fromLink(downloadLink);
 
     logger.info(`Video ID: ${videoId}`);
     logger.info(`Video Title: ${videoTitle}`);
     logger.info(`Video Time: ${videoTime} seconds`);
     logger.info(`Video Description:\n ${videoDescription}`);
+
+    fetchLinks(videoInfo, '720p');
 }
 
 runner();
