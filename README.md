@@ -24,6 +24,10 @@ Options:
   -h, --help        display help for command
 ```
 
+# Contributing
+
+Contributing guidelines have been established [here](./CONTRIBUTING.md).
+
 # License
 
-MIT
+[MIT](https://github.com/roerohan/ytdl/blob/master/LICENSE)
