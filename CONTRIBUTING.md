@@ -13,7 +13,7 @@ The following is a set of guidelines for contributing to ytdl. These are mostly 
 3. [How Can I contribute?](#how-can-i-contribute)
 
 # Guidelines
-The following are the guidelines we request you to follow in order to contribute to csi-cli.
+The following are the guidelines we request you to follow in order to contribute to ytdl.
 
 ## Styleguides
 
