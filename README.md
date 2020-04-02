@@ -1,6 +1,6 @@
 # ytdl
 
-A CLI written in javascript/typescript, which allows you to download videos from [YouTube](http://youtube.com) onto your system.
+A CLI written in javascript/typescript, which allows you to download videos from [YouTube](https://youtube.com) onto your system.
 
 # Installation
 
