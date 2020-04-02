@@ -14,18 +14,20 @@ export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string) {
         }
     });
 
+    const host = urls[0].split('/videoplayback')[0].split('https://')[1]; 
+    console.log(host);
     axios({
         method: 'get',
         url: urls[0],
         responseType: 'stream',
         headers: {
-            Accept: '*/*',
+            'Accept': '*/*',
             'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'en-US,en;q=0.9,hi;q=0.8,de-DE;q=0.7,de;q=0.6,bn;q=0.5,la;q=0.4',
-            Connection: 'keep-alive',
-            Host: 'r4---sn-ci5gup-jj06.googlevideo.com',
-            Origin: 'https://www.youtube.com',
-            Referer: 'https://www.youtube.com/',
+            'Connection': 'keep-alive',
+            'Host': host,
+            'Origin': 'https://www.youtube.com',
+            'Referer': 'https://www.youtube.com/',
             'Sec-Fetch-Dest': 'empty',
             'Sec-Fetch-Mode': 'cors',
             'Sec-Fetch-Site': 'cross-site',
