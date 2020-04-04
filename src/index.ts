@@ -22,7 +22,7 @@ export default async function runner() {
     logger.info(`Video Description:\n ${videoDescription}`);
 
     dumpJson(videoInfo, 'downloaded.json');
-    downloader(videoInfo, '480p', 'video.pm4', { videoOnly: true });
+    downloader(videoInfo, '480p', 'video.mp4', { videoOnly: true });
 }
 
 runner();
