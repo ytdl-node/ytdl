@@ -26,11 +26,11 @@ export default async function download(urls: string[], filename: string) {
         },
     })
         .then((response) => {
-            response.data.pipe(fs.createWriteStream(`/data/${filename}`));
+            response.data.pipe(fs.createWriteStream(`./data/${filename}`));
         });
 }
 
-export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string, filename?: string) {
+export function fetchVideoStream(videoInfo: VideoInfo, qualityLabel: string, filename?: string) {
     const urls: Array<string> = [];
 
     if (filename) {
@@ -40,7 +40,7 @@ export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string, filename?
     }
 
     videoInfo.streamingData.adaptiveFormats.forEach((adaptiveFormat) => {
-        if (adaptiveFormat.qualityLabel === qualityLabel) {
+        if (adaptiveFormat.qualityLabel === qualityLabel && adaptiveFormat.mimeType.includes('video/mp4')) {
             urls.push(adaptiveFormat.url
                 || Object.fromEntries(new URLSearchParams(adaptiveFormat.cipher)).url);
         }
@@ -54,12 +54,12 @@ export function fetchAudioStream(videoInfo: VideoInfo, quality: string) {
     const urls: Array<string> = [];
 
     videoInfo.streamingData.adaptiveFormats.forEach((adaptiveFormat) => {
-        if (adaptiveFormat.quality === quality) {
+        if (adaptiveFormat.quality === quality && adaptiveFormat.mimeType.includes('audio/mp4')) {
             urls.push(adaptiveFormat.url
                 || Object.fromEntries(new URLSearchParams(adaptiveFormat.cipher)).url);
         }
     });
 
     logger.info('Fetching audio');
-    download(urls, 'audio.mp4');
+    download(urls, 'audio.mp3');
 }

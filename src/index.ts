@@ -2,7 +2,10 @@ import logger from './utils/logger';
 
 import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
-import { fetchLinks, fetchAudioStream } from './videoDownloader';
+import { 
+    fetchAudioStream,
+    /* fetchVideoStream */
+} from './videoDownloader';
 
 export default async function runner() {
     // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
@@ -20,7 +23,7 @@ export default async function runner() {
     logger.info(`Video Time: ${videoTime} seconds`);
     logger.info(`Video Description:\n ${videoDescription}`);
 
-    fetchLinks(videoInfo, '720p', 'download3.json');
+    // fetchVideoStream(videoInfo, '720p', 'download3.json');
     fetchAudioStream(videoInfo, 'tiny');
 
     // Promise.all([
