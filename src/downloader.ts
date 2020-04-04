@@ -67,7 +67,7 @@ export default function fetchContent(
     });
 
     if (urls.length) {
-        logger.info('Fetching content');
+        logger.info('Fetching content...');
         download(urls, filename);
     } else {
         logger.error('No links found matching specified options.');
