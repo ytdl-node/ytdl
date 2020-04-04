@@ -2,7 +2,7 @@ import logger from './utils/logger';
 
 import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
-import { fetchLinks } from './videoDownloader';
+import { fetchLinks, fetchAudioStream } from './videoDownloader';
 
 export default async function runner() {
     // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
@@ -21,6 +21,12 @@ export default async function runner() {
     logger.info(`Video Description:\n ${videoDescription}`);
 
     fetchLinks(videoInfo, '720p');
+    fetchAudioStream(videoInfo, 'tiny');
+
+    // Promise.all([
+    //     fetchLinks(videoInfo, '720p'),
+    //     fetchAudioStream(videoInfo, 'tiny'),
+    // ]);
 }
 
 runner();
