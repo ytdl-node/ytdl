@@ -4,8 +4,14 @@ import fs from 'fs';
 
 import VideoInfo from './models/VideoInfo';
 
-export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string) {
+export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string, filename: string) {
     const urls: Array<string> = [];
+
+    if (filename) {
+        fs.writeFile(`./data/${filename}`, JSON.stringify(videoInfo), (err: any) => {
+            if (err) console.log(err);
+        });
+    }
 
     videoInfo.streamingData.adaptiveFormats.forEach((adaptiveFormat) => {
         if (adaptiveFormat.qualityLabel === qualityLabel) {
@@ -35,7 +41,7 @@ export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string) {
         },
     })
         .then((response) => {
-            response.data.pipe(fs.createWriteStream('./data/video.mp4'));
+            response.data.pipe(fs.createWriteStream('./data/video2.mp4'));
         });
 }
 
