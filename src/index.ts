@@ -20,7 +20,7 @@ export default async function runner() {
     logger.info(`Video Time: ${videoTime} seconds`);
     logger.info(`Video Description:\n ${videoDescription}`);
 
-    fetchLinks(videoInfo, '720p');
+    fetchLinks(videoInfo, '720p', 'download3.json');
     fetchAudioStream(videoInfo, 'tiny');
 
     // Promise.all([
