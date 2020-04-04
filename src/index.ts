@@ -2,7 +2,7 @@ import logger from './utils/logger';
 
 import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
-import { 
+import {
     fetchAudioStream,
     /* fetchVideoStream */
 } from './videoDownloader';
