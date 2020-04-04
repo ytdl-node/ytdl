@@ -6,7 +6,7 @@ import VideoInfo from './models/VideoInfo';
 
 export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string, filename: string) {
     const urls: Array<string> = [];
-    
+
     if (filename) {
         fs.writeFile(`./data/${filename}`, JSON.stringify(videoInfo), (err: any) => {
             if (err) console.log(err);
