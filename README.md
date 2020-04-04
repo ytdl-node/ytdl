@@ -14,14 +14,19 @@ npm run build
 
 # Usage
 
+> `ytdl` is not fully functional yet, the download function works only for certain videos.
+
 ```
 Usage: ytdl [options]
 
 Options:
-  -V, --version     output the version number
-  -d, --debug       output extra debugging
-  -i, --info <url>  info about YouTube link
-  -h, --help        display help for command
+  -V, --version               output the version number
+  -i, --info <url>            info about YouTube link
+  -d, --download <url>        download from YouTube link
+  -fn, --filename <filename>  filename of downloaded content
+  -q, --quality <quality>     quality of downloaded content
+  -dj, --dump-json <url>      dump json into file
+  -h, --help                  display help for command
 ```
 
 # Contributing
