@@ -44,16 +44,20 @@ export default function fetchContent(
     const urls: Array<string> = [];
     let { formats } = videoInfo.streamingData;
     let mimeType = 'video/mp4';
+    let opts = options;
+    if (!opts) {
+        opts = { audioOnly: false, videoOnly: false };
+    }
 
-    if (options.audioOnly) {
+    if (opts.audioOnly) {
         formats = videoInfo.streamingData.adaptiveFormats;
         mimeType = 'audio/mp';
-    } else if (options.videoOnly) {
+    } else if (opts.videoOnly) {
         formats = videoInfo.streamingData.adaptiveFormats;
     }
 
     formats.forEach((format) => {
-        if (options.audioOnly
+        if (opts.audioOnly
             ? (format.quality === qualityLabel
                 && format.mimeType.includes(mimeType))
             : (format.qualityLabel === qualityLabel
