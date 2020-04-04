@@ -26,7 +26,7 @@ export default async function download(urls: string[], filename: string) {
         },
     })
         .then((response) => {
-            response.data.pipe(fs.createWriteStream(filename));
+            response.data.pipe(fs.createWriteStream(`/data/${filename}`));
         });
 }
 
