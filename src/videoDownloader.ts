@@ -3,10 +3,10 @@ import axios from 'axios';
 import fs from 'fs';
 
 import VideoInfo from './models/VideoInfo';
+import logger from './utils/logger';
 
 export default async function download(urls: string[], filename: string) {
     const host = urls[0].split('/videoplayback')[0].split('https://')[1];
-    console.log(host);
     axios({
         method: 'get',
         url: urls[0],
@@ -35,7 +35,7 @@ export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string, filename?
 
     if (filename) {
         fs.writeFile(`./data/${filename}`, JSON.stringify(videoInfo), (err: any) => {
-            if (err) console.log(err);
+            if (err) logger.error(err);
         });
     }
 
@@ -46,6 +46,7 @@ export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string, filename?
         }
     });
 
+    logger.info('Fetching video');
     download(urls, 'video3.mp4');
 }
 
@@ -59,5 +60,6 @@ export function fetchAudioStream(videoInfo: VideoInfo, quality: string) {
         }
     });
 
+    logger.info('Fetching audio');
     download(urls, 'audio.mp4');
 }
