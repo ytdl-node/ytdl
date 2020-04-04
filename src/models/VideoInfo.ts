@@ -26,8 +26,10 @@ interface Format {
     readonly lastModified: string;
     readonly quality: string;
     readonly qualityLabel: string;
-    readonly audioQuality: string;
+    readonly audioQuality?: string;
+    readonly cipher?: string;
 }
+
 interface AdaptiveFormat {
     readonly itag: Number;
     readonly url: string;
