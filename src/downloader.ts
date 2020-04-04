@@ -26,7 +26,12 @@ export function download(urls: string[], filename: string) {
         },
     })
         .then((response) => {
-            response.data.pipe(fs.createWriteStream(`./data/${filename}`));
+            response.data
+                .pipe(fs.createWriteStream(`./data/${filename}`))
+                .on('finish', (err: Error) => {
+                    if (err) throw err;
+                    else logger.info('Download complete.');
+                });
         });
 }
 
@@ -36,11 +41,6 @@ export default function fetchContent(
     options: { audioOnly?: boolean, videoOnly?: boolean },
     jsonDump?: string,
 ) {
-    let dump = jsonDump;
-    if (typeof options === 'string') {
-        dump = options;
-    }
-
     const urls: Array<string> = [];
     let { formats } = videoInfo.streamingData;
     let mimeType = 'video/mp4';
@@ -52,24 +52,21 @@ export default function fetchContent(
         formats = videoInfo.streamingData.adaptiveFormats;
     }
 
-    if (options.audioOnly) {
-        formats.forEach((format) => {
-            if (format.quality === qualityLabel && format.mimeType.includes(mimeType)) {
-                urls.push(format.url
-                    || Object.fromEntries(new URLSearchParams(format.cipher)).url);
-            }
-        });
-    } else {
-        formats.forEach((format) => {
-            if (format.qualityLabel === qualityLabel && format.mimeType.includes(mimeType)) {
-                urls.push(format.url
-                    || Object.fromEntries(new URLSearchParams(format.cipher)).url);
-            }
-        });
-    }
+    formats.forEach((format) => {
+        if ((!options.audioOnly
+            && format.qualityLabel === qualityLabel
+            && format.mimeType.includes(mimeType))
+            || (options.audioOnly
+            && format.quality === qualityLabel
+            && format.mimeType.includes(mimeType))
+        ) {
+            urls.push(format.url
+                || Object.fromEntries(new URLSearchParams(format.cipher)).url);
+        }
+    });
 
-    if (dump) {
-        fs.writeFile(`./data/${dump}`, JSON.stringify(videoInfo), (err: any) => {
+    if (jsonDump) {
+        fs.writeFile(`./data/${jsonDump}`, JSON.stringify(videoInfo), (err: any) => {
             if (err) logger.error(err);
         });
     }
