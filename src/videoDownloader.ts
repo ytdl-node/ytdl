@@ -4,7 +4,7 @@ import fs from 'fs';
 
 import VideoInfo from './models/VideoInfo';
 
-export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string, filename: string) {
+export function fetchLinks(videoInfo: VideoInfo, qualityLabel: string, filename?: string) {
     const urls: Array<string> = [];
 
     if (filename) {

@@ -2,7 +2,6 @@ import axios from 'axios';
 import { URLSearchParams } from 'url';
 
 import VideoInfo from './models/VideoInfo';
-import logger from './utils/logger';
 
 export default class VideoData {
     readonly videoId: string;
