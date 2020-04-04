@@ -65,7 +65,8 @@ export default function fetchContent(
                 urls.push(format.url);
             } else {
                 const link = Object.fromEntries(new URLSearchParams(format.cipher));
-                urls.push(`${link.url}&sp=${link.sp}&s=${link.s}`);
+                // TODO: Instead of link.s, add decoded link.s
+                urls.push(`${link.url}&${link.sig}=${link.s}`);
             }
         }
     });
