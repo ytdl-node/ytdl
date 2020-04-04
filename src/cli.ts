@@ -2,22 +2,34 @@ import commander, { Command } from 'commander';
 
 import logger from './utils/logger';
 import VideoData from './videoData';
+import downloader from './downloader';
 
 function setOptions(program: commander.Command) {
     program
-        .option('-d, --debug', 'output extra debugging')
-        .option('-i, --info <url>', 'info about YouTube link');
+        .option('-i, --info <url>', 'info about YouTube link')
+        .option('-d, --download <url>', 'download from YouTube link')
+        .option('-fn, --filename <filename>', 'filename of downloaded content')
+        .option('-q, --quality <quality>', 'quality of downloaded content');
 }
 
 async function parseOptions(program: commander.Command) {
-    if (program.debug) {
-        logger.info(program.opts());
+    if (program.download) {
+        const {
+            videoInfo,
+        } = await VideoData.fromLink(program.download);
+
+        const filename = program.filename || 'ytdl.mp4';
+        const quality = program.quality || '360p';
+
+        downloader(videoInfo, quality, filename);
     }
     if (program.info) {
         const {
-            videoId, videoTitle, videoTime, videoDescription,
+            videoId,
+            videoTitle,
+            videoTime,
+            videoDescription,
         } = await VideoData.fromLink(program.info);
-
         logger.info(`Video ID: ${videoId}`);
         logger.info(`Video Title: ${videoTitle}`);
         logger.info(`Video Time: ${videoTime} seconds`);

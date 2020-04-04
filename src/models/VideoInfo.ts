@@ -25,7 +25,7 @@ interface Format {
     readonly height: Number;
     readonly lastModified: string;
     readonly quality: string;
-    readonly qualityLabel: string;
+    readonly qualityLabel?: string;
     readonly audioQuality?: string;
     readonly cipher?: string;
 }
@@ -43,7 +43,7 @@ interface AdaptiveFormat {
     readonly contentLength: string;
     readonly quality: string;
     readonly fps: Number;
-    readonly qualityLabel: string;
+    readonly qualityLabel?: string;
     readonly projectionType: string;
     readonly averageBitrate: Number;
     readonly approxDurationMs: string;

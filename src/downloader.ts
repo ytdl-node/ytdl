@@ -38,7 +38,7 @@ export function download(urls: string[], filename: string) {
 export default function fetchContent(
     videoInfo: VideoInfo,
     qualityLabel: string, filename: string,
-    options: { audioOnly?: boolean, videoOnly?: boolean },
+    options?: { audioOnly?: boolean, videoOnly?: boolean },
     jsonDump?: string,
 ) {
     const urls: Array<string> = [];
@@ -53,13 +53,11 @@ export default function fetchContent(
     }
 
     formats.forEach((format) => {
-        if ((!options.audioOnly
-            && format.qualityLabel === qualityLabel
-            && format.mimeType.includes(mimeType))
-            || (options.audioOnly
-            && format.quality === qualityLabel
-            && format.mimeType.includes(mimeType))
-        ) {
+        if (options.audioOnly
+            ? (format.quality === qualityLabel
+                && format.mimeType.includes(mimeType))
+            : (format.qualityLabel === qualityLabel
+                && format.mimeType.includes(mimeType))) {
             urls.push(format.url
                 || Object.fromEntries(new URLSearchParams(format.cipher)).url);
         }
