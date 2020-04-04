@@ -15,7 +15,20 @@ interface Range {
     readonly start: string;
     readonly end: string;
 }
-interface AdaptiveFormats {
+
+interface Format {
+    readonly itag: Number;
+    readonly url: string;
+    readonly mimeType: string;
+    readonly bitrate: Number;
+    readonly width: Number;
+    readonly height: Number;
+    readonly lastModified: string;
+    readonly quality: string;
+    readonly qualityLabel: string;
+    readonly audioQuality: string;
+}
+interface AdaptiveFormat {
     readonly itag: Number;
     readonly url: string;
     readonly mimeType: string;
@@ -38,8 +51,8 @@ interface AdaptiveFormats {
 
 interface StreamingData {
     readonly expiresInSeconds: string;
-    readonly formats: Array<object>;
-    readonly adaptiveFormats: Array<AdaptiveFormats>;
+    readonly formats: Array<Format>;
+    readonly adaptiveFormats: Array<AdaptiveFormat>;
 }
 
 export default interface VideoInfo {

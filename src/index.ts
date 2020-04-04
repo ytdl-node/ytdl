@@ -4,7 +4,8 @@ import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
 import {
     fetchAudioStream,
-    /* fetchVideoStream */
+    fetchVideoStream,
+    fetchVideo,
 } from './videoDownloader';
 
 export default async function runner() {
@@ -23,13 +24,9 @@ export default async function runner() {
     logger.info(`Video Time: ${videoTime} seconds`);
     logger.info(`Video Description:\n ${videoDescription}`);
 
-    // fetchVideoStream(videoInfo, '720p', 'download3.json');
+    fetchVideoStream(videoInfo, '720p', 'download3.json');
     fetchAudioStream(videoInfo, 'tiny');
-
-    // Promise.all([
-    //     fetchLinks(videoInfo, '720p'),
-    //     fetchAudioStream(videoInfo, 'tiny'),
-    // ]);
+    fetchVideo(videoInfo, '360p', 'download3.json');
 }
 
 runner();

@@ -63,3 +63,22 @@ export function fetchAudioStream(videoInfo: VideoInfo, quality: string) {
     logger.info('Fetching audio');
     download(urls, 'audio.mp3');
 }
+
+export function fetchVideo(videoInfo: VideoInfo, qualityLabel: string, filename?: string) {
+    const urls: Array<string> = [];
+
+    if (filename) {
+        fs.writeFile(`./data/${filename}`, JSON.stringify(videoInfo), (err: any) => {
+            if (err) logger.error(err);
+        });
+    }
+
+    videoInfo.streamingData.formats.forEach((format) => {
+        if (format.qualityLabel === qualityLabel && format.mimeType.includes('video/mp4')) {
+            urls.push(format.url);
+        }
+    });
+
+    logger.info('Fetching content');
+    download(urls, 'fullVideo.mp4');
+}
