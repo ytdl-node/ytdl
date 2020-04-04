@@ -61,10 +61,16 @@ export default function fetchContent(
                 && format.mimeType.includes(mimeType))
             : (format.qualityLabel === qualityLabel
                 && format.mimeType.includes(mimeType))) {
-            urls.push(format.url
-                || Object.fromEntries(new URLSearchParams(format.cipher)).url);
+            if (format.url) {
+                urls.push(format.url);
+            } else {
+                const link = Object.fromEntries(new URLSearchParams(format.cipher));
+                urls.push(`${link.url}&sp=${link.sp}&s=${link.s}`);
+            }
         }
     });
+
+    console.log(new URLSearchParams(urls[0]));
 
     if (urls.length) {
         logger.info('Fetching content...');

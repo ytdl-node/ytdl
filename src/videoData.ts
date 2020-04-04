@@ -66,7 +66,10 @@ export default class VideoData {
         if (!videoIdRegex.test(videoId)) {
             throw new Error('Invalid videoId.');
         }
-        const response = await axios.get(`http://youtube.com/get_video_info?video_id=${videoId}`);
+
+        const eurl = `https://youtube.googleapis.com/v/${videoId}`;
+
+        const response = await axios.get(`https://www.youtube.com/get_video_info?video_id=${videoId}&el=embedded&eurl=${eurl}&sts=18333`);
         const parsedResponse = Object.fromEntries(new URLSearchParams(response.data));
         // TODO: Add functionality in logger to debug things to a file
         // if (filename) {
