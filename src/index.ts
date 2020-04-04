@@ -20,7 +20,7 @@ export default async function runner() {
     logger.info(`Video Time: ${videoTime} seconds`);
     logger.info(`Video Description:\n ${videoDescription}`);
 
-    downloader(videoInfo, 'tiny', 'aud.mp3', { audioOnly: true }, 'download3.json');
+    downloader(videoInfo, 'tiny', 'aud.mp3', { audioOnly: true });
 }
 
 runner();

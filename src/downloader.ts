@@ -39,7 +39,6 @@ export default function fetchContent(
     videoInfo: VideoInfo,
     qualityLabel: string, filename: string,
     options?: { audioOnly?: boolean, videoOnly?: boolean },
-    jsonDump?: string,
 ) {
     const urls: Array<string> = [];
     let { formats } = videoInfo.streamingData;
@@ -66,12 +65,6 @@ export default function fetchContent(
                 || Object.fromEntries(new URLSearchParams(format.cipher)).url);
         }
     });
-
-    if (jsonDump) {
-        fs.writeFile(`./data/${jsonDump}`, JSON.stringify(videoInfo), (err: any) => {
-            if (err) logger.error(err);
-        });
-    }
 
     if (urls.length) {
         logger.info('Fetching content');
