@@ -50,6 +50,7 @@
     "dependencies": {
         "axios": "^0.19.2",
         "commander": "^5.0.0",
+        "miniget": "^1.7.0",
         "winston": "^3.2.1"
     }
 }

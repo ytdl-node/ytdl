@@ -4,6 +4,7 @@ import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
 import downloader from './downloader';
 import dumpJson from './utils/jsonDump';
+import getStuff from './utils/scraper';
 
 export default async function runner() {
     // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
@@ -21,6 +22,8 @@ export default async function runner() {
     logger.info(`Video Time: ${videoTime} seconds`);
     logger.info(`Video Description:\n ${videoDescription}`);
 
+
+    getStuff(videoId);
     dumpJson(videoInfo, 'downloaded.json');
     downloader(videoInfo, '480p', 'video.mp4', { videoOnly: true });
 }
