@@ -1,9 +1,6 @@
 import miniget from 'miniget';
 import logger from './logger';
 
-const BASE_URL = 'https://www.youtube.com';
-const URL = 'https://www.youtube.com/watch?v=';
-
 function between(data: string, left: string, right: string): string {
     let reqData = data;
 
@@ -18,8 +15,8 @@ function between(data: string, left: string, right: string): string {
     return reqData;
 }
 
-export default async function scraper(id: string) {
-    const [, body] = await miniget.promise(URL + id);
+export default async function scraper(videoId: string) {
+    const [, body] = await miniget.promise(`https://www.youtube.com/watch?v=${videoId}`);
 
     const jsonStr = between(body, 'ytplayer.config = ', '</script>');
 
@@ -29,7 +26,7 @@ export default async function scraper(id: string) {
         config = JSON.parse(jsonStr.slice(0, endOfJSON));
         logger.info(config.assets.js);
 
-        const [, JSBody] = await miniget.promise(BASE_URL + config.assets.js);
+        const [, JSBody] = await miniget.promise(`https://www.youtube.com${config.assets.js}`);
         logger.info(JSBody);
     }
 }
