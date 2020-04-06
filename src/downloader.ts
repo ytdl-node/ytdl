@@ -4,6 +4,7 @@ import fs from 'fs';
 
 import VideoInfo from './models/VideoInfo';
 import logger from './utils/logger';
+import decodeSignature from './utils/decodeSignature';
 
 export function download(urls: string[], filename: string) {
     const host = urls[0].split('/videoplayback')[0].split('https://')[1];
@@ -66,12 +67,10 @@ export default function fetchContent(
             } else {
                 const link = Object.fromEntries(new URLSearchParams(format.cipher));
                 // TODO: Instead of link.s, add decoded link.s
-                urls.push(`${link.url}&${link.sp}=${link.s}`);
+                urls.push(`${link.url}&${link.sp}=${decodeSignature(link.s)}`);
             }
         }
     });
-
-    console.log(new URLSearchParams(urls[0]));
 
     if (urls.length) {
         logger.info('Fetching content...');
