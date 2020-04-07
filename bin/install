@@ -1,0 +1,10 @@
+#!/bin/bash
+
+git clone https://github.com/roerohan/ytdl.git
+cd ytdl
+npm install
+npm run build
+./bin/ytdl -h
+
+echo
+echo "Add `pwd`/bin to PATH"
