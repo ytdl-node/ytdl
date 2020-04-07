@@ -32,7 +32,7 @@ export default class VideoData {
     }
 
     private static getVideoId(url: string): string {
-        const urlRegex = /^(["']|)((((https)|(http)):\/\/|)(www\.|)youtube\.com\/watch\?v=)[\w_-]*(["']|)$/;
+        const urlRegex = /^(["']|)((((https)|(http)):\/\/|)(www\.|m\.|music\.|gaming\.|)youtube\.com\/watch\?v=)[\w_-]*(["']|)$/;
         if (!urlRegex.test(url)) {
             throw new Error('Invalid URL.');
         }
