@@ -4,6 +4,20 @@ A CLI written in javascript/typescript, which allows you to download videos from
 
 # Installation
 
+## Via curl
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/roerohan/ytdl/master/bin/install)"
+```
+
+## Via wget
+
+```bash
+sh -c "$(wget -O- https://raw.githubusercontent.com/roerohan/ytdl/master/bin/install)"
+```
+
+## Via commands
+
 ```bash
 git clone https://github.com/roerohan/ytdl.git
 cd ytdl
