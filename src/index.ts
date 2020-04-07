@@ -24,7 +24,7 @@ export default async function runner() {
 
     // scraper(videoId);
     dumpJson(videoInfo, 'downloaded.json');
-    downloader(videoInfo, '480p', 'video.mp4');
+    downloader(videoInfo, '1080p', 'video.mp4');
 }
 
 runner();
