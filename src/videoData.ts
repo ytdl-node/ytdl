@@ -71,13 +71,6 @@ export default class VideoData {
 
         const response = await axios.get(`https://www.youtube.com/get_video_info?video_id=${videoId}&el=embedded&eurl=${eurl}&sts=18333`);
         const parsedResponse = Object.fromEntries(new URLSearchParams(response.data));
-        // TODO: Add functionality in logger to debug things to a file
-        // if (filename) {
-        //     fs.writeFile(`./data/${filename}`, parsedResponse.player_response, (err) => {
-        //         if (err) { throw err; }
-        //         return true;
-        //     });
-        // }
 
         const jsonResponse = JSON.parse(parsedResponse.player_response);
         const { playabilityStatus, videoDetails, streamingData } = jsonResponse;
