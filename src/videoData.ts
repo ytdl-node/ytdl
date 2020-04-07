@@ -32,8 +32,9 @@ export default class VideoData {
     }
 
     private static getVideoId(url: string): string {
-        const urlRegex = /^(["']|)((((https)|(http)):\/\/|)(www\.|m\.|music\.|gaming\.|)youtube\.com\/watch\?v=)[\w_-]*(["']|)$/;
-        if (!urlRegex.test(url)) {
+        const urlRegexPrimary = /^(["']|)((((https)|(http)):\/\/|)(www\.|m\.|music\.|gaming\.|)youtube\.com\/watch\?v=)[\w_-]*(["']|)$/i;
+        const urlRegexSecondary = /^(["']|)(((https)|(http)):\/\/|)youtu.be\/[\w_-]*(["']|)$/i;
+        if (!urlRegexPrimary.test(url) && !urlRegexSecondary.test(url)) {
             throw new Error('Invalid URL.');
         }
         return url.split('watch?v=')[1];
