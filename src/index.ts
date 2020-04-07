@@ -8,7 +8,7 @@ import dumpJson, { dumpToFile } from './utils/jsonDump';
 import scraper from './utils/scraper';
 
 export default async function runner() {
-    // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
+    // Added temporarily, 'npm start <youtubeLink>' or 'ts-node src/index.js <youtubeLink> works
     const downloadLink = process.argv[2] || await getDownloadLink();
     const {
         videoId,
