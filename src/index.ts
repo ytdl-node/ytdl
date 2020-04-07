@@ -3,8 +3,9 @@ import logger from './utils/logger';
 import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
 import downloader from './downloader';
-import dumpJson from './utils/jsonDump';
-// import scraper from './utils/scraper';
+import dumpJson, { dumpToFile } from './utils/jsonDump';
+
+import scraper from './utils/scraper';
 
 export default async function runner() {
     // Added temporarily, 'npm start <youtubeLink>' or 'node src/index.js <youtubeLink> works
@@ -22,9 +23,9 @@ export default async function runner() {
     logger.info(`Video Time: ${videoTime} seconds`);
     logger.info(`Video Description:\n ${videoDescription}`);
 
-    // scraper(videoId);
+    dumpToFile(await scraper(videoId), 'scraped.js');
     dumpJson(videoInfo, 'downloaded.json');
-    downloader(videoInfo, '1080p', 'video.mp4');
+    downloader(videoInfo, '480p', 'video.mp4');
 }
 
 runner();
