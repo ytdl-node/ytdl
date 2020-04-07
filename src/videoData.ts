@@ -54,7 +54,28 @@ export default class VideoData {
     }
 
     private getVideoTime(): string {
-        return this.videoInfo.videoDetails.lengthSeconds;
+        let lengthSeconds = Number(this.videoInfo.videoDetails.lengthSeconds);
+
+        const minute = 60;
+        const hour = 60 * minute;
+
+        const hours = Math.floor(lengthSeconds / hour);
+        lengthSeconds -= hour * hours;
+        const minutes = Math.floor(lengthSeconds / minute);
+        lengthSeconds -= minute * minutes;
+        const seconds = lengthSeconds;
+
+        function lpad(target: string, padString: string, length: Number) {
+            let str = target;
+            while (str.length < length) str = padString + str;
+            return str;
+        }
+
+        let date = lpad(hours.toString(), '0', 2);
+        date += `:${lpad(minutes.toString(), '0', 2)}`;
+        date += `:${lpad(seconds.toString(), '0', 2)}`;
+
+        return date;
     }
 
     private getVideoDescription(): string {

@@ -20,7 +20,7 @@ export default async function runner() {
 
     logger.info(`Video ID: ${videoId}`);
     logger.info(`Video Title: ${videoTitle}`);
-    logger.info(`Video Time: ${videoTime} seconds`);
+    logger.info(`Video Time: ${videoTime}`);
     logger.info(`Video Description:\n ${videoDescription}`);
 
     dumpToFile(await scraper(videoId), 'scraped.js');
