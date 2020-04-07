@@ -6,6 +6,7 @@ import VideoInfo from './models/VideoInfo';
 import logger from './utils/logger';
 import decodeSignature from './utils/decodeSignature';
 import mergeStreams from './utils/mergeStreams';
+import deleteFile from './utils/deleteFile';
 
 export async function download(urls: string[], filename: string) {
     return new Promise((resolve, reject) => {
@@ -41,15 +42,32 @@ export async function download(urls: string[], filename: string) {
 
 export default async function fetchContent(
     videoInfo: VideoInfo,
-    qualityLabel: string, filename: string,
+    qualityLabel: string,
+    filename: string,
     options?: { audioOnly?: boolean, videoOnly?: boolean },
 ) {
+    type audioMapping = {
+        [key: string]: string
+    };
+    const audioMappings: audioMapping = {
+        high: 'AUDIO_QUALITY_HIGH',
+        medium: 'AUDIO_QUALITY_MEDIUM',
+        low: 'AUDIO_QUALITY_LOW',
+        AUDIO_QUALITY_HIGH: 'AUDIO_QUALITY_HIGH',
+        AUDIO_QUALITY_MEDIUM: 'AUDIO_QUALITY_MEDIUM',
+        AUDIO_QUALITY_LOW: 'AUDIO_QUALITY_LOW',
+    };
     const urls: Array<string> = [];
+
     let { formats } = videoInfo.streamingData;
     let mimeType = 'video/mp4';
     let opts = options;
+
     if (!opts) {
         opts = { audioOnly: false, videoOnly: false };
+    }
+    if (opts.audioOnly && opts.videoOnly) {
+        throw new Error('audioOnly and videoOnly can\'t be true simultaneously.');
     }
 
     if (opts.audioOnly) {
@@ -61,7 +79,8 @@ export default async function fetchContent(
 
     formats.forEach((format) => {
         if (opts.audioOnly
-            ? (format.quality === qualityLabel
+            ? ((format.audioQuality === audioMappings[qualityLabel]
+                || format.quality === 'tiny') // If no audio found for specified quality
                 && format.mimeType.includes(mimeType))
             : (format.qualityLabel === qualityLabel
                 && format.mimeType.includes(mimeType))) {
@@ -89,10 +108,15 @@ export default async function fetchContent(
     } else if (!opts.audioOnly && !opts.videoOnly) {
         await Promise.all([
             fetchContent(videoInfo, qualityLabel, `vid-${filename}`, { videoOnly: true }),
-            fetchContent(videoInfo, 'tiny', `aud-${filename}`, { audioOnly: true }),
+            fetchContent(videoInfo, 'low', `aud-${filename}`, { audioOnly: true }),
         ]);
 
         await mergeStreams(`vid-${filename}`, `aud-${filename}`, filename);
+
+        await Promise.all([
+            deleteFile(`vid-${filename}`),
+            deleteFile(`aud-${filename}`),
+        ]);
 
         logger.info('Video download complete.');
     } else {
