@@ -71,11 +71,11 @@ export default class VideoData {
             return str;
         }
 
-        let date = lpad(hours.toString(), '0', 2);
-        date += `:${lpad(minutes.toString(), '0', 2)}`;
-        date += `:${lpad(seconds.toString(), '0', 2)}`;
+        let time = lpad(hours.toString(), '0', 2);
+        time += `:${lpad(minutes.toString(), '0', 2)}`;
+        time += `:${lpad(seconds.toString(), '0', 2)}`;
 
-        return date;
+        return time;
     }
 
     private getVideoDescription(): string {
