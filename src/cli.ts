@@ -11,7 +11,9 @@ function setOptions(program: commander.Command) {
         .option('-d, --download <url>', 'download from YouTube link')
         .option('-fn, --filename <filename>', 'filename of downloaded content')
         .option('-q, --quality <quality>', 'quality of downloaded content')
-        .option('-dj, --dump-json <url>', 'dump json into file');
+        .option('-dj, --dump-json <url>', 'dump json into file')
+        .option('-ao, --audio-only', 'download only audio stream')
+        .option('-vo, --video-only', 'download only video stream');
 }
 
 async function parseOptions(program: commander.Command) {
@@ -22,8 +24,12 @@ async function parseOptions(program: commander.Command) {
 
         const filename = program.filename || 'ytdl.mp4';
         const quality = program.quality || '360p';
+        const options = {
+            audioOnly: !!program.audioOnly,
+            videoOnly: !!program.videoOnly,
+        };
 
-        downloader(videoInfo, quality, filename);
+        downloader(videoInfo, quality, filename, options);
     }
 
     if (program.info) {

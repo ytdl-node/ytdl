@@ -46,6 +46,7 @@ interface AdaptiveFormat {
     readonly qualityLabel?: string;
     readonly projectionType: string;
     readonly averageBitrate: Number;
+    readonly audioQuality?: string;
     readonly approxDurationMs: string;
     readonly colorInfo?: object;
     readonly cipher?: string;

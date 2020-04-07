@@ -26,6 +26,8 @@ Options:
   -fn, --filename <filename>  filename of downloaded content
   -q, --quality <quality>     quality of downloaded content
   -dj, --dump-json <url>      dump json into file
+  -ao, --audio-only           download only audio stream
+  -vo, --video-only           download only video stream
   -h, --help                  display help for command
 ```
 
