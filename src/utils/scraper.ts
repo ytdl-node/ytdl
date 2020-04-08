@@ -16,7 +16,9 @@ function between(data: string, left: string, right: string): string {
 }
 
 export default async function scraper(videoId: string): Promise<string[]> {
-    const [, body] = await miniget.promise(`https://www.youtube.com/watch?v=${videoId}`);
+    const [, body] = await miniget.promise(`https://www.youtube.com/watch?v=${videoId}`, {
+        headers: { 'User-Agent': '' },
+    });
 
     const jsonStr = between(body, 'ytplayer.config = ', '</script>');
 
