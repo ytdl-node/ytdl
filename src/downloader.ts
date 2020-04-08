@@ -53,17 +53,18 @@ export async function fetchContentByItag(
     let url: string;
     const tokens = await getTokens(videoInfo.videoDetails.videoId);
 
-    function callback(format: Format|AdaptiveFormat) {
+    function callback(format: Format | AdaptiveFormat) {
         if (format.itag === itag) {
             if (format.url) {
                 url = format.url;
             } else {
                 const link = Object.fromEntries(new URLSearchParams(format.cipher));
 
-                const deciphered = decipher(tokens, link.s);
+                const sig = tokens && link.s ? decipher(tokens, link.s) : null;
+
                 logger.info(`s = ${link.s}`);
-                logger.info(`sig = ${deciphered}`);
-                url = `${link.url}&sig=${deciphered}`;
+                logger.info(`sig = ${sig}`);
+                url = `${link.url}&sig=${sig}`;
             }
         }
     }
