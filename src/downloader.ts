@@ -40,7 +40,7 @@ export async function download(url: string, filename: string) {
                     });
             })
             .catch((err) => {
-                logger.error(`Failed to download, code: ${err.response.status}`);
+                logger.error(`Failed to download, status code: ${err.response.status}`);
             });
     });
 }
