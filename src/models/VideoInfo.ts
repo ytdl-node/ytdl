@@ -16,7 +16,7 @@ interface Range {
     readonly end: string;
 }
 
-interface Format {
+export interface Format {
     readonly itag: Number;
     readonly url: string;
     readonly mimeType: string;
@@ -30,7 +30,7 @@ interface Format {
     readonly cipher?: string;
 }
 
-interface AdaptiveFormat {
+export interface AdaptiveFormat {
     readonly itag: Number;
     readonly url: string;
     readonly mimeType: string;

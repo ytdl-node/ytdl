@@ -1,5 +1,4 @@
 import miniget from 'miniget';
-import logger from './logger';
 import extractActions from './signature';
 
 function between(data: string, left: string, right: string): string {
@@ -28,7 +27,6 @@ export default async function scraper(videoId: string): Promise<string[]> {
 
         const [, JSBody] = await miniget.promise(`https://www.youtube.com${config.assets.js}`);
 
-        logger.info('Getting tokens');
         const tokens = extractActions(JSBody);
 
         return tokens;

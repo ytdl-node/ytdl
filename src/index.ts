@@ -2,10 +2,10 @@ import logger from './utils/logger';
 
 import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
-import downloader from './downloader';
 import dumpJson from './utils/jsonDump';
+import { fetchContentByItag } from './downloader';
+// import downloader from './downloader';
 // import { dumpToFile } from './utils/jsonDump';
-
 // import scraper from './utils/scraper';
 
 export default async function runner() {
@@ -25,8 +25,9 @@ export default async function runner() {
     logger.info(`Video Description:\n ${videoDescription}`);
 
     // dumpToFile(await scraper(videoId), 'scraped.js');
+    // downloader(videoInfo, '360p', 'audio.mp4');
     dumpJson(videoInfo, 'downloaded.json');
-    downloader(videoInfo, '480p', 'video.mp4');
+    fetchContentByItag(videoInfo, 18, 'something.mp4');
 }
 
 runner();

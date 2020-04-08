@@ -3,18 +3,19 @@ import axios from 'axios';
 import fs from 'fs';
 
 import VideoInfo from './models/VideoInfo';
+import { Format, AdaptiveFormat } from './models/VideoInfo'
 import logger from './utils/logger';
 import getTokens from './utils/scraper';
 import { decipher } from './utils/signature';
 import mergeStreams from './utils/mergeStreams';
 import deleteFile from './utils/deleteFile';
 
-export async function download(urls: string[], filename: string) {
+export async function download(url: string, filename: string) {
     return new Promise((resolve, reject) => {
-        const host = urls[0].split('/videoplayback')[0].split('https://')[1];
+        const host = url.split('/videoplayback')[0].split('https://')[1];
         axios({
             method: 'get',
-            url: urls[0],
+            url,
             responseType: 'stream',
             headers: {
                 Accept: '*/*',
@@ -37,8 +38,49 @@ export async function download(urls: string[], filename: string) {
                         if (err) reject(err);
                         else resolve();
                     });
+            })
+            .catch((err) => {
+                logger.error(`Failed to download, code: ${err.response.status}`);
             });
     });
+}
+
+export async function fetchContentByItag(
+    videoInfo: VideoInfo,
+    itag: Number,
+    filename: string,
+) {
+    let url: string;
+    const tokens = await getTokens(videoInfo.videoDetails.videoId);
+
+    function callback(format: Format|AdaptiveFormat) {
+        if (format.itag === itag) {
+            if (format.url) {
+                url = format.url;
+            } else {
+                const link = Object.fromEntries(new URLSearchParams(format.cipher));
+
+                const deciphered = decipher(tokens, link.s);
+                logger.info(`sig = ${deciphered}`);
+                url = `${link.url}&sig=${deciphered}`;
+            }
+        }
+    }
+    videoInfo.streamingData.formats.forEach(callback);
+
+    logger.info(url);
+
+    if (!url) {
+        videoInfo.streamingData.adaptiveFormats.forEach(callback);
+    }
+
+    if (url) {
+        logger.info('Fetching content...');
+        await download(url, filename);
+        logger.info('Downloaded content...');
+    } else {
+        logger.error('No links found matching specified options.');
+    }
 }
 
 export default async function fetchContent(
@@ -59,8 +101,8 @@ export default async function fetchContent(
         AUDIO_QUALITY_LOW: 'AUDIO_QUALITY_LOW',
     };
     const urls: Array<string> = [];
+    logger.info('Getting tokens');
     const tokens = await getTokens(videoInfo.videoDetails.videoId);
-    logger.info(tokens);
 
     let { formats } = videoInfo.streamingData;
     let mimeType = 'video/mp4';
@@ -100,7 +142,8 @@ export default async function fetchContent(
         }
     });
 
-    if (urls.length) {
+    const url = urls[0];
+    if (url) {
         let content = 'video';
         if (opts.audioOnly) {
             content = 'audio stream';
@@ -109,7 +152,7 @@ export default async function fetchContent(
         }
 
         logger.info(`Fetching ${content}...`);
-        await download(urls, filename);
+        await download(url, filename);
         logger.info(`Downloaded ${content}.`);
     } else if (!opts.audioOnly && !opts.videoOnly) {
         await Promise.all([
@@ -129,3 +172,4 @@ export default async function fetchContent(
         logger.error('No links found matching specified options.');
     }
 }
+
