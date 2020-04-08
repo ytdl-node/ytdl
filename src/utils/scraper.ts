@@ -2,36 +2,31 @@ import miniget from 'miniget';
 import logger from './logger';
 import extractActions from './signature';
 
-const BASE_URL = 'https://www.youtube.com';
-const URL = 'https://www.youtube.com/watch?v=';
-// const INFO_URL = 'https://www.youtube.com/get_video_info';
+function between(data: string, left: string, right: string): string {
+    let modifiedData = data;
 
-function between(data: string, left: string, right: string) {
-    let reqData = data;
-
-    let pos = reqData.indexOf(left);
+    let pos = modifiedData.indexOf(left);
     if (pos === -1) { return ''; }
-    reqData = reqData.slice(pos + left.length);
+    modifiedData = modifiedData.slice(pos + left.length);
 
-    pos = reqData.indexOf(right);
+    pos = modifiedData.indexOf(right);
     if (pos === -1) { return ''; }
-    reqData = reqData.slice(0, pos);
+    modifiedData = modifiedData.slice(0, pos);
 
-    return reqData;
+    return modifiedData;
 }
 
-export default async function getTokens(id: string) {
-    const [, body] = await miniget.promise(URL + id);
+export default async function scraper(videoId: string): Promise<string[]> {
+    const [, body] = await miniget.promise(`https://www.youtube.com/watch?v=${videoId}`);
 
     const jsonStr = between(body, 'ytplayer.config = ', '</script>');
 
     let config;
     if (jsonStr) {
-        // To get script wala JS File
         const endOfJSON = jsonStr.lastIndexOf(';ytplayer.load');
         config = JSON.parse(jsonStr.slice(0, endOfJSON));
 
-        const [, JSBody] = await miniget.promise(BASE_URL + config.assets.js);
+        const [, JSBody] = await miniget.promise(`https://www.youtube.com${config.assets.js}`);
 
         logger.info('Getting tokens');
         const tokens = extractActions(JSBody);

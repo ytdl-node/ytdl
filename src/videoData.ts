@@ -32,8 +32,9 @@ export default class VideoData {
     }
 
     private static getVideoId(url: string): string {
-        const urlRegex = /^(["']|)((((https)|(http)):\/\/|)(www\.|)youtube\.com\/watch\?v=)[\w_-]*(["']|)$/;
-        if (!urlRegex.test(url)) {
+        const urlRegexPrimary = /^(["']|)((((https)|(http)):\/\/|)(www\.|m\.|music\.|gaming\.|)youtube\.com\/watch\?v=)[\w_-]*(["']|)$/i;
+        const urlRegexSecondary = /^(["']|)(((https)|(http)):\/\/|)youtu.be\/[\w_-]*(["']|)$/i;
+        if (!urlRegexPrimary.test(url) && !urlRegexSecondary.test(url)) {
             throw new Error('Invalid URL.');
         }
         return url.split('watch?v=')[1];
@@ -54,7 +55,28 @@ export default class VideoData {
     }
 
     private getVideoTime(): string {
-        return this.videoInfo.videoDetails.lengthSeconds;
+        let lengthSeconds = Number(this.videoInfo.videoDetails.lengthSeconds);
+
+        const minute = 60;
+        const hour = 60 * minute;
+
+        const hours = Math.floor(lengthSeconds / hour);
+        lengthSeconds -= hour * hours;
+        const minutes = Math.floor(lengthSeconds / minute);
+        lengthSeconds -= minute * minutes;
+        const seconds = lengthSeconds;
+
+        function lpad(target: string, padString: string, length: Number) {
+            let str = target;
+            while (str.length < length) str = padString + str;
+            return str;
+        }
+
+        let time = lpad(hours.toString(), '0', 2);
+        time += `:${lpad(minutes.toString(), '0', 2)}`;
+        time += `:${lpad(seconds.toString(), '0', 2)}`;
+
+        return time;
     }
 
     private getVideoDescription(): string {
@@ -71,13 +93,6 @@ export default class VideoData {
 
         const response = await axios.get(`https://www.youtube.com/get_video_info?video_id=${videoId}&el=embedded&eurl=${eurl}&sts=18333`);
         const parsedResponse = Object.fromEntries(new URLSearchParams(response.data));
-        // TODO: Add functionality in logger to debug things to a file
-        // if (filename) {
-        //     fs.writeFile(`./data/${filename}`, parsedResponse.player_response, (err) => {
-        //         if (err) { throw err; }
-        //         return true;
-        //     });
-        // }
 
         const jsonResponse = JSON.parse(parsedResponse.player_response);
         const { playabilityStatus, videoDetails, streamingData } = jsonResponse;
