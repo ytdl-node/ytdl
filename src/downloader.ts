@@ -4,6 +4,8 @@ import fs from 'fs';
 
 import VideoInfo from './models/VideoInfo';
 import logger from './utils/logger';
+import getTokens from './utils/scraper';
+import { decipher } from './utils/signature';
 
 export function download(urls: string[], filename: string) {
     const host = urls[0].split('/videoplayback')[0].split('https://')[1];
@@ -35,12 +37,15 @@ export function download(urls: string[], filename: string) {
         });
 }
 
-export default function fetchContent(
+export default async function fetchContent(
     videoInfo: VideoInfo,
     qualityLabel: string, filename: string,
     options?: { audioOnly?: boolean, videoOnly?: boolean },
 ) {
     const urls: Array<string> = [];
+    const tokens = await getTokens(videoInfo.videoDetails.videoId);
+    logger.info(tokens);
+
     let { formats } = videoInfo.streamingData;
     let mimeType = 'video/mp4';
     let opts = options;
@@ -55,7 +60,7 @@ export default function fetchContent(
         formats = videoInfo.streamingData.adaptiveFormats;
     }
 
-    formats.forEach((format) => {
+    formats.forEach(async (format) => {
         if (opts.audioOnly
             ? (format.quality === qualityLabel
                 && format.mimeType.includes(mimeType))
@@ -65,8 +70,11 @@ export default function fetchContent(
                 urls.push(format.url);
             } else {
                 const link = Object.fromEntries(new URLSearchParams(format.cipher));
-                // TODO: Instead of link.s, add decoded link.s
-                urls.push(`${link.url}&${link.sp}=${link.s}`);
+                logger.info(`Signature ${link.s}`);
+
+                const deciphered = decipher(tokens, link.s);
+                logger.info(`Deciphered Signature ${deciphered}`);
+                urls.push(`${link.url}&${link.sp}=${deciphered}`);
             }
         }
     });

@@ -1,5 +1,6 @@
 import miniget from 'miniget';
 import logger from './logger';
+import extractActions from './signature';
 
 const BASE_URL = 'https://www.youtube.com';
 const URL = 'https://www.youtube.com/watch?v=';
@@ -19,7 +20,7 @@ function between(data: string, left: string, right: string) {
     return reqData;
 }
 
-export default async function getStuff(id: string) {
+export default async function getTokens(id: string) {
     const [, body] = await miniget.promise(URL + id);
 
     const jsonStr = between(body, 'ytplayer.config = ', '</script>');
@@ -29,11 +30,14 @@ export default async function getStuff(id: string) {
         // To get script wala JS File
         const endOfJSON = jsonStr.lastIndexOf(';ytplayer.load');
         config = JSON.parse(jsonStr.slice(0, endOfJSON));
-        logger.info(config.assets.js);
 
         const [, JSBody] = await miniget.promise(BASE_URL + config.assets.js);
-        logger.info(JSBody);
+
+        logger.info('Getting tokens');
+        const tokens = extractActions(JSBody);
+
+        return tokens;
     }
 
-    // logger.info(jsonStr);
+    return [];
 }
