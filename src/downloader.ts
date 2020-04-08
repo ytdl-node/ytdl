@@ -2,8 +2,8 @@ import { URLSearchParams } from 'url';
 import axios from 'axios';
 import fs from 'fs';
 
-import VideoInfo from './models/VideoInfo';
-import { Format, AdaptiveFormat } from './models/VideoInfo'
+import VideoInfo, { Format, AdaptiveFormat } from './models/VideoInfo';
+
 import logger from './utils/logger';
 import getTokens from './utils/scraper';
 import { decipher } from './utils/signature';
@@ -61,6 +61,7 @@ export async function fetchContentByItag(
                 const link = Object.fromEntries(new URLSearchParams(format.cipher));
 
                 const deciphered = decipher(tokens, link.s);
+                logger.info(`s = ${link.s}`);
                 logger.info(`sig = ${deciphered}`);
                 url = `${link.url}&sig=${deciphered}`;
             }
@@ -133,10 +134,10 @@ export default async function fetchContent(
                 urls.push(format.url);
             } else {
                 const link = Object.fromEntries(new URLSearchParams(format.cipher));
-                logger.info(`Signature ${link.s}`);
+                logger.info(`s = ${link.s}`);
 
                 const deciphered = decipher(tokens, link.s);
-                logger.info(`Deciphered Signature ${deciphered}`);
+                logger.info(`sig = ${deciphered}`);
                 urls.push(`${link.url}&${link.sp}=${deciphered}`);
             }
         }
@@ -172,4 +173,3 @@ export default async function fetchContent(
         logger.error('No links found matching specified options.');
     }
 }
-
