@@ -70,11 +70,11 @@ export async function fetchContentByItag(
     }
     videoInfo.streamingData.formats.forEach(callback);
 
-    logger.info(url);
-
     if (!url) {
         videoInfo.streamingData.adaptiveFormats.forEach(callback);
     }
+
+    logger.info(url);
 
     if (url) {
         logger.info('Fetching content...');

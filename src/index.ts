@@ -27,7 +27,7 @@ export default async function runner() {
     // dumpToFile(await scraper(videoId), 'scraped.js');
     // downloader(videoInfo, '360p', 'audio.mp4');
     dumpJson(videoInfo, 'downloaded.json');
-    fetchContentByItag(videoInfo, 18, 'something.mp4');
+    fetchContentByItag(videoInfo, 396, 'something.mp4');
 }
 
 runner();
