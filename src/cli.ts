@@ -29,6 +29,8 @@ async function parseOptions(program: commander.Command) {
             videoOnly: !!program.videoOnly,
         };
 
+        // TODO: download by itag
+
         downloader(videoInfo, quality, filename, options);
     }
 
