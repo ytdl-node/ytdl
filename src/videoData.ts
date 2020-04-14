@@ -2,6 +2,8 @@ import axios from 'axios';
 import { URLSearchParams } from 'url';
 
 import VideoInfo from './models/VideoInfo';
+import between from './utils/between';
+import extractActions from './utils/signature';
 
 export default class VideoData {
     readonly videoId: string;
@@ -25,7 +27,6 @@ export default class VideoData {
     static async fromLink(link: string): Promise<VideoData> {
         const videoId = VideoData.getVideoId(link);
         const videoInfo = await VideoData.getVideoInfo(videoId);
-
         VideoData.validateParsedResponse(videoInfo);
 
         return new VideoData(videoId, videoInfo);
@@ -89,14 +90,41 @@ export default class VideoData {
             throw new Error('Invalid videoId.');
         }
 
-        const eurl = `https://youtube.googleapis.com/v/${videoId}`;
+        const body = await axios.get(
+            `https://www.youtube.com/watch?v=${videoId}&hl=en&bpctr=${Math.ceil(Date.now() / 1000)}`, {
+                headers: {
+                    'User-Agent': '',
+                },
+            },
+        );
 
-        const response = await axios.get(`https://www.youtube.com/get_video_info?video_id=${videoId}&el=embedded&eurl=${eurl}&sts=18333`);
-        const parsedResponse = Object.fromEntries(new URLSearchParams(response.data));
+        const jsonStr = between(body.data, 'ytplayer.config = ', '</script>');
+        const config = JSON.parse(jsonStr.slice(0, jsonStr.lastIndexOf(';ytplayer.load')));
 
-        const jsonResponse = JSON.parse(parsedResponse.player_response);
-        const { playabilityStatus, videoDetails, streamingData } = jsonResponse;
-        const videoInfo = <VideoInfo> { playabilityStatus, videoDetails, streamingData };
+        let playerResponse = JSON.parse(config.args.player_response);
+
+        if (!config.args.player_response) {
+            const eurl = `https://youtube.googleapis.com/v/${videoId}`;
+            const response = await axios.get(
+                `https://www.youtube.com/get_video_info?video_id=${videoId}&el=embedded&eurl=${eurl}&sts=18333`,
+            );
+            playerResponse = JSON.parse(
+                Object.fromEntries(new URLSearchParams(response.data)).player_response,
+            );
+        }
+
+        const { playabilityStatus, videoDetails, streamingData } = playerResponse;
+
+        const html5playerfileResponse = await axios.get(`https://www.youtube.com${config.assets.js}`);
+
+        const tokens = extractActions(html5playerfileResponse.data);
+
+        const videoInfo = <VideoInfo> {
+            playabilityStatus,
+            videoDetails,
+            streamingData,
+            tokens,
+        };
 
         return videoInfo;
     }
