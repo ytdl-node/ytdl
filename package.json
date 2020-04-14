@@ -52,7 +52,6 @@
         "axios": "^0.19.2",
         "commander": "^5.0.0",
         "fluent-ffmpeg": "^2.1.2",
-        "miniget": "^1.7.0",
         "winston": "^3.2.1"
     }
 }
