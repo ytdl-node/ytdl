@@ -5,7 +5,6 @@ import fs from 'fs';
 import VideoInfo, { Format, AdaptiveFormat } from './models/VideoInfo';
 
 import logger from './utils/logger';
-import getTokens from './utils/scraper';
 import { decipher } from './utils/signature';
 import mergeStreams from './utils/mergeStreams';
 import deleteFile from './utils/deleteFile';
@@ -51,7 +50,7 @@ export async function fetchContentByItag(
     filename: string,
 ) {
     let url: string;
-    const tokens = await getTokens(videoInfo.videoDetails.videoId);
+    const { tokens } = videoInfo;
 
     function callback(format: Format | AdaptiveFormat) {
         if (format.itag === itag) {
@@ -102,9 +101,10 @@ export default async function fetchContent(
         AUDIO_QUALITY_MEDIUM: 'AUDIO_QUALITY_MEDIUM',
         AUDIO_QUALITY_LOW: 'AUDIO_QUALITY_LOW',
     };
+
     const urls: Array<string> = [];
-    logger.info('Getting tokens');
-    const tokens = await getTokens(videoInfo.videoDetails.videoId);
+
+    const { tokens } = videoInfo;
 
     let { formats } = videoInfo.streamingData;
     let mimeType = 'video/mp4';
@@ -124,7 +124,7 @@ export default async function fetchContent(
         formats = videoInfo.streamingData.adaptiveFormats;
     }
 
-    formats.forEach(async (format) => {
+    formats.forEach((format) => {
         if (opts.audioOnly
             ? ((format.audioQuality === audioMappings[qualityLabel]
                 || format.quality === 'tiny') // If no audio found for specified quality
