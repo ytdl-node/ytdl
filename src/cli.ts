@@ -23,12 +23,15 @@ async function parseOptions(program: commander.Command) {
         } = await VideoData.fromLink(program.download);
 
         const filename = program.filename || 'ytdl.mp4';
-        const quality = program.quality || '360p';
+        let quality = program.quality || '360p';
         const options = {
             audioOnly: !!program.audioOnly,
             videoOnly: !!program.videoOnly,
         };
 
+        if (options.audioOnly) {
+            quality = 'any';
+        }
         // TODO: download by itag
 
         downloader(videoInfo, quality, filename, options);
