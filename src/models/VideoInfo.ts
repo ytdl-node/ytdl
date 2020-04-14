@@ -62,4 +62,5 @@ export default interface VideoInfo {
     readonly playabilityStatus: PlayabilityStatus;
     readonly videoDetails: VideoDetails;
     readonly streamingData: StreamingData;
+    readonly tokens: Array<string>;
 }
