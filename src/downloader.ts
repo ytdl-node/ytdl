@@ -2,18 +2,19 @@ import { URLSearchParams } from 'url';
 import axios from 'axios';
 import fs from 'fs';
 
-import VideoInfo from './models/VideoInfo';
+import VideoInfo, { Format, AdaptiveFormat } from './models/VideoInfo';
+
 import logger from './utils/logger';
-import decodeSignature from './utils/decodeSignature';
+import { decipher } from './utils/signature';
 import mergeStreams from './utils/mergeStreams';
 import deleteFile from './utils/deleteFile';
 
-export async function download(urls: string[], filename: string) {
+export async function download(url: string, filename: string) {
     return new Promise((resolve, reject) => {
-        const host = urls[0].split('/videoplayback')[0].split('https://')[1];
+        const host = url.split('/videoplayback')[0].split('https://')[1];
         axios({
             method: 'get',
-            url: urls[0],
+            url,
             responseType: 'stream',
             headers: {
                 Accept: '*/*',
@@ -36,8 +37,46 @@ export async function download(urls: string[], filename: string) {
                         if (err) reject(err);
                         else resolve();
                     });
+            })
+            .catch((err) => {
+                logger.error(`Failed to download, status code: ${err.response.status}`);
             });
     });
+}
+
+export async function fetchContentByItag(
+    videoInfo: VideoInfo,
+    itag: Number,
+    filename: string,
+) {
+    let url: string;
+    const { tokens } = videoInfo;
+
+    function callback(format: Format | AdaptiveFormat) {
+        if (format.itag === itag) {
+            if (format.url) {
+                url = format.url;
+            } else {
+                const link = Object.fromEntries(new URLSearchParams(format.cipher));
+
+                const sig = tokens && link.s ? decipher(tokens, link.s) : null;
+                url = `${link.url}&${link.sp || 'sig'}=${sig}`;
+            }
+        }
+    }
+    videoInfo.streamingData.formats.forEach(callback);
+
+    if (!url) {
+        videoInfo.streamingData.adaptiveFormats.forEach(callback);
+    }
+
+    if (url) {
+        logger.info('Fetching content...');
+        await download(url, filename);
+        logger.info('Downloaded content...');
+    } else {
+        logger.error('No links found matching specified options.');
+    }
 }
 
 export default async function fetchContent(
@@ -57,44 +96,55 @@ export default async function fetchContent(
         AUDIO_QUALITY_MEDIUM: 'AUDIO_QUALITY_MEDIUM',
         AUDIO_QUALITY_LOW: 'AUDIO_QUALITY_LOW',
     };
-    const urls: Array<string> = [];
 
-    let { formats } = videoInfo.streamingData;
-    let mimeType = 'video/mp4';
     let opts = options;
 
     if (!opts) {
         opts = { audioOnly: false, videoOnly: false };
-    }
-    if (opts.audioOnly && opts.videoOnly) {
+    } else if (opts.audioOnly && opts.videoOnly) {
         throw new Error('audioOnly and videoOnly can\'t be true simultaneously.');
     }
 
-    if (opts.audioOnly) {
-        formats = videoInfo.streamingData.adaptiveFormats;
-        mimeType = 'audio/mp';
-    } else if (opts.videoOnly) {
-        formats = videoInfo.streamingData.adaptiveFormats;
+    let url: string;
+
+    const { tokens } = videoInfo;
+
+    function common(format: Format | AdaptiveFormat) {
+        if (format.url) {
+            return format.url;
+        }
+        const link = Object.fromEntries(new URLSearchParams(format.cipher));
+
+        const sig = tokens && link.s ? decipher(tokens, link.s) : null;
+        return `${link.url}&${link.sp || 'sig'}=${sig}`;
     }
 
-    formats.forEach((format) => {
-        if (opts.audioOnly
-            ? ((format.audioQuality === audioMappings[qualityLabel]
-                || format.quality === 'tiny') // If no audio found for specified quality
-                && format.mimeType.includes(mimeType))
-            : (format.qualityLabel === qualityLabel
-                && format.mimeType.includes(mimeType))) {
-            if (format.url) {
-                urls.push(format.url);
-            } else {
-                const link = Object.fromEntries(new URLSearchParams(format.cipher));
-                // TODO: Instead of link.s, add decoded link.s
-                urls.push(`${link.url}&${link.sp}=${decodeSignature(link.s)}`);
-            }
+    function callback(format: Format | AdaptiveFormat) {
+        const mimeType = 'video/mp4';
+        if (format.qualityLabel === qualityLabel && format.mimeType.includes(mimeType)) {
+            url = common(format);
         }
-    });
+    }
 
-    if (urls.length) {
+    function audioCallback(format: Format | AdaptiveFormat) {
+        const mimeType = 'audio/mp4';
+        if (format.mimeType.includes(mimeType)
+            && (qualityLabel === 'any' ? true : format.audioQuality === audioMappings[qualityLabel])) {
+            url = common(format);
+        }
+    }
+
+    // TODO: url is always the last URL in the array, check if this needs to be changed
+
+    if (!opts.audioOnly && !opts.videoOnly) {
+        videoInfo.streamingData.formats.forEach(callback);
+    } else if (options.videoOnly) {
+        videoInfo.streamingData.adaptiveFormats.forEach(callback);
+    } else {
+        videoInfo.streamingData.adaptiveFormats.forEach(audioCallback);
+    }
+
+    if (url) {
         let content = 'video';
         if (opts.audioOnly) {
             content = 'audio stream';
@@ -103,12 +153,12 @@ export default async function fetchContent(
         }
 
         logger.info(`Fetching ${content}...`);
-        await download(urls, filename);
+        await download(url, filename);
         logger.info(`Downloaded ${content}.`);
     } else if (!opts.audioOnly && !opts.videoOnly) {
         await Promise.all([
             fetchContent(videoInfo, qualityLabel, `vid-${filename}`, { videoOnly: true }),
-            fetchContent(videoInfo, 'low', `aud-${filename}`, { audioOnly: true }),
+            fetchContent(videoInfo, 'any', `aud-${filename}`, { audioOnly: true }),
         ]);
 
         await mergeStreams(`vid-${filename}`, `aud-${filename}`, filename);

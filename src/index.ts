@@ -2,13 +2,12 @@ import logger from './utils/logger';
 
 import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
+import dumpJson from './utils/jsonDump';
 import downloader from './downloader';
-import dumpJson, { dumpToFile } from './utils/jsonDump';
 
-import scraper from './utils/scraper';
 
 export default async function runner() {
-    // Added temporarily, 'npm start <youtubeLink>' or 'ts-node src/index.js <youtubeLink> works
+    // TODO: Added temporarily, 'npm start <youtubeLink>', 'ts-node src/index.js <youtubeLink> works
     const downloadLink = process.argv[2] || await getDownloadLink();
     const {
         videoId,
@@ -23,9 +22,9 @@ export default async function runner() {
     logger.info(`Video Time: ${videoTime}`);
     logger.info(`Video Description:\n ${videoDescription}`);
 
-    dumpToFile(await scraper(videoId), 'scraped.js');
-    dumpJson(videoInfo, 'downloaded.json');
     downloader(videoInfo, '480p', 'video.mp4');
+    dumpJson(videoInfo, 'downloaded.json');
+    // fetchContentByItag(videoInfo, 396, 'video2.mp4');
 }
 
 runner();
