@@ -60,10 +60,7 @@ export async function fetchContentByItag(
                 const link = Object.fromEntries(new URLSearchParams(format.cipher));
 
                 const sig = tokens && link.s ? decipher(tokens, link.s) : null;
-
-                logger.info(`s = ${link.s}`);
-                logger.info(`sig = ${sig}`);
-                url = `${link.url}&sig=${sig}`;
+                url = `${link.url}&${link.sp || 'sig'}=${sig}`;
             }
         }
     }
@@ -72,8 +69,6 @@ export async function fetchContentByItag(
     if (!url) {
         videoInfo.streamingData.adaptiveFormats.forEach(callback);
     }
-
-    logger.info(url);
 
     if (url) {
         logger.info('Fetching content...');
@@ -102,49 +97,53 @@ export default async function fetchContent(
         AUDIO_QUALITY_LOW: 'AUDIO_QUALITY_LOW',
     };
 
-    const urls: Array<string> = [];
-
-    const { tokens } = videoInfo;
-
-    let { formats } = videoInfo.streamingData;
-    let mimeType = 'video/mp4';
     let opts = options;
 
     if (!opts) {
         opts = { audioOnly: false, videoOnly: false };
-    }
-    if (opts.audioOnly && opts.videoOnly) {
+    } else if (opts.audioOnly && opts.videoOnly) {
         throw new Error('audioOnly and videoOnly can\'t be true simultaneously.');
     }
 
-    if (opts.audioOnly) {
-        formats = videoInfo.streamingData.adaptiveFormats;
-        mimeType = 'audio/mp';
-    } else if (opts.videoOnly) {
-        formats = videoInfo.streamingData.adaptiveFormats;
+    let url: string;
+
+    const { tokens } = videoInfo;
+
+    function common(format: Format | AdaptiveFormat) {
+        if (format.url) {
+            return format.url;
+        }
+        const link = Object.fromEntries(new URLSearchParams(format.cipher));
+
+        const sig = tokens && link.s ? decipher(tokens, link.s) : null;
+        return `${link.url}&${link.sp || 'sig'}=${sig}`;
     }
 
-    formats.forEach((format) => {
-        if (opts.audioOnly
-            ? ((format.audioQuality === audioMappings[qualityLabel]
-                || format.quality === 'tiny') // If no audio found for specified quality
-                && format.mimeType.includes(mimeType))
-            : (format.qualityLabel === qualityLabel
-                && format.mimeType.includes(mimeType))) {
-            if (format.url) {
-                urls.push(format.url);
-            } else {
-                const link = Object.fromEntries(new URLSearchParams(format.cipher));
-                logger.info(`s = ${link.s}`);
-
-                const deciphered = decipher(tokens, link.s);
-                logger.info(`sig = ${deciphered}`);
-                urls.push(`${link.url}&${link.sp}=${deciphered}`);
-            }
+    function callback(format: Format | AdaptiveFormat) {
+        const mimeType = 'video/mp4';
+        if (format.qualityLabel === qualityLabel && format.mimeType.includes(mimeType)) {
+            url = common(format);
         }
-    });
+    }
 
-    const url = urls[0];
+    function audioCallback(format: Format | AdaptiveFormat) {
+        const mimeType = 'audio/mp4';
+        if (format.mimeType.includes(mimeType)
+            && (qualityLabel === 'any' ? true : format.audioQuality === audioMappings[qualityLabel])) {
+            url = common(format);
+        }
+    }
+
+    // TODO: url is always the last URL in the array, check if this needs to be changed
+
+    if (!opts.audioOnly && !opts.videoOnly) {
+        videoInfo.streamingData.formats.forEach(callback);
+    } else if (options.videoOnly) {
+        videoInfo.streamingData.adaptiveFormats.forEach(callback);
+    } else {
+        videoInfo.streamingData.adaptiveFormats.forEach(audioCallback);
+    }
+
     if (url) {
         let content = 'video';
         if (opts.audioOnly) {
@@ -159,7 +158,7 @@ export default async function fetchContent(
     } else if (!opts.audioOnly && !opts.videoOnly) {
         await Promise.all([
             fetchContent(videoInfo, qualityLabel, `vid-${filename}`, { videoOnly: true }),
-            fetchContent(videoInfo, 'low', `aud-${filename}`, { audioOnly: true }),
+            fetchContent(videoInfo, 'any', `aud-${filename}`, { audioOnly: true }),
         ]);
 
         await mergeStreams(`vid-${filename}`, `aud-${filename}`, filename);
