@@ -1,12 +1,4 @@
 /* eslint-disable no-bitwise */
-// const url = require('url');
-// const miniget = require('miniget');
-// const querystring = require('querystring');
-
-
-// A shared cache to keep track of html5player.js tokens.
-exports.cache = new Map();
-
 
 const jsVarStr = '[a-zA-Z_\\$][a-zA-Z_0-9]*';
 const jsSingleQuoteStr = '\'[^\'\\\\]*(:?\\\\[\\s\\S][^\'\\\\]*)*\'';
@@ -47,14 +39,6 @@ const sliceRegexp = new RegExp(`(?:^|,)(${jsKeyStr})${sliceStr}`, 'm');
 const spliceRegexp = new RegExp(`(?:^|,)(${jsKeyStr})${spliceStr}`, 'm');
 const swapRegexp = new RegExp(`(?:^|,)(${jsKeyStr})${swapStr}`, 'm');
 
-
-/**
- * Swaps the first element of an array with one of given position.
- *
- * @param {Array.<Object>} arr
- * @param {number} position
- * @return {Array.<Object>}
- */
 const swapHeadAndPosition = (arr: string[], position: number) => {
     const result = arr;
     const first = result[0];
@@ -63,14 +47,6 @@ const swapHeadAndPosition = (arr: string[], position: number) => {
     return result;
 };
 
-
-/**
- * Decipher a signature based on action tokens.
- *
- * @param {Array.<string>} tokens
- * @param {string} sig
- * @return {string}
- */
 export function decipher(tokens: string[], sig: string) {
     let sigChars = sig.split('');
     for (let i = 0, len = tokens.length; i < len; i += 1) {
@@ -98,27 +74,6 @@ export function decipher(tokens: string[], sig: string) {
     return sigChars.join('');
 }
 
-
-/**
- * Extracts the actions that should be taken to decipher a signature.
- *
- * This searches for a function that performs string manipulations on
- * the signature. We already know what the 3 possible changes to a signature
- * are in order to decipher it. There is
- *
- * * Reversing the string.
- * * Removing a number of characters from the beginning.
- * * Swapping the first character with another position.
- *
- * Note, `Array#slice()` used to be used instead of `Array#splice()`,
- * it's kept in case we encounter any older html5player files.
- *
- * After retrieving the function that does this, we can see what actions
- * it takes on a signature.
- *
- * @param {string} body
- * @return {Array.<string>}
- */
 export default function extractActions(body: string) {
     const objResult = actionsObjRegexp.exec(body);
     const funcResult = actionsFuncRegexp.exec(body);
@@ -174,74 +129,3 @@ export default function extractActions(body: string) {
     }
     return tokens;
 }
-
-
-/**
- * @param {Object} format
- * @param {string} sig
- * @param {boolean} debug
- */
-// export function setDownloadURL(format, sig, debug) {
-//     let decodedUrl;
-//     if (format.url) {
-//         decodedUrl = format.url;
-//     } else {
-//         if (debug) {
-//             console.warn(`Download url not found for itag ${format.itag}`);
-//         }
-//         return;
-//     }
-
-//     try {
-//         decodedUrl = decodeURIComponent(decodedUrl);
-//     } catch (err) {
-//         if (debug) {
-//             console.warn(`Could not decode url: ${err.message}`);
-//         }
-//         return;
-//     }
-
-//     // Make some adjustments to the final url.
-//     const parsedUrl = url.parse(decodedUrl, true);
-
-//     // Deleting the `search` part is necessary otherwise changes to
-//     // `query` won't reflect when running `url.format()`
-//     delete parsedUrl.search;
-
-//     const { query } = parsedUrl;
-
-//     // This is needed for a speedier download.
-//     // See https://github.com/fent/node-ytdl-core/issues/127
-//     query.ratebypass = 'yes';
-//     if (sig) {
-//         // When YouTube provides a `sp` parameter the signature `sig` must go
-//         // into the parameter it specifies.
-//         // See https://github.com/fent/node-ytdl-core/issues/417
-//         if (format.sp) {
-//             query[format.sp] = sig;
-//         } else {
-//             query.signature = sig;
-//         }
-//     }
-
-//     format.url = url.format(parsedUrl);
-// }
-
-
-/**
- * Applies `sig.decipher()` to all format URL's.
- *
- * @param {Array.<Object>} formats
- * @param {Array.<string>} tokens
- * @param {boolean} debug
- */
-// export function decipherFormats(formats, tokens, debug) {
-//     formats.forEach((format) => {
-//         if (format.cipher) {
-//             Object.assign(format, querystring.parse(format.cipher));
-//             delete format.cipher;
-//         }
-//         const sig = tokens && format.s ? exports.decipher(tokens, format.s) : null;
-//         exports.setDownloadURL(format, sig, debug);
-//     });
-// }
