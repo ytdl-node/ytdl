@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git clone https://github.com/roerohan/ytdl.git
+git clone https://github.com/ytdl-node/ytdl.git
 cd ytdl
 npm install
 npm run pack
