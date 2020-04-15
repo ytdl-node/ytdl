@@ -4,6 +4,12 @@ A CLI written in javascript/typescript, which allows you to download videos from
 
 # Installation
 
+## Via npm
+
+```bash
+npm install @ytdl/ytdl
+```
+
 ## Via curl
 
 ```bash
