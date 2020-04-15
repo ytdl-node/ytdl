@@ -7,19 +7,19 @@ A CLI written in javascript/typescript, which allows you to download videos from
 ## Via curl
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/roerohan/ytdl/master/bin/install)"
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/install)"
 ```
 
 ## Via wget
 
 ```bash
-sh -c "$(wget -O- https://raw.githubusercontent.com/roerohan/ytdl/master/bin/install)"
+sh -c "$(wget -O- https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/install)"
 ```
 
 ## Via commands
 
 ```bash
-git clone https://github.com/roerohan/ytdl.git
+git clone https://github.com/ytdl-node/ytdl.git
 cd ytdl
 npm install
 npm run pack
@@ -51,4 +51,4 @@ Contributing guidelines have been established [here](./CONTRIBUTING.md).
 
 # License
 
-[MIT](https://github.com/roerohan/ytdl/blob/master/LICENSE)
+[MIT](https://github.com/ytdl-node/ytdl/blob/master/LICENSE)
