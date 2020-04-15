@@ -46,6 +46,8 @@ npm run pack
 
 # Library / API
 
+> Note: Currently ytdl saves files in `./data`, i.e., a directory named data in the current directory. If `./data` does not exist, ytdl will throw an error (to be fixed soon).
+
 ## Example
 
 ```javascript
@@ -130,7 +132,7 @@ async function getInfo (link) {
 getInfo('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
 ```
 
-- This may be written as the following without using async-await:
+- This may be written without using async-await:
 
 ```javascript
 const ytdl = require('@ytdl/ytdl');
