@@ -1,6 +1,6 @@
 {
     "name": "@ytdl/ytdl",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "description": "A CLI/Library written in typescript/javascript, which allows you to download videos from [YouTube](http://youtube.com) onto your system.",
     "main": "dist/index.js",
     "scripts": {
