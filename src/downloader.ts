@@ -161,7 +161,9 @@ export default async function fetchContent(
             fetchContent(videoInfo, 'any', `aud-${filename}`, { audioOnly: true }),
         ]);
 
+        logger.info('Merging streams...');
         await mergeStreams(`vid-${filename}`, `aud-${filename}`, filename);
+        logger.info('Finished merging!');
 
         await Promise.all([
             deleteFile(`vid-${filename}`),

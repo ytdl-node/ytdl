@@ -14,7 +14,6 @@ export default async function mergeStreams(
                 reject(err);
             })
             .on('end', () => {
-                logger.info('Finished merging!');
                 resolve();
             });
     });
