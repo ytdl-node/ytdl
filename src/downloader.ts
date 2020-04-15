@@ -9,26 +9,13 @@ import { decipher } from './utils/signature';
 import mergeStreams from './utils/mergeStreams';
 import deleteFile from './utils/deleteFile';
 
-export async function download(url: string, filename: string) {
+export async function download(url: string, filename: string, headers?: any) {
     return new Promise((resolve, reject) => {
-        const host = url.split('/videoplayback')[0].split('https://')[1];
         axios({
             method: 'get',
             url,
             responseType: 'stream',
-            headers: {
-                Accept: '*/*',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Accept-Language': 'en-US,en;q=0.9,hi;q=0.8,de-DE;q=0.7,de;q=0.6,bn;q=0.5,la;q=0.4',
-                Connection: 'keep-alive',
-                Host: host,
-                Origin: 'https://www.youtube.com',
-                Referer: 'https://www.youtube.com/',
-                'Sec-Fetch-Dest': 'empty',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Site': 'cross-site',
-                'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
-            },
+            headers,
         })
             .then((response) => {
                 response.data
@@ -42,6 +29,23 @@ export async function download(url: string, filename: string) {
                 logger.error(`Failed to download, status code: ${err.response.status}`);
             });
     });
+}
+
+function getHeaders(url: string) {
+    const host = url.split('/videoplayback')[0].split('https://')[1];
+    return {
+        Accept: '*/*',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Language': 'en-US,en;q=0.9,hi;q=0.8,de-DE;q=0.7,de;q=0.6,bn;q=0.5,la;q=0.4',
+        Connection: 'keep-alive',
+        Host: host,
+        Origin: 'https://www.youtube.com',
+        Referer: 'https://www.youtube.com/',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'cross-site',
+        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36',
+    };
 }
 
 export async function fetchContentByItag(
@@ -72,7 +76,7 @@ export async function fetchContentByItag(
 
     if (url) {
         logger.info('Fetching content...');
-        await download(url, filename);
+        await download(url, filename, getHeaders(url));
         logger.info('Downloaded content...');
     } else {
         logger.error('No links found matching specified options.');
@@ -153,7 +157,7 @@ export default async function fetchContent(
         }
 
         logger.info(`Fetching ${content}...`);
-        await download(url, filename);
+        await download(url, filename, getHeaders(url));
         logger.info(`Downloaded ${content}.`);
     } else if (!opts.audioOnly && !opts.videoOnly) {
         await Promise.all([
