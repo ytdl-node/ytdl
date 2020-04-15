@@ -23,14 +23,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/roerohan/ytdl.git"
+        "url": "git+https://github.com/ytdl-node/ytdl.git"
     },
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/roerohan/ytdl/issues"
+        "url": "https://github.com/ytdl-node/ytdl/issues"
     },
-    "homepage": "https://github.com/roerohan/ytdl#readme",
+    "homepage": "https://github.com/ytdl-node/ytdl#readme",
     "devDependencies": {
         "@types/axios": "^0.14.0",
         "@types/chai": "^4.2.11",
