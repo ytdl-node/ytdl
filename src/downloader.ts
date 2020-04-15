@@ -179,3 +179,7 @@ export default async function fetchContent(
         logger.error('No links found matching specified options.');
     }
 }
+
+export {
+    fetchContent,
+};
