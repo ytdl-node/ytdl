@@ -1,5 +1,4 @@
 import ffmpeg from 'fluent-ffmpeg';
-import logger from './logger';
 
 export default async function mergeStreams(
     videoFile: string,
