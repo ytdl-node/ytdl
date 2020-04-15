@@ -2,3 +2,4 @@ test
 data
 .github
 node_modules
+dist/cli
