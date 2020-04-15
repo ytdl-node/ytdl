@@ -6,9 +6,9 @@ export default async function mergeStreams(
     outputFile: string,
 ) {
     return new Promise((resolve, reject) => {
-        ffmpeg(`./data/${videoFile}`)
-            .input(`./data/${audioFile}`)
-            .saveToFile(`./data/${outputFile}`)
+        ffmpeg(videoFile)
+            .input(audioFile)
+            .saveToFile(outputFile)
             .on('error', (err) => {
                 reject(err);
             })

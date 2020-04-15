@@ -19,8 +19,7 @@ export async function download(url: string, filename: string, headers?: any) {
         })
             .then((response) => {
                 response.data
-                // TODO: remove all instance of './data'
-                    .pipe(fs.createWriteStream(`./data/${filename}`))
+                    .pipe(fs.createWriteStream(filename))
                     .on('finish', (err: Error) => {
                         if (err) reject(err);
                         else resolve();

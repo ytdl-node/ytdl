@@ -2,6 +2,14 @@
 
 **ytdl** provides a library to integrate a Youtube Downloader for `Node.js` projects, and a CLI to download content from [Youtube](https://www.youtube.com).
 
+# Contents
+
+- [Installation](#installation)
+  * [Library](#library)
+  * [CLI](#cli)
+- [API](#api)
+- [CLI](#cli-(ytdl))
+
 # Installation
 
 ## Library
@@ -42,11 +50,7 @@ npm run pack
 ./bin/ytdl -h
 ```
 
-# Usage
-
-# Library / API
-
-> Note: Currently ytdl saves files in `./data`, i.e., a directory named data in the current directory. If `./data` does not exist, ytdl will throw an error (to be fixed soon).
+# API
 
 ## Example
 
@@ -152,7 +156,7 @@ ytdl.info('https://www.youtube.com/watch?v=fJ9rUzIMcZQ')
   });
 ```
 
-# CLI
+# CLI (ytdl)
 
 ```
 Usage: ytdl [options]
