@@ -2,13 +2,13 @@
     "name": "@ytdl/ytdl",
     "version": "1.0.0",
     "description": "A CLI written in javascript, which allows you to download videos from [YouTube](http://youtube.com) onto your system.",
-    "main": "src/index.ts",
+    "main": "dist/index.js",
     "scripts": {
         "build": "npm run clean && tsc",
         "clean": "rm -rf ./dist",
         "test": "mocha --opts test/mocha.opts",
         "lint": "eslint \"src/**/*.{ts,js,jsx}\" \"test/**/*.ts\"",
-        "pack-src": "ncc build",
+        "pack-src": "ncc build src/index.ts -o dist",
         "pack-cli": "ncc build bin/ytdl -o dist/cli && mv dist/cli/index.js dist/cli/ytdl",
         "pack": "npm run clean && npm run pack-src && npm run pack-cli",
         "start": "ts-node src/index.ts"
