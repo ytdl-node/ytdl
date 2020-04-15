@@ -8,7 +8,7 @@
   * [Library](#library)
   * [CLI](#cli)
 - [API](#api)
-- [CLI](#cli-(ytdl))
+- [CLI](#cli-ytdl)
 
 # Installation
 
@@ -158,6 +158,13 @@ ytdl.info('https://www.youtube.com/watch?v=fJ9rUzIMcZQ')
 
 # CLI (ytdl)
 
+## Example
+
+```bash
+ytdl -d https://www.youtube.com/watch?v=fJ9rUzIMcZQ -fn rhapsody.mp3 -ao
+```
+
+## Usage
 ```
 Usage: ytdl [options]
 
@@ -179,4 +186,4 @@ Contributing guidelines have been established [here](./CONTRIBUTING.md).
 
 # License
 
-[MIT](https://github.com/ytdl-node/ytdl/blob/master/LICENSE)
+[MIT](./LICENSE)
