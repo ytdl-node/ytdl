@@ -97,7 +97,7 @@ ytdl.ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ', 'medium', 'audio.mp3', 
 ```javascript
 const ytdl = require('@ytdl/ytdl');
 
-ytdl.ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ', '360p', 'video.mp4', { audioOnly: true });
+ytdl.ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ', '360p', 'video.mp4', { videoOnly: true });
 
 // quality: '144p', '360p', '480p', '720p', '1080p'
 ```
