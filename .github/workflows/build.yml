@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: npm install and build
+    - name: npm install and pack
       run: |
         npm install
-        npm run build --if-present        
+        npm run pack --if-present        

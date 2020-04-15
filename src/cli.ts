@@ -62,7 +62,7 @@ async function parseOptions(program: commander.Command) {
     }
 }
 
-async function cli(args: string[]) {
+export default async function cli(args: string[]) {
     const program = new Command();
     program.version('0.0.1');
 
@@ -71,6 +71,6 @@ async function cli(args: string[]) {
     await parseOptions(program);
 }
 
-export = {
+export {
     cli,
 };

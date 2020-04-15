@@ -22,7 +22,7 @@ sh -c "$(wget -O- https://raw.githubusercontent.com/roerohan/ytdl/master/bin/ins
 git clone https://github.com/roerohan/ytdl.git
 cd ytdl
 npm install
-npm run build
+npm run pack
 ./bin/ytdl -h
 ```
 

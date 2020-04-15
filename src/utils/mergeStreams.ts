@@ -1,5 +1,4 @@
 import ffmpeg from 'fluent-ffmpeg';
-import logger from './logger';
 
 export default async function mergeStreams(
     videoFile: string,
@@ -14,7 +13,6 @@ export default async function mergeStreams(
                 reject(err);
             })
             .on('end', () => {
-                logger.info('Finished merging!');
                 resolve();
             });
     });

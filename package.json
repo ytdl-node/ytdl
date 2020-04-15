@@ -2,12 +2,13 @@
     "name": "ytdl",
     "version": "1.0.0",
     "description": "A CLI written in javascript, which allows you to download videos from [YouTube](http://youtube.com) onto your system.",
-    "main": "index.js",
+    "main": "src/index.ts",
     "scripts": {
         "build": "npm run clean && tsc",
         "clean": "rm -rf ./dist",
         "test": "mocha --opts test/mocha.opts",
         "lint": "eslint \"src/**/*.{ts,js,jsx}\" \"test/**/*.ts\"",
+        "pack": "npm run clean && ncc build",
         "start": "ts-node src/index.ts"
     },
     "bin": {
@@ -49,6 +50,7 @@
     },
     "dependencies": {
         "@types/fluent-ffmpeg": "^2.1.14",
+        "@zeit/ncc": "^0.22.1",
         "axios": "^0.19.2",
         "commander": "^5.0.0",
         "fluent-ffmpeg": "^2.1.2",

@@ -1,30 +1,40 @@
-import logger from './utils/logger';
-
-import getDownloadLink from './getDownloadLink';
 import VideoData from './videoData';
-import dumpJson from './utils/jsonDump';
-import downloader from './downloader';
+import downloader, { fetchContentByItag } from './downloader';
 
+import mergeStreams from './utils/mergeStreams';
+import getDownloadLink from './utils/getDownloadLink';
+import dumpVideoInfo, { dumpToFile } from './utils/jsonDump';
 
-export default async function runner() {
-    // TODO: Added temporarily, 'npm start <youtubeLink>', 'ts-node src/index.js <youtubeLink> works
-    const downloadLink = process.argv[2] || await getDownloadLink();
-    const {
-        videoId,
-        videoTitle,
-        videoTime,
-        videoDescription,
-        videoInfo,
-    } = await VideoData.fromLink(downloadLink);
-
-    logger.info(`Video ID: ${videoId}`);
-    logger.info(`Video Title: ${videoTitle}`);
-    logger.info(`Video Time: ${videoTime}`);
-    logger.info(`Video Description:\n ${videoDescription}`);
-
-    downloader(videoInfo, '480p', 'video.mp4');
-    dumpJson(videoInfo, 'downloaded.json');
-    // fetchContentByItag(videoInfo, 396, 'video2.mp4');
+export default async function ytdl(
+    link: string,
+    quality: string,
+    filename: string,
+    options?: { audioOnly?: boolean, videoOnly?: boolean },
+) {
+    const { videoInfo } = await VideoData.fromLink(link);
+    downloader(videoInfo, quality, filename, options);
 }
 
-runner();
+export async function downloadByItag(
+    link: string,
+    itag: Number,
+    filename: string,
+) {
+    const { videoInfo } = await VideoData.fromLink(link);
+    fetchContentByItag(videoInfo, itag, filename);
+}
+
+export async function info(link: string) {
+    return VideoData.fromLink(link);
+}
+
+export * from './cli';
+export * from './downloader';
+
+export {
+    mergeStreams,
+    getDownloadLink,
+    dumpVideoInfo,
+    dumpToFile,
+    ytdl,
+};
