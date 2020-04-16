@@ -4,6 +4,7 @@ import { URLSearchParams } from 'url';
 import VideoInfo from './models/VideoInfo';
 import between from './utils/between';
 import extractActions from './utils/signature';
+import downloader, { fetchContentByItag } from './downloader';
 
 export default class VideoData {
     readonly videoId: string;
@@ -119,7 +120,7 @@ export default class VideoData {
 
         const tokens = extractActions(html5playerfileResponse.data);
 
-        const videoInfo = <VideoInfo> {
+        const videoInfo = <VideoInfo>{
             playabilityStatus,
             videoDetails,
             streamingData,
@@ -127,5 +128,29 @@ export default class VideoData {
         };
 
         return videoInfo;
+    }
+
+    public async download(
+        quality: string,
+        filename: string,
+        options?: {
+            audioOnly?: boolean;
+            videoOnly?: boolean;
+        },
+    ): Promise<void> {
+        return downloader(this.videoInfo, quality, filename, options);
+    }
+
+    public async downloadByItag(itag: Number, filename: string): Promise<void> {
+        return fetchContentByItag(this.videoInfo, itag, filename);
+    }
+
+    public async info() {
+        return {
+            id: this.videoId,
+            title: this.videoTitle,
+            time: this.videoTime,
+            description: this.videoDescription,
+        };
     }
 }
