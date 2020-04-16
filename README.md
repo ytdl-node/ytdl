@@ -226,6 +226,7 @@ ytdl.fetch('https://raw.githubusercontent.com/ytdl-node/ytdl/master/README.md', 
 const ytdl = require('@ytdl/ytdl');
 
 ytdl.mergeStreams('video.mp4', 'audio.mp3', 'output.mp4');
+// This returns a Promise.
 ```
 
 ## ytdl.cli()
