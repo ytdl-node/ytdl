@@ -245,7 +245,7 @@ ytdl.cli(process.argv);
 ```javascript
 const ytdl = require('@ytdl/ytdl');
 
-const link = ytdl.getDownloadLink();
+const link = await ytdl.getDownloadLink();
 ```
 
 # CLI (ytdl)
