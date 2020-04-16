@@ -9,7 +9,7 @@ import { decipher } from './utils/signature';
 import mergeStreams from './utils/mergeStreams';
 import deleteFile from './utils/deleteFile';
 
-export async function download(url: string, filename: string, headers?: object): Promise<void> {
+export async function fetch(url: string, filename: string, headers?: object): Promise<void> {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
@@ -76,7 +76,7 @@ export async function fetchContentByItag(
 
     if (url) {
         logger.info('Fetching content...');
-        await download(url, filename, getHeaders(url));
+        await fetch(url, filename, getHeaders(url));
         logger.info('Downloaded content...');
     } else {
         logger.error('No links found matching specified options.');
@@ -157,7 +157,7 @@ export default async function fetchContent(
         }
 
         logger.info(`Fetching ${content}...`);
-        await download(url, filename, getHeaders(url));
+        await fetch(url, filename, getHeaders(url));
         logger.info(`Downloaded ${content}.`);
     } else if (!opts.audioOnly && !opts.videoOnly) {
         await Promise.all([
