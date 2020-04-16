@@ -5,7 +5,7 @@ import VideoData from './videoData';
 import downloader from './downloader';
 import dumpJson from './utils/jsonDump';
 
-function setOptions(program: commander.Command) {
+function setOptions(program: commander.Command): void {
     program
         .option('-i, --info <url>', 'info about YouTube link')
         .option('-d, --download <url>', 'download from YouTube link')
@@ -16,7 +16,7 @@ function setOptions(program: commander.Command) {
         .option('-vo, --video-only', 'download only video stream');
 }
 
-async function parseOptions(program: commander.Command) {
+async function parseOptions(program: commander.Command): Promise<void> {
     if (program.download) {
         const {
             videoInfo,
@@ -62,7 +62,7 @@ async function parseOptions(program: commander.Command) {
     }
 }
 
-export default async function cli(args: string[]) {
+export default async function cli(args: string[]): Promise<void> {
     const program = new Command();
     program.version('0.0.1');
 

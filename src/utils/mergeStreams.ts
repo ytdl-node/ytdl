@@ -4,7 +4,7 @@ export default async function mergeStreams(
     videoFile: string,
     audioFile: string,
     outputFile: string,
-) {
+): Promise<void> {
     return new Promise((resolve, reject) => {
         ffmpeg(videoFile)
             .input(audioFile)

@@ -9,7 +9,7 @@ import { decipher } from './utils/signature';
 import mergeStreams from './utils/mergeStreams';
 import deleteFile from './utils/deleteFile';
 
-export async function download(url: string, filename: string, headers?: any) {
+export async function download(url: string, filename: string, headers?: object) {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
@@ -31,7 +31,7 @@ export async function download(url: string, filename: string, headers?: any) {
     });
 }
 
-function getHeaders(url: string) {
+function getHeaders(url: string): object {
     const host = url.split('/videoplayback')[0].split('https://')[1];
     return {
         Accept: '*/*',
@@ -52,7 +52,7 @@ export async function fetchContentByItag(
     videoInfo: VideoInfo,
     itag: Number,
     filename: string,
-) {
+): Promise<void> {
     let url: string;
     const { tokens } = videoInfo;
 
@@ -88,7 +88,7 @@ export default async function fetchContent(
     qualityLabel: string,
     filename: string,
     options?: { audioOnly?: boolean, videoOnly?: boolean },
-) {
+): Promise<void> {
     type audioMapping = {
         [key: string]: string
     };
@@ -113,7 +113,7 @@ export default async function fetchContent(
 
     const { tokens } = videoInfo;
 
-    function common(format: Format | AdaptiveFormat) {
+    function common(format: Format | AdaptiveFormat): string {
         if (format.url) {
             return format.url;
         }
@@ -123,14 +123,14 @@ export default async function fetchContent(
         return `${link.url}&${link.sp || 'sig'}=${sig}`;
     }
 
-    function callback(format: Format | AdaptiveFormat) {
+    function callback(format: Format | AdaptiveFormat): void {
         const mimeType = 'video/mp4';
         if (format.qualityLabel === qualityLabel && format.mimeType.includes(mimeType)) {
             url = common(format);
         }
     }
 
-    function audioCallback(format: Format | AdaptiveFormat) {
+    function audioCallback(format: Format | AdaptiveFormat): void {
         const mimeType = 'audio/mp4';
         if (format.mimeType.includes(mimeType)
             && (qualityLabel === 'any' ? true : format.audioQuality === audioMappings[qualityLabel])) {
