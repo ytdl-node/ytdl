@@ -3,7 +3,7 @@
 git clone https://github.com/ytdl-node/ytdl.git
 cd ytdl
 npm install
-npm run pack
+npm run buid
 ./bin/ytdl -h
 
 echo

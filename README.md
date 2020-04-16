@@ -46,7 +46,7 @@ sh -c "$(wget -O- https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/in
 git clone https://github.com/ytdl-node/ytdl.git
 cd ytdl
 npm install
-npm run pack
+npm run build
 ./bin/ytdl -h
 ```
 
