@@ -36,7 +36,7 @@ async function parseOptions(program: commander.Command): Promise<void> {
         quality = program.quality || quality;
         // TODO: download by itag
 
-        downloader(videoInfo, quality, filename, options);
+        await downloader(videoInfo, quality, filename, options);
     }
 
     if (program.info) {
@@ -58,7 +58,7 @@ async function parseOptions(program: commander.Command): Promise<void> {
         } = await VideoData.fromLink(program.dumpJson);
 
         const filename = program.filename || 'dump.json';
-        dumpJson(videoInfo, filename);
+        await dumpJson(videoInfo, filename);
     }
 }
 

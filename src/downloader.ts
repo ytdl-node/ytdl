@@ -9,7 +9,7 @@ import { decipher } from './utils/signature';
 import mergeStreams from './utils/mergeStreams';
 import deleteFile from './utils/deleteFile';
 
-export async function download(url: string, filename: string, headers?: object) {
+export async function download(url: string, filename: string, headers?: object): Promise<void> {
     return new Promise((resolve, reject) => {
         axios({
             method: 'get',
