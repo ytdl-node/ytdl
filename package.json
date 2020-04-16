@@ -1,6 +1,6 @@
 {
     "name": "@ytdl/ytdl",
-    "version": "1.0.12",
+    "version": "1.0.13",
     "description": "A CLI/Library written in typescript/javascript, which allows you to download videos from [YouTube](http://youtube.com) onto your system.",
     "main": "dist/src/index.js",
     "scripts": {
@@ -12,7 +12,7 @@
         "pack-cli": "ncc build bin/ytdl -o dist/cli && mv dist/cli/index.js dist/cli/ytdl",
         "pack": "npm run clean && npm run pack-src && npm run pack-cli",
         "start": "ts-node src/index.ts",
-        "prepublish": "npm run build"
+        "prepare": "npm run build"
     },
     "bin": {
         "ytdl": "bin/ytdl"
