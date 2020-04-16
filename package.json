@@ -42,6 +42,7 @@
         "@types/winston": "^2.4.4",
         "@typescript-eslint/eslint-plugin": "^2.26.0",
         "@typescript-eslint/parser": "^2.26.0",
+        "@zeit/ncc": "^0.22.1",
         "chai": "^4.2.0",
         "eslint": "^6.8.0",
         "eslint-config-airbnb-typescript": "^7.2.0",
@@ -53,7 +54,6 @@
     },
     "dependencies": {
         "@types/fluent-ffmpeg": "^2.1.14",
-        "@zeit/ncc": "^0.22.1",
         "axios": "^0.19.2",
         "commander": "^5.0.0",
         "fluent-ffmpeg": "^2.1.2",
