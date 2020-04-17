@@ -6,6 +6,9 @@
         "youtube",
         "download",
         "video",
+        "audio",
+        "mp4",
+        "mp3",
         "cli"
     ],
     "main": "dist/src/index.js",
