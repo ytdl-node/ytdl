@@ -3,3 +3,8 @@ data
 .github
 node_modules
 dist/cli
+.env
+.eslintignore
+.eslintrc.json
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
