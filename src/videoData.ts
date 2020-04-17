@@ -145,7 +145,7 @@ export default class VideoData {
         return fetchContentByItag(this.videoInfo, itag, filename);
     }
 
-    public async info() {
+    public info() {
         return {
             id: this.videoId,
             title: this.videoTitle,
