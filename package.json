@@ -9,7 +9,8 @@
         "audio",
         "mp4",
         "mp3",
-        "cli"
+        "cli",
+        "ytdl"
     ],
     "main": "dist/src/index.js",
     "scripts": {
