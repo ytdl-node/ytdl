@@ -18,7 +18,7 @@
         "clean": "rm -rf ./dist",
         "test": "mocha --opts test/mocha.opts",
         "lint": "eslint \"src/**/*.{ts,js,jsx}\" \"test/**/*.ts\"",
-        "pack-src": "ncc build src/index.ts -o dist",
+        "pack-src": "ncc build src/index.ts -o dist/src",
         "pack-cli": "ncc build bin/ytdl -o dist/cli && mv dist/cli/index.js dist/cli/ytdl",
         "pack": "npm run clean && npm run pack-src && npm run pack-cli",
         "start": "ts-node src/index.ts",
