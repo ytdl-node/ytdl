@@ -24,6 +24,7 @@ export interface Format {
     readonly width: Number;
     readonly height: Number;
     readonly lastModified: string;
+    readonly contentLength: string;
     readonly quality: string;
     readonly qualityLabel?: string;
     readonly audioQuality?: string;

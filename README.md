@@ -181,6 +181,43 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 });
 ```
 
+## video.size(quality|itag[, options])
+
+- Returns size in bytes.
+- A number is treated as an `itag` whereas a string is treated as `quality`.
+- Options may be passed only with `quality`, else it will be ignored.
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+
+async function videoSize() {
+  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  
+  const size = video.size('360p'); // can pass options: { audioOnly: boolean, videoOnly: boolean }
+  const sizeItag = video.size(396);
+
+  console.log(`Video Size for 360p: ${size}`);
+  console.log(`Video Size for itag = 396: ${sizeItag}`);
+}
+
+videoSize();
+```
+
+### OR
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+
+ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+  const size = video.size('360p'); // can pass options: { audioOnly: boolean, videoOnly: boolean}
+  const sizeItag = video.size(396);
+
+  console.log(`Video Size for 360p: ${size}`);
+  console.log(`Video Size for itag = 396: ${sizeItag}`);
+
+});
+```
+
 ## video.info()
 
 ```javascript
