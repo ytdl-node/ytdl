@@ -4,7 +4,7 @@ import { URLSearchParams } from 'url';
 import VideoInfo from './models/VideoInfo';
 import between from './utils/between';
 import extractActions from './utils/signature';
-import downloader, { fetchContentByItag } from './downloader';
+import downloader, { fetchContentByItag, fetchFormatData, fetchFormatDataByItag } from './downloader';
 
 export default class VideoData {
     readonly videoId: string;
@@ -143,6 +143,21 @@ export default class VideoData {
 
     public async downloadByItag(itag: Number, filename: string): Promise<void> {
         return fetchContentByItag(this.videoInfo, itag, filename);
+    }
+
+    public size(
+        qualityLabelOrItag: string | Number,
+        options?: { audioOnly?: boolean, videoOnly?: boolean },
+    ): Number {
+        let format;
+        if (typeof qualityLabelOrItag === 'string') {
+            format = fetchFormatData(this.videoInfo, qualityLabelOrItag, options).fmt;
+        } else if (typeof qualityLabelOrItag === 'number') {
+            format = fetchFormatDataByItag(this.videoInfo, qualityLabelOrItag).fmt;
+        } else {
+            return 0;
+        }
+        return Number(format.contentLength);
     }
 
     public info() {

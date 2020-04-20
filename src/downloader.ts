@@ -48,16 +48,20 @@ function getHeaders(url: string): object {
     };
 }
 
-export async function fetchContentByItag(
+export function fetchFormatDataByItag(
     videoInfo: VideoInfo,
     itag: Number,
-    filename: string,
-): Promise<void> {
+): {
+        url: string,
+        fmt: Format | AdaptiveFormat,
+    } {
     let url: string;
+    let fmt: Format | AdaptiveFormat;
     const { tokens } = videoInfo;
 
     function callback(format: Format | AdaptiveFormat) {
         if (format.itag === itag) {
+            fmt = format;
             if (format.url) {
                 url = format.url;
             } else {
@@ -74,6 +78,19 @@ export async function fetchContentByItag(
         videoInfo.streamingData.adaptiveFormats.forEach(callback);
     }
 
+    return {
+        url,
+        fmt,
+    };
+}
+
+export async function fetchContentByItag(
+    videoInfo: VideoInfo,
+    itag: Number,
+    filename: string,
+): Promise<void> {
+    const { url } = fetchFormatDataByItag(videoInfo, itag);
+
     if (url) {
         logger.info('Fetching content...');
         await fetch(url, filename, getHeaders(url));
@@ -83,12 +100,14 @@ export async function fetchContentByItag(
     }
 }
 
-export default async function fetchContent(
+export function fetchFormatData(
     videoInfo: VideoInfo,
     qualityLabel: string,
-    filename: string,
     options?: { audioOnly?: boolean, videoOnly?: boolean },
-): Promise<void> {
+): {
+        url: string,
+        fmt: Format | AdaptiveFormat,
+    } {
     type audioMapping = {
         [key: string]: string
     };
@@ -110,6 +129,7 @@ export default async function fetchContent(
     }
 
     let url: string;
+    let fmt: Format | AdaptiveFormat;
 
     const { tokens } = videoInfo;
 
@@ -127,6 +147,7 @@ export default async function fetchContent(
         const mimeType = 'video/mp4';
         if (format.qualityLabel === qualityLabel && format.mimeType.includes(mimeType)) {
             url = common(format);
+            fmt = format;
         }
     }
 
@@ -135,6 +156,7 @@ export default async function fetchContent(
         if (format.mimeType.includes(mimeType)
             && (qualityLabel === 'any' ? true : format.audioQuality === audioMappings[qualityLabel])) {
             url = common(format);
+            fmt = format;
         }
     }
 
@@ -146,6 +168,28 @@ export default async function fetchContent(
         videoInfo.streamingData.adaptiveFormats.forEach(callback);
     } else {
         videoInfo.streamingData.adaptiveFormats.forEach(audioCallback);
+    }
+
+    return {
+        url,
+        fmt,
+    };
+}
+
+export default async function fetchContent(
+    videoInfo: VideoInfo,
+    qualityLabel: string,
+    filename: string,
+    options?: { audioOnly?: boolean, videoOnly?: boolean },
+): Promise<void> {
+    const { url } = fetchFormatData(videoInfo, qualityLabel, options);
+
+    let opts = options;
+
+    if (!opts) {
+        opts = { audioOnly: false, videoOnly: false };
+    } else if (opts.audioOnly && opts.videoOnly) {
+        throw new Error('audioOnly and videoOnly can\'t be true simultaneously.');
     }
 
     if (url) {
