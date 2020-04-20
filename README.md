@@ -183,6 +183,7 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 
 ## video.size(quality|itag[, options])
 
+- Returns size in bytes.
 - A number is treated as an `itag` whereas a string is treated as `quality`.
 - Options may be passed only with `quality`, else it will be ignored.
 
