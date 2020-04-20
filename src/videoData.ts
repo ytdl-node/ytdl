@@ -1,21 +1,20 @@
 import axios from 'axios';
 import { URLSearchParams } from 'url';
 
-import VideoInfo from './models/VideoInfo';
+import VideoInfo, { Format, AdaptiveFormat } from './models/VideoInfo';
 import between from './utils/between';
-import extractActions from './utils/signature';
-import downloader, { fetchContentByItag, fetchFormatData, fetchFormatDataByItag } from './downloader';
+import extractActions, { decipher } from './utils/signature';
 
 export default class VideoData {
     readonly videoId: string;
-
-    readonly videoInfo: VideoInfo;
 
     readonly videoTitle: string;
 
     readonly videoTime: string;
 
     readonly videoDescription: string;
+
+    private readonly videoInfo: VideoInfo;
 
     constructor(videoId: string, videoInfo: VideoInfo) {
         this.videoId = videoId;
@@ -85,7 +84,7 @@ export default class VideoData {
         return this.videoInfo.videoDetails.shortDescription;
     }
 
-    public static async getVideoInfo(videoId: string): Promise<VideoInfo> {
+    private static async getVideoInfo(videoId: string): Promise<VideoInfo> {
         const videoIdRegex = /^[\w_-]+$/;
         if (!videoIdRegex.test(videoId)) {
             throw new Error('Invalid videoId.');
@@ -130,19 +129,114 @@ export default class VideoData {
         return videoInfo;
     }
 
-    public async download(
-        quality: string,
-        filename: string,
-        options?: {
-            audioOnly?: boolean;
-            videoOnly?: boolean;
-        },
-    ): Promise<void> {
-        return downloader(this.videoInfo, quality, filename, options);
+    public fetchFormatData(
+        qualityLabel: string,
+        options?: { audioOnly?: boolean, videoOnly?: boolean },
+    ): {
+            url: string,
+            fmt: Format | AdaptiveFormat,
+        } {
+        type audioMapping = {
+            [key: string]: string
+        };
+        const audioMappings: audioMapping = {
+            high: 'AUDIO_QUALITY_HIGH',
+            medium: 'AUDIO_QUALITY_MEDIUM',
+            low: 'AUDIO_QUALITY_LOW',
+            AUDIO_QUALITY_HIGH: 'AUDIO_QUALITY_HIGH',
+            AUDIO_QUALITY_MEDIUM: 'AUDIO_QUALITY_MEDIUM',
+            AUDIO_QUALITY_LOW: 'AUDIO_QUALITY_LOW',
+        };
+
+        let opts = options;
+
+        if (!opts) {
+            opts = { audioOnly: false, videoOnly: false };
+        } else if (opts.audioOnly && opts.videoOnly) {
+            throw new Error('audioOnly and videoOnly can\'t be true simultaneously.');
+        }
+
+        let url: string;
+        let fmt: Format | AdaptiveFormat;
+
+        const { tokens } = this.videoInfo;
+
+        function common(format: Format | AdaptiveFormat): string {
+            if (format.url) {
+                return format.url;
+            }
+            const link = Object.fromEntries(new URLSearchParams(format.cipher));
+
+            const sig = tokens && link.s ? decipher(tokens, link.s) : null;
+            return `${link.url}&${link.sp || 'sig'}=${sig}`;
+        }
+
+        function callback(format: Format | AdaptiveFormat): void {
+            const mimeType = 'video/mp4';
+            if (format.qualityLabel === qualityLabel && format.mimeType.includes(mimeType)) {
+                url = common(format);
+                fmt = format;
+            }
+        }
+
+        function audioCallback(format: Format | AdaptiveFormat): void {
+            const mimeType = 'audio/mp4';
+            if (format.mimeType.includes(mimeType)
+                && (qualityLabel === 'any' ? true : format.audioQuality === audioMappings[qualityLabel])) {
+                url = common(format);
+                fmt = format;
+            }
+        }
+
+        // TODO: url is always the last URL in the array, check if this needs to be changed
+
+        if (!opts.audioOnly && !opts.videoOnly) {
+            this.videoInfo.streamingData.formats.forEach(callback);
+        } else if (options.videoOnly) {
+            this.videoInfo.streamingData.adaptiveFormats.forEach(callback);
+        } else {
+            this.videoInfo.streamingData.adaptiveFormats.forEach(audioCallback);
+        }
+
+        return {
+            url,
+            fmt,
+        };
     }
 
-    public async downloadByItag(itag: Number, filename: string): Promise<void> {
-        return fetchContentByItag(this.videoInfo, itag, filename);
+    public fetchFormatDataByItag(
+        itag: Number,
+    ): {
+            url: string,
+            fmt: Format | AdaptiveFormat,
+        } {
+        let url: string;
+        let fmt: Format | AdaptiveFormat;
+        const { tokens } = this.videoInfo;
+
+        function callback(format: Format | AdaptiveFormat) {
+            if (format.itag === itag) {
+                fmt = format;
+                if (format.url) {
+                    url = format.url;
+                } else {
+                    const link = Object.fromEntries(new URLSearchParams(format.cipher));
+
+                    const sig = tokens && link.s ? decipher(tokens, link.s) : null;
+                    url = `${link.url}&${link.sp || 'sig'}=${sig}`;
+                }
+            }
+        }
+        this.videoInfo.streamingData.formats.forEach(callback);
+
+        if (!url) {
+            this.videoInfo.streamingData.adaptiveFormats.forEach(callback);
+        }
+
+        return {
+            url,
+            fmt,
+        };
     }
 
     public size(
@@ -151,16 +245,16 @@ export default class VideoData {
     ): Number {
         let format;
         if (typeof qualityLabelOrItag === 'string') {
-            format = fetchFormatData(this.videoInfo, qualityLabelOrItag, options).fmt;
+            format = this.fetchFormatData(qualityLabelOrItag, options).fmt;
         } else if (typeof qualityLabelOrItag === 'number') {
-            format = fetchFormatDataByItag(this.videoInfo, qualityLabelOrItag).fmt;
+            format = this.fetchFormatDataByItag(qualityLabelOrItag).fmt;
         } else {
             return 0;
         }
         return Number(format.contentLength);
     }
 
-    public info() {
+    public all() {
         return {
             id: this.videoId,
             title: this.videoTitle,
