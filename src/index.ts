@@ -9,7 +9,7 @@ export default function init(link: string): Promise<VideoData> {
 }
 
 export * from './cli';
-export * from './downloader';
+export { fetch, fetchContent, fetchContentByItag } from './downloader';
 
 export {
     mergeStreams,
