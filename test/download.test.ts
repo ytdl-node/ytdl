@@ -15,13 +15,11 @@ async function videoDownloaderByItag() {
 }
 
 describe('Download', () => {
-    it('Should download the sample video', async (done) => {
+    it('Should download the sample video', async () => {
         expect(await videoDownloader()).to.be.true;
-        done();
-    });
+    }).timeout(100000);
 
-    it('Should be able to download by itag', async (done) => {
+    it('Should be able to download by itag', async () => {
         expect(await videoDownloaderByItag()).to.be.true;
-        done();
-    });
+    }).timeout(100000);
 });
