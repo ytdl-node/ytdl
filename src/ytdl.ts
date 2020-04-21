@@ -1,7 +1,10 @@
+import { Logger } from 'winston';
+
 import VideoData from './videoData';
 import VideoDownloader from './videoDownloader';
 import mergeStreams from './utils/mergeStreams';
 import deleteFile from './utils/deleteFile';
+import { createLogger } from './utils/logger';
 
 export default class Ytdl {
     readonly link: string;
@@ -10,14 +13,21 @@ export default class Ytdl {
 
     private videoDownloader: VideoDownloader;
 
+    logger: Logger;
+
     constructor(link: string, videoData: VideoData) {
         this.link = link;
         this.info = videoData;
+        this.logger = createLogger('error');
     }
 
     public static async init(link: string): Promise<Ytdl> {
         const videoData = await VideoData.fromLink(link);
         return new Ytdl(link, videoData);
+    }
+
+    public setLogLevel(level: string) {
+        this.logger = createLogger(level);
     }
 
     public async download(
@@ -40,38 +50,38 @@ export default class Ytdl {
         const { url } = this.info.fetchFormatData(qualityLabel, options);
 
         if (url) {
-            // let content = 'video';
-            // if (opts.audioOnly) {
-            //     content = 'audio stream';
-            // } else if (opts.videoOnly) {
-            //     content = 'video stream';
-            // }
+            let content = 'video';
+            if (opts.audioOnly) {
+                content = 'audio stream';
+            } else if (opts.videoOnly) {
+                content = 'video stream';
+            }
 
-            // logger.info(`Fetching ${content}...`);
+            this.logger.info(`Fetching ${content}...`);
             if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
                 this.videoDownloader = new VideoDownloader(url);
             }
 
             await this.videoDownloader.download(filename);
-            // logger.info(`Downloaded ${content}.`);
+            this.logger.info(`Downloaded ${content}.`);
         } else if (!opts.audioOnly && !opts.videoOnly) {
             await Promise.all([
                 this.download(qualityLabel, `${filename}.vid`, { videoOnly: true }),
                 this.download('any', `${filename}.aud`, { audioOnly: true }),
             ]);
 
-            // logger.info('Merging streams...');
+            this.logger.info('Merging streams...');
             await mergeStreams(`${filename}.vid`, `${filename}.aud`, filename);
-            // logger.info('Finished merging!');
+            this.logger.info('Finished merging!');
 
             await Promise.all([
                 deleteFile(`${filename}.vid`),
                 deleteFile(`${filename}.aud`),
             ]);
 
-            // logger.info('Video download complete.');
+            this.logger.info('Video download complete.');
         } else {
-            // logger.error('No links found matching specified options.');
+            this.logger.error('No links found matching specified options.');
             return false;
         }
         return true;
@@ -85,15 +95,15 @@ export default class Ytdl {
         const { url } = this.info.fetchFormatDataByItag(itag);
 
         if (url) {
-            // logger.info('Fetching content...');
+            this.logger.info('Fetching content...');
             if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
                 this.videoDownloader = new VideoDownloader(url);
             }
 
             await this.videoDownloader.download(filename);
-            // logger.info('Downloaded content...');
+            this.logger.info('Downloaded content...');
         } else {
-            // logger.error('No links found matching specified options.');
+            this.logger.error('No links found matching specified options.');
             return false;
         }
         return true;
