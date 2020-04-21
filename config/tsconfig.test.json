@@ -5,9 +5,5 @@
     },
     "include": [
         "../test/**/*.ts"
-    ],
-    "exclude": [
-        "../examples",
-        "../src"
     ]
 }
