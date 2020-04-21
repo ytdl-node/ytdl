@@ -22,6 +22,7 @@ async function parseOptions(program: commander.Command): Promise<void> {
     }
 
     const ytdl = await Ytdl.init(program.link);
+    ytdl.setLogLevel('info');
 
     const options = {
         audioOnly: !!program.audioOnly,
@@ -39,6 +40,7 @@ async function parseOptions(program: commander.Command): Promise<void> {
         const filename = program.filename || 'ytdl.mp4';
 
         // TODO: download by itag
+        logger.info(`Downloading: ${ytdl.info.videoTitle}`);
 
         await ytdl.download(quality, filename, options);
     }
