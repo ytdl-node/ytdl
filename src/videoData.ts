@@ -251,6 +251,7 @@ export default class VideoData {
         } else {
             return 0;
         }
+        if (!format) return 0;
         return Number(format.contentLength);
     }
 
