@@ -230,6 +230,7 @@ download();
 OR
 
 ```javascript
+// Without using async-await.
 const ytdl = require('@ytdl/ytdl').default;
 const fs = require('fs');
 
@@ -262,8 +263,8 @@ async function videoSize() {
   const size = video.info.size('360p'); // can pass options: { audioOnly: boolean, videoOnly: boolean }
   const sizeItag = video.info.size(396);
 
-  console.log(`Video Size for 360p: ${size}`);
-  console.log(`Video Size for itag = 396: ${sizeItag}`);
+  console.log(`Video Size for 360p: ${Math.round(size/(1024*1024))}M`);
+  console.log(`Video Size for itag = 396: ${Math.round(sizeItag/(1024*1024))}M`);
 }
 
 videoSize();
@@ -278,9 +279,8 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   const size = video.info.size('360p'); // can pass options: { audioOnly: boolean, videoOnly: boolean}
   const sizeItag = video.info.size(396);
 
-  console.log(`Video Size for 360p: ${size}`);
-  console.log(`Video Size for itag = 396: ${sizeItag}`);
-
+  console.log(`Video Size for 360p: ${Math.round(size/(1024*1024))}M`);
+  console.log(`Video Size for itag = 396: ${Math.round(sizeItag/(1024*1024))}M`);
 });
 ```
 
