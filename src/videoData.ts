@@ -67,7 +67,7 @@ export default class VideoData {
         lengthSeconds -= minute * minutes;
         const seconds = lengthSeconds;
 
-        function lpad(target: string, padString: string, length: Number) {
+        function lpad(target: string, padString: string, length: number) {
             let str = target;
             while (str.length < length) str = padString + str;
             return str;
@@ -205,7 +205,7 @@ export default class VideoData {
     }
 
     public fetchFormatDataByItag(
-        itag: Number,
+        itag: number,
     ): {
             url: string,
             fmt: Format | AdaptiveFormat,
@@ -240,9 +240,9 @@ export default class VideoData {
     }
 
     public size(
-        qualityLabelOrItag: string | Number,
+        qualityLabelOrItag: string | number,
         options?: { audioOnly?: boolean, videoOnly?: boolean },
-    ): Number {
+    ): number {
         let format;
         if (typeof qualityLabelOrItag === 'string') {
             format = this.fetchFormatData(qualityLabelOrItag, options).fmt;

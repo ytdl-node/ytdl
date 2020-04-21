@@ -77,7 +77,7 @@ export default class Ytdl {
         return true;
     }
 
-    public async downloadByItag(itag: Number, filename: string): Promise<boolean> {
+    public async downloadByItag(itag: number, filename: string): Promise<boolean> {
         if (!filename || typeof filename !== 'string') {
             throw new Error('filename is missing.');
         }

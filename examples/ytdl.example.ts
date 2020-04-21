@@ -24,7 +24,7 @@ async function main(): Promise<void> {
      * Get the size of the video
      */
 
-    const size = <number> video.info.size('360p');
+    const size = video.info.size('360p');
     console.log(`Video Size: ${Math.round(size / (1024 * 1024))}M`);
 
     /**
