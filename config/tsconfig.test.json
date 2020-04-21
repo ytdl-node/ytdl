@@ -1,0 +1,13 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "declaration": true
+    },
+    "include": [
+        "../test/**/*.ts"
+    ],
+    "exclude": [
+        "../examples",
+        "../src"
+    ]
+}
