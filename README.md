@@ -268,7 +268,7 @@ const ytdl = require('@ytdl/ytdl').default;
 async function videoDownloader() {
   const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
 
-  // This line will enable logging to console while downloading content.
+  // This line will enable logging info to console while downloading content.
   video.setLogLevel('info');
 
   await video.downloadByItag(396, 'ytdl.mp4');
@@ -337,6 +337,65 @@ const ytdl = require('@ytdl/ytdl').default;
 ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   const { id, title, time, description } = video.info.all();
   console.log(`Video Title: ${title}`);
+});
+```
+
+## video.info.fetchFormatData(quality[, options])
+
+- Returns an object: `{ url: string, fmt: object }`.
+- `url` holds the download URL for the video.
+- `fmt` holds other data about the format such as `contentLength`, `fps`, `mimeType`, etc.
+- options are same as in [video.download](#options).
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+
+async function getData() {
+  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  
+  const { url, fmt } = video.info.fetchFormatData('360p');
+  console.log(`Download url: ${url}`);
+  console.log(`Format data: ${fmt}`);
+}
+
+getData();
+```
+
+OR
+
+```javascript
+ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+  const { url, fmt } = video.info.fetchFormatData('360p');
+  console.log(`Download url: ${url}`);
+  console.log(`Format data: ${fmt}`);
+});
+```
+
+## video.info.fetchFormatDataByItag(itag)
+
+- Same as `video.info.fetchFormatData(quality)`; except, it fetches data by itag instead of quality.
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+
+async function getData() {
+  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  
+  const { url, fmt } = video.info.fetchFormatDataByItag(18);
+  console.log(`Download url: ${url}`);
+  console.log(`Format data: ${fmt}`);
+}
+
+getData();
+```
+
+OR
+
+```javascript
+ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+  const { url, fmt } = video.info.fetchFormatDataByItag(18);
+  console.log(`Download url: ${url}`);
+  console.log(`Format data: ${fmt}`);
 });
 ```
 
