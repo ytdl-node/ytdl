@@ -89,6 +89,7 @@ A `Ytdl` object has the following properties:
 - **info.size(quality[, options])**: *Number*, stores the size of the stream in *bytes*.
 - **info.all()**: *Object*, returns an object consisting of id, title, time, description.
 - **download(quality, filename[, options])**: *Promise\<void\>*, downloads the video/audio from YouTube.
+- **setLogLevel(level)**: *void*, allows you to enable or disable logging depending on the level.
 - **downloadByItag(itag, filename)**: *Promise\<void\>*, downloads from YouTube using the itag property.
 - **stream(quality[, options, headers])**: *Promise\<any\>*, returns a `Node.js` stream.
 
@@ -246,6 +247,34 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
       });
   });
 });
+```
+
+## video.setLogLevel(level)
+
+- `level` can be one of the following:
+  * error 
+  * warn
+  * info
+  * http
+  * verbose
+  * debug
+  * silly
+- A level lower in the list also enables the levels before it.
+- E.G., a log level of debug will also enable `verbose, http, info, warn, error`.
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+
+async function videoDownloader() {
+  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+
+  // This line will enable logging to console while downloading content.
+  video.setLogLevel('info');
+
+  await video.downloadByItag(396, 'ytdl.mp4');
+}
+
+videoDownloader();
 ```
 
 ## video.info.size(quality|itag[, options])
