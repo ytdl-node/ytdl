@@ -79,19 +79,37 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 
 ## Brief
 
-The function `ytdl.init(link: string)` or `ytdl.default(link: string)` returns a Promise which resolves with an object of type `VideoData`.
+The function `ytdl.init(link: string)` or `ytdl.default(link: string)` returns a Promise which resolves with an object of type `Ytdl`.
 
-A VideoData object has the following properties:
-- **videoId**: *string*, stores the video ID.
-- **videoTitle**: *string*, stores the title of the video.
-- **videoTime**: *string*, stores the time of the video.
-- **videoDescription**: *string*, stores the description of the video.
-- **videoInfo**: *[VideoInfo](./src/models/VideoInfo.ts)*, stores the player_response from YouTube.
+A `Ytdl` object has the following properties:
+- **info.videoId**: *string*, stores the video ID.
+- **info.videoTitle**: *string*, stores the title of the video.
+- **info.videoTime**: *string*, stores the time of the video.
+- **info.videoDescription**: *string*, stores the description of the video.
+- **info.size(quality[, options])**: *Number*, stores the size of the stream in *bytes*.
+- **info.all()**: *Object*, returns an object consisting of id, title, time, description.
 - **download(quality, filename[, options])**: *Promise\<void\>*, downloads the video/audio from YouTube.
 - **downloadByItag(itag, filename)**: *Promise\<void\>*, downloads from YouTube using the itag property.
-- **info()**: *Object*, returns an object consisting of id, title, time, description.
 
 > Any reference to `video` refers to an object returned by `ytdl.default('link')`.
+
+### options: object
+- audioOnly: true | false
+- videoOnly: true | false
+
+```javascript
+// Example
+const options = { audioOnly: true, videoOnly: false };
+```
+
+### quality: string
+- For audio: low, medium, high, any.
+- For video: 144p, 360p, 480p, 720p, 1080p.
+
+```javascript
+// Example
+const quality = 'low'
+```
 
 ## video.download(quality, path[, options])
 
@@ -181,7 +199,52 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 });
 ```
 
-## video.size(quality|itag[, options])
+## video.stream(quality[, options, headers])
+
+- This function returns a Node.js stream.
+- This may be piped to `fs.createWriteStream(filename)` to save the stream into a file.
+
+> Note: The download function merges separate audio-only and video-only stream when a combined stream is unavailable. This function however will return the appropriate stream if and only if it is available. You may require to pass options, having properties `audioOnly` and `videoOnly` to get the desired stream. E.G. `video.stream('480p', { videoOnly: true })`.
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+const fs = require('fs');
+
+async function download() {
+  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const stream = await video.stream('360p');
+  // The variable stream now holds a Node.js stream.
+  // Sample use of stream is as follows:
+  stream
+    .pipe(fs.createWriteStream('ytdl.mp4'))
+    .on('finish', (err) => {
+      if (err) console.log(err);
+      else console.log('Stream saved successfully.');
+    });
+}
+
+download();
+```
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+const fs = require('fs');
+
+ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+  video.stream('360p').then((stream) => {
+    // The variable stream now holds a Node.js stream.
+    // Sample use of stream is as follows:
+    stream
+      .pipe(fs.createWriteStream('ytdl.mp4'))
+      .on('finish', (err) => {
+        if (err) console.log(err);
+        else console.log('Stream saved successfully.');
+      });
+  });
+});
+```
+
+## video.info.size(quality|itag[, options])
 
 - Returns size in bytes.
 - A number is treated as an `itag` whereas a string is treated as `quality`.
@@ -193,8 +256,8 @@ const ytdl = require('@ytdl/ytdl').default;
 async function videoSize() {
   const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   
-  const size = video.size('360p'); // can pass options: { audioOnly: boolean, videoOnly: boolean }
-  const sizeItag = video.size(396);
+  const size = video.info.size('360p'); // can pass options: { audioOnly: boolean, videoOnly: boolean }
+  const sizeItag = video.info.size(396);
 
   console.log(`Video Size for 360p: ${size}`);
   console.log(`Video Size for itag = 396: ${sizeItag}`);
@@ -209,8 +272,8 @@ videoSize();
 const ytdl = require('@ytdl/ytdl').default;
 
 ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
-  const size = video.size('360p'); // can pass options: { audioOnly: boolean, videoOnly: boolean}
-  const sizeItag = video.size(396);
+  const size = video.info.size('360p'); // can pass options: { audioOnly: boolean, videoOnly: boolean}
+  const sizeItag = video.info.size(396);
 
   console.log(`Video Size for 360p: ${size}`);
   console.log(`Video Size for itag = 396: ${sizeItag}`);
@@ -218,7 +281,7 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 });
 ```
 
-## video.info()
+## video.info.all()
 
 ```javascript
 const ytdl = require('@ytdl/ytdl').default;
@@ -226,7 +289,7 @@ const ytdl = require('@ytdl/ytdl').default;
 async function videoInfo() {
   const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   
-  const { id, title, time, description } = video.info();
+  const { id, title, time, description } = video.info.all();
   console.log(`Video Title: ${title}`);
 }
 
@@ -240,21 +303,35 @@ videoInfo();
 const ytdl = require('@ytdl/ytdl').default;
 
 ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
-  const { id, title, time, description } = video.info();
+  const { id, title, time, description } = video.info.all();
   console.log(`Video Title: ${title}`);
 });
 ```
 
-## ytdl.fetch(url, path[, headers])
+## ytdl.fetch(url)
 
 - This function may be used to fetch any data from a website and store it in a file (path).
 
 ```javascript
 const ytdl = require('@ytdl/ytdl');
+const fs = require('fs');
 
-ytdl.fetch('https://raw.githubusercontent.com/ytdl-node/ytdl/master/README.md', 'ytdl-README.md');
-// This returns a promise
-// The link could also be an audio/video file.
+const downloader = new ytdl.fetch('https://raw.githubusercontent.com/ytdl-node/ytdl/master/README.md');
+async function download() {
+  await downloader.download('ytdl-README.md');
+  // This returns a promise
+  // The link could also be an audio/video file.
+}
+
+async function downloadFromStream() {
+  const stream = await downloader.stream();
+  // This returns a Node.js stream
+  // This stream may be utilized in many ways, E.G.:
+  stream.pipe(fs.createWriteStream('ytdl-README-from-stream.md'));
+}
+
+download();
+downloadFromStream();
 ```
 
 ## ytdl.mergeStreams(videoFile, audioFile, outputFile)
@@ -271,6 +348,8 @@ ytdl.mergeStreams('video.mp4', 'audio.mp3', 'output.mp4');
 ## ytdl.cli()
 
 - This will create a CLI for YTDL.
+- You can run this by passing arguments.
+  * `node file.js -h` OR `npm start -h`
 
 ```javascript
 const ytdl = require('@ytdl/ytdl');
@@ -310,7 +389,6 @@ Options:
   -d, --download <url>        download from YouTube link
   -fn, --filename <filename>  filename of downloaded content
   -q, --quality <quality>     quality of downloaded content
-  -dj, --dump-json <url>      dump json into file
   -ao, --audio-only           download only audio stream
   -vo, --video-only           download only video stream
   -h, --help                  display help for command

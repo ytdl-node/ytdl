@@ -1,9 +1,7 @@
 import commander, { Command } from 'commander';
 
 import logger from './utils/logger';
-import VideoData from './videoData';
-import downloader from './downloader';
-import dumpJson from './utils/jsonDump';
+import Ytdl from './ytdl';
 
 function setOptions(program: commander.Command): void {
     program
@@ -11,16 +9,13 @@ function setOptions(program: commander.Command): void {
         .option('-d, --download <url>', 'download from YouTube link')
         .option('-fn, --filename <filename>', 'filename of downloaded content')
         .option('-q, --quality <quality>', 'quality of downloaded content')
-        .option('-dj, --dump-json <url>', 'dump json into file')
         .option('-ao, --audio-only', 'download only audio stream')
         .option('-vo, --video-only', 'download only video stream');
 }
 
 async function parseOptions(program: commander.Command): Promise<void> {
     if (program.download) {
-        const {
-            videoInfo,
-        } = await VideoData.fromLink(program.download);
+        const ytdl = await Ytdl.init(program.download);
 
         const filename = program.filename || 'ytdl.mp4';
         const options = {
@@ -36,29 +31,22 @@ async function parseOptions(program: commander.Command): Promise<void> {
         quality = program.quality || quality;
         // TODO: download by itag
 
-        await downloader(videoInfo, quality, filename, options);
+        await ytdl.download(quality, filename, options);
     }
 
     if (program.info) {
+        const ytdl = await Ytdl.init(program.info);
         const {
-            videoId,
-            videoTitle,
-            videoTime,
-            videoDescription,
-        } = await VideoData.fromLink(program.info);
-        logger.info(`Video ID: ${videoId}`);
-        logger.info(`Video Title: ${videoTitle}`);
-        logger.info(`Video Time: ${videoTime} seconds`);
-        logger.info(`Video Description:\n ${videoDescription}`);
-    }
+            id,
+            title,
+            time,
+            description,
+        } = ytdl.info.all();
 
-    if (program.dumpJson) {
-        const {
-            videoInfo,
-        } = await VideoData.fromLink(program.dumpJson);
-
-        const filename = program.filename || 'dump.json';
-        await dumpJson(videoInfo, filename);
+        logger.info(`Video ID: ${id}`);
+        logger.info(`Video Title: ${title}`);
+        logger.info(`Video Time: ${time} seconds`);
+        logger.info(`Video Description:\n ${description}`);
     }
 }
 
