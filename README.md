@@ -226,6 +226,8 @@ async function download() {
 download();
 ```
 
+OR
+
 ```javascript
 const ytdl = require('@ytdl/ytdl').default;
 const fs = require('fs');
