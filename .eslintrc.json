@@ -17,12 +17,37 @@
         "SharedArrayBuffer": "readonly"
     },
     "parserOptions": {
-        "project": "./tsconfig.json"
+        "project": [
+            "./config/tsconfig.json",
+            "./config/tsconfig.examples.json",
+            "./config/tsconfig.test.json"
+        ]
     },
     "rules": {
         "@typescript-eslint/indent": [
             "error",
             4
         ]
-    }
+    },
+    "overrides": [
+        {
+            "files": [
+                "test/**/*.ts"
+            ],
+            "env": {
+                "mocha": true
+            },
+            "rules": {
+                "@typescript-eslint/no-unused-expressions": 0
+            }
+        },
+        {
+            "files": [
+                "examples/**/*"
+            ],
+            "rules": {
+                "no-console": "off"
+            }
+        }
+    ]
 }
