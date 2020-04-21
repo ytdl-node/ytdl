@@ -6,4 +6,4 @@ npm install
 ./bin/ytdl -h
 
 echo
-echo "Add `pwd`/bin to PATH"
+echo "Add $(pwd)/bin to PATH"
