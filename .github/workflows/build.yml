@@ -15,4 +15,5 @@ jobs:
     - name: npm install and pack
       run: |
         npm install
-        npm run pack --if-present        
+        npm run build
+        npm test
