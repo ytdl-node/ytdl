@@ -14,7 +14,7 @@ export function createLogger(level: string) {
         silly: 6,
     };
 
-    if (!levels[level]) {
+    if (levels[level] === undefined) {
         throw new Error('Invalid logging level.');
     }
 
