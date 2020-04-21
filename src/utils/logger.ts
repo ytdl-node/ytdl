@@ -18,7 +18,7 @@ export function createLogger(level: string) {
 const logger = winston.createLogger({
     transports: [
         new winston.transports.Console({
-            level: 'error',
+            level: 'info',
         }),
     ],
     format: winston.format.combine(
