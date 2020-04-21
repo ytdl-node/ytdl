@@ -33,6 +33,10 @@ export default class Ytdl {
             throw new Error('audioOnly and videoOnly can\'t be true simultaneously.');
         }
 
+        if (!filename || typeof filename !== 'string') {
+            throw new Error('filename is missing.');
+        }
+
         const { url } = this.info.fetchFormatData(qualityLabel, options);
 
         if (url) {
@@ -74,6 +78,10 @@ export default class Ytdl {
     }
 
     public async downloadByItag(itag: Number, filename: string): Promise<boolean> {
+        if (!filename || typeof filename !== 'string') {
+            throw new Error('filename is missing.');
+        }
+
         const { url } = this.info.fetchFormatDataByItag(itag);
 
         if (url) {
