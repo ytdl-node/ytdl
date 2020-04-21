@@ -38,7 +38,7 @@
                 "mocha": true
             },
             "rules": {
-                "@typescript-eslint/no-unused-expressions": 0
+                "@typescript-eslint/no-unused-expressions": "off"
             }
         },
         {
@@ -46,7 +46,8 @@
                 "examples/**/*"
             ],
             "rules": {
-                "no-console": "off"
+                "no-console": "off",
+                "@typescript-eslint/no-unused-vars": "off"
             },
             "parserOptions": {
                 "ecmaVersion": 7
