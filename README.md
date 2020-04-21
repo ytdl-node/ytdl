@@ -86,12 +86,30 @@ A `Ytdl` object has the following properties:
 - **info.videoTitle**: *string*, stores the title of the video.
 - **info.videoTime**: *string*, stores the time of the video.
 - **info.videoDescription**: *string*, stores the description of the video.
-- **info.size()**: *Number*, stores the size of the stream in *bytes*.
+- **info.size(quality[, options])**: *Number*, stores the size of the stream in *bytes*.
 - **info.all()**: *Object*, returns an object consisting of id, title, time, description.
 - **download(quality, filename[, options])**: *Promise\<void\>*, downloads the video/audio from YouTube.
 - **downloadByItag(itag, filename)**: *Promise\<void\>*, downloads from YouTube using the itag property.
 
 > Any reference to `video` refers to an object returned by `ytdl.default('link')`.
+
+### options: object
+- audioOnly: true | false
+- videoOnly: true | false
+
+```javascript
+// Example
+const options = { audioOnly: true, videoOnly: false };
+```
+
+### quality: string
+- For audio: low, medium, high, any.
+- For video: 144p, 360p, 480p, 720p, 1080p.
+
+```javascript
+// Example
+const quality = 'low'
+```
 
 ## video.download(quality, path[, options])
 
