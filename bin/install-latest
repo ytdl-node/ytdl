@@ -1,0 +1,31 @@
+#!/bin/bash
+
+cd /tmp
+
+curl -s https://api.github.com/repos/ytdl-node/ytdl/releases/latest \
+| grep "browser_download_url" \
+| cut -d : -f 2,3 \
+| tr -d \" \
+| wget -qi -
+
+chmod +x ytdl
+
+node --version > /dev/null
+
+if [ $? -eq 0 ]
+then
+    TAG="$(curl -s https://api.github.com/repos/ytdl-node/ytdl/releases/latest | grep tag_name | cut -d'"' -f4)"
+    sudo mv ytdl /usr/local/bin/
+    if [ $? -eq 0 ]
+    then
+        ytdl -h
+        echo
+        echo "Installed tag '$TAG' successfully!"
+        echo "Location: $(which ytdl)"
+    else
+        echo "Failed to move 'ytdl' to /usr/local/bin"
+        echo "Move $(pwd)/ytdl to /usr/local/bin to access from anywhere."
+    fi
+else
+    echo "Please install Node.js first!"
+fi
