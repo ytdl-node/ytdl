@@ -1,6 +1,6 @@
 {
     "name": "@ytdl/ytdl",
-    "version": "1.1.7",
+    "version": "1.1.8",
     "description": "A CLI/Library written in typescript/javascript, which allows you to download videos from [YouTube](http://youtube.com) onto your system.",
     "keywords": [
         "youtube",
@@ -14,10 +14,10 @@
     ],
     "main": "dist/src/index.js",
     "scripts": {
-        "build": "npm run clean && tsc",
+        "build": "npm run clean && tsc --build config/tsconfig.json",
         "clean": "rm -rf ./dist",
         "test": "mocha --opts test/mocha.opts",
-        "lint": "eslint \"src/**/*.{ts,js,jsx}\" \"test/**/*.ts\"",
+        "lint": "eslint \"src/**/*.{ts,js,jsx}\" \"test/**/*.ts\" \"examples/**/*\"",
         "pack-src": "ncc build src/index.ts -o dist/src",
         "pack-cli": "ncc build bin/ytdl -o dist/cli && mv dist/cli/index.js dist/cli/ytdl",
         "pack": "npm run clean && npm run build && npm run pack-cli",
