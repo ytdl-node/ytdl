@@ -90,6 +90,7 @@ A `Ytdl` object has the following properties:
 - **info.all()**: *Object*, returns an object consisting of id, title, time, description.
 - **download(quality, filename[, options])**: *Promise\<void\>*, downloads the video/audio from YouTube.
 - **downloadByItag(itag, filename)**: *Promise\<void\>*, downloads from YouTube using the itag property.
+- **stream(quality[, options, headers])**: *Promise\<any\>*, returns a `Node.js` stream.
 
 > Any reference to `video` refers to an object returned by `ytdl.default('link')`.
 
