@@ -387,10 +387,12 @@ Usage: ytdl [options]
 
 Options:
   -V, --version               output the version number
-  -i, --info <url>            info about YouTube link
-  -d, --download <url>        download from YouTube link
+  -l, --link <url>            set the url for the YouTube video
+  -i, --info                  info about YouTube link
+  -d, --download              download from YouTube link
   -fn, --filename <filename>  filename of downloaded content
   -q, --quality <quality>     quality of downloaded content
+  -s, --size                  get the size of the video to be downloaded
   -ao, --audio-only           download only audio stream
   -vo, --video-only           download only video stream
   -h, --help                  display help for command
