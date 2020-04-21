@@ -5,37 +5,45 @@ import Ytdl from './ytdl';
 
 function setOptions(program: commander.Command): void {
     program
-        .option('-i, --info <url>', 'info about YouTube link')
-        .option('-d, --download <url>', 'download from YouTube link')
+        .option('-l, --link <url>', 'set the url for the YouTube video')
+        .option('-i, --info', 'info about YouTube link')
+        .option('-d, --download', 'download from YouTube link')
         .option('-fn, --filename <filename>', 'filename of downloaded content')
         .option('-q, --quality <quality>', 'quality of downloaded content')
+        .option('-s, --size', 'get the size of the video to be downloaded')
         .option('-ao, --audio-only', 'download only audio stream')
         .option('-vo, --video-only', 'download only video stream');
 }
 
 async function parseOptions(program: commander.Command): Promise<void> {
+    if (!program.link) {
+        logger.error('Link not specified, use -l or --link to specify.');
+        return;
+    }
+
+    const ytdl = await Ytdl.init(program.link);
+
+    const options = {
+        audioOnly: !!program.audioOnly,
+        videoOnly: !!program.videoOnly,
+    };
+
+    let quality = '360p';
+    if (options.audioOnly) {
+        quality = 'any';
+    }
+
+    quality = program.quality || quality;
+
     if (program.download) {
-        const ytdl = await Ytdl.init(program.download);
-
         const filename = program.filename || 'ytdl.mp4';
-        const options = {
-            audioOnly: !!program.audioOnly,
-            videoOnly: !!program.videoOnly,
-        };
 
-        let quality = '360p';
-        if (options.audioOnly) {
-            quality = 'any';
-        }
-
-        quality = program.quality || quality;
         // TODO: download by itag
 
         await ytdl.download(quality, filename, options);
     }
 
     if (program.info) {
-        const ytdl = await Ytdl.init(program.info);
         const {
             id,
             title,
@@ -47,6 +55,10 @@ async function parseOptions(program: commander.Command): Promise<void> {
         logger.info(`Video Title: ${title}`);
         logger.info(`Video Time: ${time} seconds`);
         logger.info(`Video Description:\n ${description}`);
+    }
+
+    if (program.size) {
+        logger.info(`Size: ${ytdl.info.size(quality)}`);
     }
 }
 

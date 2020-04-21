@@ -226,6 +226,8 @@ async function download() {
 download();
 ```
 
+OR
+
 ```javascript
 const ytdl = require('@ytdl/ytdl').default;
 const fs = require('fs');
@@ -376,7 +378,7 @@ getLinkFromUser();
 ## Example
 
 ```bash
-ytdl -d "https://www.youtube.com/watch?v=fJ9rUzIMcZQ" -fn "rhapsody.mp3" -ao
+ytdl -d -l "https://www.youtube.com/watch?v=fJ9rUzIMcZQ" -fn "rhapsody.mp3" -ao
 ```
 
 ## Usage
@@ -385,10 +387,12 @@ Usage: ytdl [options]
 
 Options:
   -V, --version               output the version number
-  -i, --info <url>            info about YouTube link
-  -d, --download <url>        download from YouTube link
+  -l, --link <url>            set the url for the YouTube video
+  -i, --info                  info about YouTube link
+  -d, --download              download from YouTube link
   -fn, --filename <filename>  filename of downloaded content
   -q, --quality <quality>     quality of downloaded content
+  -s, --size                  get the size of the video to be downloaded
   -ao, --audio-only           download only audio stream
   -vo, --video-only           download only video stream
   -h, --help                  display help for command
