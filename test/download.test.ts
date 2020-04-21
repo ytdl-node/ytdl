@@ -9,7 +9,7 @@ async function videoDownloader() {
 
 async function videoDownloaderByItag() {
     const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
-    await video.downloadByItag(396, 'data/ytdlItag.mp4');
+    await video.downloadByItag(18, 'data/ytdlItag.mp4');
     return true;
 }
 
