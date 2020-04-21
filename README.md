@@ -378,7 +378,7 @@ getLinkFromUser();
 ## Example
 
 ```bash
-ytdl -d "https://www.youtube.com/watch?v=fJ9rUzIMcZQ" -fn "rhapsody.mp3" -ao
+ytdl -d -l "https://www.youtube.com/watch?v=fJ9rUzIMcZQ" -fn "rhapsody.mp3" -ao
 ```
 
 ## Usage
