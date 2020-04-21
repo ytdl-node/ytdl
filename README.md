@@ -109,7 +109,7 @@ const options = { audioOnly: true, videoOnly: false };
 
 ```javascript
 // Example
-const quality = 'low'
+const quality = 'low';
 ```
 
 ## video.download(quality, path[, options])
