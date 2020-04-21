@@ -21,7 +21,6 @@ The following are the guidelines we request you to follow in order to contribute
 
 The commit messages should follow the following pattern:
 ```bash
-update: Description # if a feature is updated or enchanced
 feat: Description # if a new feature is added
 fix: Description # if a bug is fixed
 refactor: Description # if code is refactored
