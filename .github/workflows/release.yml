@@ -39,3 +39,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./dist/cli/ytdl
           asset_name: ytdl
+          asset_content_type: text/plain
