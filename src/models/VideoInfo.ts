@@ -17,12 +17,12 @@ interface Range {
 }
 
 export interface Format {
-    readonly itag: Number;
+    readonly itag: number;
     readonly url: string;
     readonly mimeType: string;
-    readonly bitrate: Number;
-    readonly width: Number;
-    readonly height: Number;
+    readonly bitrate: number;
+    readonly width: number;
+    readonly height: number;
     readonly lastModified: string;
     readonly contentLength: string;
     readonly quality: string;
@@ -32,21 +32,21 @@ export interface Format {
 }
 
 export interface AdaptiveFormat {
-    readonly itag: Number;
+    readonly itag: number;
     readonly url: string;
     readonly mimeType: string;
-    readonly bitrate: Number;
-    readonly width: Number;
-    readonly height: Number;
+    readonly bitrate: number;
+    readonly width: number;
+    readonly height: number;
     readonly initRange: Range;
     readonly indexRange: Range;
     readonly lastModified: string;
     readonly contentLength: string;
     readonly quality: string;
-    readonly fps: Number;
+    readonly fps: number;
     readonly qualityLabel?: string;
     readonly projectionType: string;
-    readonly averageBitrate: Number;
+    readonly averageBitrate: number;
     readonly audioQuality?: string;
     readonly approxDurationMs: string;
     readonly colorInfo?: object;

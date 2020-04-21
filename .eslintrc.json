@@ -18,7 +18,7 @@
     },
     "parserOptions": {
         "project": [
-            "./config/tsconfig.json",
+            "./tsconfig.json",
             "./config/tsconfig.examples.json",
             "./config/tsconfig.test.json"
         ]
@@ -50,7 +50,7 @@
                 "@typescript-eslint/no-unused-vars": "off"
             },
             "parserOptions": {
-                "ecmaVersion": 7
+                "ecmaVersion": 2019
             }
         }
     ]
