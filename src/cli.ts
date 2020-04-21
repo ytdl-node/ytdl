@@ -16,7 +16,22 @@ function setOptions(program: commander.Command): void {
 }
 
 async function parseOptions(program: commander.Command): Promise<void> {
-    if (!program.link) {
+    const programOpts = program.opts();
+    let optionsCount = 0;
+    Object.keys(programOpts).forEach((programOpt) => {
+        if (programOpts[programOpt]) optionsCount += 1;
+    });
+
+    if (optionsCount <= 1) program.help();
+
+    if (
+        (
+            program.download
+            || program.info
+            || program.size
+        )
+        && !program.link
+    ) {
         logger.error('Link not specified, use -l or --link to specify.');
         return;
     }
