@@ -228,7 +228,7 @@ async function download() {
 download();
 ```
 
-OR
+### OR
 
 ```javascript
 // Without using async-await.
@@ -361,7 +361,7 @@ async function getData() {
 getData();
 ```
 
-OR
+### OR
 
 ```javascript
 ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
@@ -389,7 +389,7 @@ async function getData() {
 getData();
 ```
 
-OR
+### OR
 
 ```javascript
 ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
