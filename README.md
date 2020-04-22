@@ -265,7 +265,9 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 });
 ```
 
-### video.streamByItag()
+### video.streamByItag(itag[, headers])
+
+- Same functionality as [`video.stream(quality)`](#videostreamquality-options-headers), uses `itag` instead of `quality`.
 
 ```javascript
 const ytdl = require('@ytdl/ytdl').default;
