@@ -3,10 +3,16 @@ const ytdl = require('@ytdl/ytdl');
 
 const app = express();
 
+/**
+ * Start server on port 3000.
+ */
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Listening on port: ${process.env.PORT || 3000}`);
 });
 
+/**
+ * Returns a Node.js stream and the video title.
+ */
 async function streamer(link) {
     const video = await ytdl.init(link);
     const stream = await video.stream('360p');
@@ -14,6 +20,9 @@ async function streamer(link) {
     return { stream, title };
 }
 
+/**
+ * Get request of the form: http://localhost:3000/download?link=<youtubeLink>
+ */
 app.get('/download', async (req, res) => {
     const { link } = req.query;
     console.log(link);
