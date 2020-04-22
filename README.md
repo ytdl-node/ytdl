@@ -265,6 +265,49 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 });
 ```
 
+### video.streamByItag()
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+const fs = require('fs');
+
+async function download() {
+  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const stream = await video.stream(18);
+  // The variable stream now holds a Node.js stream.
+  // Sample use of stream is as follows:
+  stream
+    .pipe(fs.createWriteStream('ytdl.mp4'))
+    .on('finish', (err) => {
+      if (err) console.log(err);
+      else console.log('Stream saved successfully.');
+    });
+}
+
+download();
+```
+
+### OR
+
+```javascript
+// Without using async-await.
+const ytdl = require('@ytdl/ytdl').default;
+const fs = require('fs');
+
+ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+  video.streamByItag(18).then((stream) => {
+    // The variable stream now holds a Node.js stream.
+    // Sample use of stream is as follows:
+    stream
+      .pipe(fs.createWriteStream('ytdl.mp4'))
+      .on('finish', (err) => {
+        if (err) console.log(err);
+        else console.log('Stream saved successfully.');
+      });
+  });
+});
+```
+
 ## video.setLogLevel(level)
 
 - `level` can be one of the following:
