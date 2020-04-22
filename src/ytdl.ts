@@ -21,15 +21,29 @@ export default class Ytdl {
         this.logger = createLogger('error');
     }
 
+    /**
+     * Returns a Ytdl object.
+     * @param link YouTube video link
+     */
     public static async init(link: string): Promise<Ytdl> {
         const videoData = await VideoData.fromLink(link);
         return new Ytdl(link, videoData);
     }
 
+    /**
+     * Sets logging level as passed in params.
+     * @param level Indicates logging level
+     */
     public setLogLevel(level: string) {
         this.logger = createLogger(level);
     }
 
+    /**
+     * Downloads the stream and stores in a file specified by filename.
+     * @param qualityLabel Stores the quality
+     * @param filename Stores the filename
+     * @param options Stores special options like audioOnly or videoOnly
+     */
     public async download(
         qualityLabel: string,
         filename: string,
@@ -87,6 +101,11 @@ export default class Ytdl {
         return true;
     }
 
+    /**
+     * Downloads the video by it's itag and stores in the file specified by filename.
+     * @param itag YouTube video itag
+     * @param filename Stores the filename
+     */
     public async downloadByItag(itag: number, filename: string): Promise<boolean> {
         if (!filename || typeof filename !== 'string') {
             throw new Error('filename is missing.');
@@ -109,6 +128,12 @@ export default class Ytdl {
         return true;
     }
 
+    /**
+     * Returns a Node.js stream for a particular YouTube video.
+     * @param qualityLabel Stores the quality
+     * @param options Stores special options such as audioOnly or videoOnly
+     * @param headers Stores additional headers if any
+     */
     public async stream(
         qualityLabel: string,
         options?: { audioOnly?: boolean, videoOnly?: boolean },
@@ -126,6 +151,11 @@ export default class Ytdl {
         return this.videoDownloader.stream(headers);
     }
 
+    /**
+     * Returns a Node.js stream for a particular YouTube video, identifying by it's itag.
+     * @param itag YouTube video itag
+     * @param headers Stores additional headers if any
+     */
     public async streamByItag(itag: number, headers?: object) {
         const { url } = this.info.fetchFormatDataByItag(itag);
         if (!url) {
