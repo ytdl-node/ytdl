@@ -17,6 +17,8 @@ jobs:
       - name: Check version change
         uses: thebongy/version-check@v1
         id: check
+        with:
+          file: package.json
 
       - run: yarn install
 
