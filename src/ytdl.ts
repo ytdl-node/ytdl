@@ -125,4 +125,17 @@ export default class Ytdl {
 
         return this.videoDownloader.stream(headers);
     }
+
+    public async streamByItag(itag: number, headers?: object) {
+        const { url } = this.info.fetchFormatDataByItag(itag);
+        if (!url) {
+            return Promise.resolve();
+        }
+
+        if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
+            this.videoDownloader = new VideoDownloader(url);
+        }
+
+        return this.videoDownloader.stream(headers);
+    }
 }

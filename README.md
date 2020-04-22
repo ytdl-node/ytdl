@@ -32,26 +32,26 @@ npm install @ytdl/ytdl -g
 
 ### Via curl
 
-### As a single file (from latest Github Release):
+- As a single file (from latest Github Release):
 ```bash
 # Needs both curl and wget
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/install-latest)"
 ```
 
-### From GitHub repository:
+- From GitHub repository:
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/install)"
 ```
 
 ### Via wget
 
-### As a single file (from latest Github Release):
+- As a single file (from latest Github Release):
 ```bash
 # Needs both curl and wget
 sh -c "$(wget -O- https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/install-latest)"
 ```
 
-### From GitHub repository:
+- From GitHub repository:
 ```bash
 sh -c "$(wget -O- https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/install)"
 ```
@@ -253,6 +253,51 @@ const fs = require('fs');
 
 ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   video.stream('360p').then((stream) => {
+    // The variable stream now holds a Node.js stream.
+    // Sample use of stream is as follows:
+    stream
+      .pipe(fs.createWriteStream('ytdl.mp4'))
+      .on('finish', (err) => {
+        if (err) console.log(err);
+        else console.log('Stream saved successfully.');
+      });
+  });
+});
+```
+
+### video.streamByItag(itag[, headers])
+
+- Same functionality as [`video.stream(quality)`](#videostreamquality-options-headers), uses `itag` instead of `quality`.
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+const fs = require('fs');
+
+async function download() {
+  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const stream = await video.stream(18);
+  // The variable stream now holds a Node.js stream.
+  // Sample use of stream is as follows:
+  stream
+    .pipe(fs.createWriteStream('ytdl.mp4'))
+    .on('finish', (err) => {
+      if (err) console.log(err);
+      else console.log('Stream saved successfully.');
+    });
+}
+
+download();
+```
+
+### OR
+
+```javascript
+// Without using async-await.
+const ytdl = require('@ytdl/ytdl').default;
+const fs = require('fs');
+
+ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+  video.streamByItag(18).then((stream) => {
     // The variable stream now holds a Node.js stream.
     // Sample use of stream is as follows:
     stream
