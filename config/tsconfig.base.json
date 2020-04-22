@@ -7,7 +7,6 @@
         "moduleResolution": "node",
         "esModuleInterop": true,
         "noImplicitAny": true,
-        "removeComments": true,
         "preserveConstEnums": true,
         "forceConsistentCasingInFileNames": true,
     },
