@@ -14,14 +14,12 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
         
-      - name: Check release version
+      - name: Check version change
+        uses: thebongy/version-check@v1
         id: check
-        uses: EndBug/version-check@v1
 
-      - if: steps.check.outputs.changed == 'true' 
-        run: yarn install
+      - run: yarn install
 
-      - if: steps.check.outputs.changed == 'true'
-        run: npm publish --access public
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
