@@ -32,26 +32,26 @@ npm install @ytdl/ytdl -g
 
 ### Via curl
 
-### As a single file (from latest Github Release):
+- As a single file (from latest Github Release):
 ```bash
 # Needs both curl and wget
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/install-latest)"
 ```
 
-### From GitHub repository:
+- From GitHub repository:
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/install)"
 ```
 
 ### Via wget
 
-### As a single file (from latest Github Release):
+- As a single file (from latest Github Release):
 ```bash
 # Needs both curl and wget
 sh -c "$(wget -O- https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/install-latest)"
 ```
 
-### From GitHub repository:
+- From GitHub repository:
 ```bash
 sh -c "$(wget -O- https://raw.githubusercontent.com/ytdl-node/ytdl/master/bin/install)"
 ```
