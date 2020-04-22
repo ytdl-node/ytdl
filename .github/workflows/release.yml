@@ -8,37 +8,42 @@ on:
 name: ytdl-release
 
 jobs:
-  build:
+  release:
     name: Release and Upload Asset
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Pack
-        run: |
-          npm install
-          npm run pack
-
       - name: Check version change
         uses: thebongy/version-check@v1
         id: check
         with:
           file: package.json
+          failBuild: false
+          tagFormat: v${version}
+
+      - name: Pack
+        if: steps.check.outputs.versionChanged == 'true'
+        run: |
+          npm install
+          npm run pack
 
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
+        if: steps.check.outputs.versionChanged == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.check.outputs.releaseVersion }}
-          release_name: Release v${{ steps.check.outputs.releaseVersion }}
+          tag_name: steps.check.outputs.releaseVersion
+          release_name: Release ${{ steps.check.outputs.releaseVersion }}
           draft: false
           prerelease: false
 
       - name: Upload Release Asset
         id: upload-release-asset
+        if: steps.check.outputs.versionChanged == 'true'
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

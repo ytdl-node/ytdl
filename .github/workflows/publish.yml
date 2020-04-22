@@ -5,7 +5,7 @@ on:
     branches: [master]
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -19,9 +19,13 @@ jobs:
         id: check
         with:
           file: package.json
+          failBuild: false
+          tagFormat: v${version}
 
-      - run: yarn install
+      - if: steps.check.outputs.versionChanged == 'true'
+        run: yarn install
 
-      - run: npm publish --access public
+      - if: steps.check.outputs.versionChanged == 'true'
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
