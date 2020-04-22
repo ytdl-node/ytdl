@@ -13,6 +13,8 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
+
+      - run: git fetch --all --tags
         
       - name: Check version change
         uses: thebongy/version-check@v1
