@@ -1,5 +1,7 @@
 # ytdl
 
+![ytdl-build](https://github.com/ytdl-node/ytdl/workflows/ytdl-build/badge.svg) ![ytdl-release](https://github.com/ytdl-node/ytdl/workflows/ytdl-release/badge.svg) ![ytdl-publish](https://github.com/ytdl-node/ytdl/workflows/ytdl-publish/badge.svg)
+
 **ytdl** provides a library to integrate a Youtube Downloader for `Node.js` projects, and a CLI to download content from [Youtube](https://www.youtube.com).
 
 > Note: You need [ffmpeg](https://ffmpeg.org/download.html) to be installed on your computer for complete functionality. Without it, you won't be able to some formats/qualities of videos.
