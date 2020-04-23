@@ -2,6 +2,7 @@ import commander, { Command } from 'commander';
 
 import logger from './utils/logger';
 import Ytdl from './ytdl';
+import packageJson from '../package.json';
 
 /**
  * Sets options in the `program`.
@@ -52,20 +53,9 @@ async function parseOptions(program: commander.Command): Promise<void> {
         videoOnly: !!program.videoOnly,
     };
 
-    let quality = '360p';
-    if (options.audioOnly) {
-        quality = 'any';
-    }
-
-    quality = program.quality || quality;
-
-    if (program.download) {
-        const filename = program.filename || 'ytdl.mp4';
-
-        // TODO: download by itag
-        logger.info(`Downloading: ${ytdl.info.videoTitle}`);
-
-        await ytdl.download(quality, filename, options);
+    const quality = program.quality || 'any';
+    if (program.size) {
+        logger.info(`Size: ${ytdl.info.size(quality)}`);
     }
 
     if (program.info) {
@@ -82,8 +72,13 @@ async function parseOptions(program: commander.Command): Promise<void> {
         logger.info(`Video Description:\n ${description}`);
     }
 
-    if (program.size) {
-        logger.info(`Size: ${ytdl.info.size(quality)}`);
+    if (program.download) {
+        const filename = program.filename || `${ytdl.info.videoTitle}.mp4`;
+
+        // TODO: download by itag
+        logger.info(`Downloading: ${ytdl.info.videoTitle}`);
+
+        await ytdl.download(quality, filename, options);
     }
 }
 
@@ -93,7 +88,8 @@ async function parseOptions(program: commander.Command): Promise<void> {
  */
 export default async function cli(args: string[]): Promise<void> {
     const program = new Command();
-    program.version('0.0.1');
+
+    program.version(packageJson.version);
 
     setOptions(program);
     program.parse(args);

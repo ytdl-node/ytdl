@@ -204,7 +204,8 @@ export default class VideoData {
 
         function callback(format: Format | AdaptiveFormat): void {
             const mimeType = 'video/mp4';
-            if (format.qualityLabel === qualityLabel && format.mimeType.includes(mimeType)) {
+            if (format.mimeType.includes(mimeType)
+                && (qualityLabel === 'any' ? true : format.qualityLabel === qualityLabel)) {
                 url = common(format);
                 fmt = format;
             }
