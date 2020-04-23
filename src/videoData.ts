@@ -41,12 +41,12 @@ export default class VideoData {
      * @param url Stores the YouTube link
      */
     private static getVideoId(url: string): string {
-        const urlRegexPrimary = /^(["']|)((((https)|(http)):\/\/|)(www\.|m\.|music\.|gaming\.|)youtube\.com\/watch\?v=)[\w_-]*(["']|)$/i;
-        const urlRegexSecondary = /^(["']|)(((https)|(http)):\/\/|)youtu.be\/[\w_-]*(["']|)$/i;
+        const urlRegexPrimary = /^(["']|)((((https)|(http)):\/\/|)(www\.|m\.|music\.|gaming\.|)youtube\.com\/watch\?v=)[\w\-&=.]+(["']|)$/i;
+        const urlRegexSecondary = /^(["']|)(((https)|(http)):\/\/|)youtu.be\/[\w\-&=.]+(["']|)$/i;
         if (!urlRegexPrimary.test(url) && !urlRegexSecondary.test(url)) {
             throw new Error('Invalid URL.');
         }
-        return url.split('watch?v=')[1];
+        return url.split('watch?v=')[1].split('&')[0];
     }
 
     /**
