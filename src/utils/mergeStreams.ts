@@ -1,5 +1,11 @@
 import ffmpeg from 'fluent-ffmpeg';
 
+/**
+ * Uses system ffmpeg binaries to add `audioFile` to `videoFile`.
+ * @param videoFile Stores video file
+ * @param audioFile Stores audio file
+ * @param outputFile Stores output file
+ */
 export default async function mergeStreams(
     videoFile: string,
     audioFile: string,

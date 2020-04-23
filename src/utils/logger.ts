@@ -1,5 +1,9 @@
 import winston from 'winston';
 
+/**
+ * Returns a new logger with transports to console.
+ * @param level Stores the logger level
+ */
 export function createLogger(level: string) {
     type level = {
         [key: string]: number
@@ -32,6 +36,9 @@ export function createLogger(level: string) {
     return logger;
 }
 
+/**
+ * Stores the default logger.
+ */
 const logger = winston.createLogger({
     transports: [
         new winston.transports.Console({

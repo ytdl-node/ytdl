@@ -3,6 +3,10 @@ import commander, { Command } from 'commander';
 import logger from './utils/logger';
 import Ytdl from './ytdl';
 
+/**
+ * Sets options in the `program`.
+ * @param program Stores the commander.Command object
+ */
 function setOptions(program: commander.Command): void {
     program
         .option('-l, --link <url>', 'set the url for the YouTube video')
@@ -15,6 +19,10 @@ function setOptions(program: commander.Command): void {
         .option('-vo, --video-only', 'download only video stream');
 }
 
+/**
+ * Parses the options specified in `program`.
+ * @param program Stores the commander.Command program
+ */
 async function parseOptions(program: commander.Command): Promise<void> {
     const programOpts = program.opts();
     let optionsCount = 0;
@@ -79,6 +87,10 @@ async function parseOptions(program: commander.Command): Promise<void> {
     }
 }
 
+/**
+ * Main function for CLI, to be exported.
+ * @param args Stores process.argv as string array
+ */
 export default async function cli(args: string[]): Promise<void> {
     const program = new Command();
     program.version('0.0.1');

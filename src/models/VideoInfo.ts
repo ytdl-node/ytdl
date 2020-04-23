@@ -1,9 +1,15 @@
+/**
+ * Returns object of type `PlayabilityStatus`.
+ */
 interface PlayabilityStatus {
     readonly status: string;
     readonly playableInEmbed: string;
     readonly contextParams: string;
 }
 
+/**
+ * Returns object of type `VideoDetails`.
+ */
 interface VideoDetails {
     readonly title: string;
     readonly lengthSeconds: string;
@@ -11,11 +17,17 @@ interface VideoDetails {
     readonly videoId: string;
 }
 
+/**
+ * Returns object of type `Range`.
+ */
 interface Range {
     readonly start: string;
     readonly end: string;
 }
 
+/**
+ * Returns object of type `Format`.
+ */
 export interface Format {
     readonly itag: number;
     readonly url: string;
@@ -31,6 +43,9 @@ export interface Format {
     readonly cipher?: string;
 }
 
+/**
+ * Returns object of type `AdaptiveFormat`.
+ */
 export interface AdaptiveFormat {
     readonly itag: number;
     readonly url: string;
@@ -53,12 +68,18 @@ export interface AdaptiveFormat {
     readonly cipher?: string;
 }
 
+/**
+ * Returns object of type `StreamingData`.
+ */
 interface StreamingData {
     readonly expiresInSeconds: string;
     readonly formats: Array<Format>;
     readonly adaptiveFormats: Array<AdaptiveFormat>;
 }
 
+/**
+ * Returns object of type `VideoInfo`.
+ */
 export default interface VideoInfo {
     readonly playabilityStatus: PlayabilityStatus;
     readonly videoDetails: VideoDetails;

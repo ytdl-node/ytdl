@@ -24,6 +24,10 @@ export default class VideoData {
         this.videoDescription = this.getVideoDescription();
     }
 
+    /**
+     * Returns a `videoData` object with link as specified by `link`.
+     * @param link Stores a YouTube link
+     */
     static async fromLink(link: string): Promise<VideoData> {
         const videoId = VideoData.getVideoId(link);
         const videoInfo = await VideoData.getVideoInfo(videoId);
@@ -32,6 +36,10 @@ export default class VideoData {
         return new VideoData(videoId, videoInfo);
     }
 
+    /**
+     * Extracts the video id from the YouTube link.
+     * @param url Stores the YouTube link
+     */
     private static getVideoId(url: string): string {
         const urlRegexPrimary = /^(["']|)((((https)|(http)):\/\/|)(www\.|m\.|music\.|gaming\.|)youtube\.com\/watch\?v=)[\w_-]*(["']|)$/i;
         const urlRegexSecondary = /^(["']|)(((https)|(http)):\/\/|)youtu.be\/[\w_-]*(["']|)$/i;
@@ -41,6 +49,10 @@ export default class VideoData {
         return url.split('watch?v=')[1];
     }
 
+    /**
+     * Returns true if `videoInfo` is valid.
+     * @param videoInfo Stores the videoInfo object
+     */
     private static validateParsedResponse(videoInfo: VideoInfo) {
         if (videoInfo.playabilityStatus.status === 'UNPLAYABLE') {
             return new Error('Video Unplayable');
@@ -51,10 +63,16 @@ export default class VideoData {
         return true;
     }
 
+    /**
+     * Extracts `this.videoTitle` from `this.videoInfo` and stores.
+     */
     private getVideoTitle(): string {
         return this.videoInfo.videoDetails.title;
     }
 
+    /**
+     * Extracts `this.videoTime` from `this.videoInfo` and stores.
+     */
     private getVideoTime(): string {
         let lengthSeconds = Number(this.videoInfo.videoDetails.lengthSeconds);
 
@@ -80,10 +98,17 @@ export default class VideoData {
         return time;
     }
 
+    /**
+     * Extracts `this.videoDescription` from `this.videoInfo` and stores.
+     */
     private getVideoDescription(): string {
         return this.videoInfo.videoDetails.shortDescription;
     }
 
+    /**
+     * Returns a promise which resolves with a `videoInfo` object.
+     * @param videoId Stores the video id
+     */
     private static async getVideoInfo(videoId: string): Promise<VideoInfo> {
         const videoIdRegex = /^[\w_-]+$/;
         if (!videoIdRegex.test(videoId)) {
@@ -129,6 +154,12 @@ export default class VideoData {
         return videoInfo;
     }
 
+    /**
+     * Returns the download `url` and other details about the specific `format`
+     * searched by `quality`.
+     * @param qualityLabel Stores the video quality
+     * @param options Stores special options like audioOnly or videoOnly
+     */
     public fetchFormatData(
         qualityLabel: string,
         options?: { audioOnly?: boolean, videoOnly?: boolean },
@@ -204,6 +235,11 @@ export default class VideoData {
         };
     }
 
+    /**
+     * Returns the download `url` and other details about the specific `format`
+     * searching by `itag`.
+     * @param itag Stores the YouTube itag
+     */
     public fetchFormatDataByItag(
         itag: number,
     ): {
@@ -239,6 +275,11 @@ export default class VideoData {
         };
     }
 
+    /**
+     * Returns the size of the YouTube content, in `bytes`.
+     * @param qualityLabelOrItag Stores the quality or itag
+     * @param options Stores special options like audioOnly or videoOnly
+     */
     public size(
         qualityLabelOrItag: string | number,
         options?: { audioOnly?: boolean, videoOnly?: boolean },
@@ -255,6 +296,9 @@ export default class VideoData {
         return Number(format.contentLength);
     }
 
+    /**
+     * Returns `id`, `title`, `time`, and `description`.
+     */
     public all() {
         return {
             id: this.videoId,

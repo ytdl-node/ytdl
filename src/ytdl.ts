@@ -15,6 +15,11 @@ export default class Ytdl {
 
     logger: Logger;
 
+    /**
+     * Creates a `Ytdl` object with `link` and `videoData`.
+     * @param link Stores the vYouTube link
+     * @param videoData Stores a videoData object
+     */
     constructor(link: string, videoData: VideoData) {
         this.link = link;
         this.info = videoData;
@@ -22,8 +27,8 @@ export default class Ytdl {
     }
 
     /**
-     * Returns a Ytdl object.
-     * @param link YouTube video link
+     * Returns a `Ytdl` object.
+     * @param link Stores the YouTube link
      */
     public static async init(link: string): Promise<Ytdl> {
         const videoData = await VideoData.fromLink(link);
@@ -39,7 +44,7 @@ export default class Ytdl {
     }
 
     /**
-     * Downloads the stream and stores in a file specified by filename.
+     * Downloads the stream and stores in a file specified by `filename`.
      * @param qualityLabel Stores the quality
      * @param filename Stores the filename
      * @param options Stores special options like audioOnly or videoOnly
@@ -102,7 +107,7 @@ export default class Ytdl {
     }
 
     /**
-     * Downloads the video by it's itag and stores in the file specified by filename.
+     * Downloads the video by it's `itag` and stores in the file specified by `filename`.
      * @param itag YouTube video itag
      * @param filename Stores the filename
      */
@@ -129,7 +134,7 @@ export default class Ytdl {
     }
 
     /**
-     * Returns a Node.js stream for a particular YouTube video.
+     * Returns a `Node.js` stream for a particular YouTube video.
      * @param qualityLabel Stores the quality
      * @param options Stores special options such as audioOnly or videoOnly
      * @param headers Stores additional headers if any
@@ -152,7 +157,7 @@ export default class Ytdl {
     }
 
     /**
-     * Returns a Node.js stream for a particular YouTube video, identifying by it's itag.
+     * Returns a `Node.js` stream for a particular YouTube video, identifying by it's `itag`.
      * @param itag YouTube video itag
      * @param headers Stores additional headers if any
      */
