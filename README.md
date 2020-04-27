@@ -571,7 +571,7 @@ ytdl -d -l "https://www.youtube.com/watch?v=fJ9rUzIMcZQ" -fn "rhapsody.mp3" -ao
 
 - Play "https://www.youtube.com/watch?v=fJ9rUzIMcZQ", 360p, in your local media player.
 ```bash
-ytdl -p -l "https://www.youtube.com/watch?v=fJ9rUzIMcZQ" -q "360p"
+ytdl -p -l "https://www.youtube.com/watch?v=fJ9rUzIMcZQ" -q "360p" --set-player "mplayer"
 
 # Add -ao to play only audio from your command line.
 ```
