@@ -5,6 +5,7 @@ import VideoDownloader from './videoDownloader';
 import mergeStreams from './utils/mergeStreams';
 import deleteFile from './utils/deleteFile';
 import { createLogger } from './utils/logger';
+import Player from './utils/player';
 
 export default class Ytdl {
     readonly link: string;
@@ -172,5 +173,28 @@ export default class Ytdl {
         }
 
         return this.videoDownloader.stream(headers);
+    }
+
+    /**
+     * Play media without downloading it from YouTube, on your locally installed media player.
+     * @param qualityLabel Stores the quality
+     * @param options Stores special options such as audioOnly or videoOnly
+     * @param player Stores the media player (default: cvlc)
+     */
+    public play(
+        qualityLabel: string | number,
+        options?: { audioOnly?: boolean, videoOnly?: boolean },
+        player?: string,
+    ) {
+        let url: string;
+        if (typeof qualityLabel === 'string') {
+            url = this.info.fetchFormatData(qualityLabel, options).url;
+        } else if (typeof qualityLabel === 'number') {
+            url = this.info.fetchFormatDataByItag(qualityLabel).url;
+        }
+
+        const media: string = this.videoDownloader ? this.videoDownloader.url : url;
+        const mediaPlayer: Player = new Player(media, player);
+        mediaPlayer.play();
     }
 }

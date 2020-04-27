@@ -1,4 +1,4 @@
-const ytdl = require('..');
+const ytdl = require('..'); // require('@ytdl/ytdl');
 
 async function main() {
     const video = await ytdl.init('https://www.youtube.com/watch?v=A7ry4cx6HfY');

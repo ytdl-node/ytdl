@@ -1,4 +1,4 @@
-import ytdl, {} from '..';
+import ytdl from '..'; // import ytdl from '@ytdl/ytdl';
 
 async function main(): Promise<void> {
     const video = await ytdl('https://www.youtube.com/watch?v=A7ry4cx6HfY');
