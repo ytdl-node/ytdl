@@ -312,6 +312,41 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 });
 ```
 
+## video.play(quality[, options, player])
+
+- Play audio or video from YouTube in your local media player.
+- `quality` may be an `itag` or among the ones mentioned [here](#quality-string).
+- Options are of [this](#options-object) format. This is ignored if parameter `quality` is an `itag`.
+- Allowed media players are: `cvlc`, `vlc`, `mplayer`, `afplay`, `mpg123`, `mpg321`, `play`, `omxplayer`, `aplay`, `cmdmp3`.
+
+> Default player is `cvlc`.
+> The media player set must be on your [PATH](https://en.wikipedia.org/wiki/PATH_(variable)) or in your Environment Variables. On UNIX based systems, you can check if your media player is on your PATH by using the which command, e.g. `which mplayer`.
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+
+async function play() {
+  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  video.play('any', { audioOnly: true }, 'mplayer');
+
+  // Play audio of any quality on mplayer.
+}
+
+play();
+```
+
+### OR
+
+```javascript
+const ytdl = require('@ytdl/ytdl').default;
+
+ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+  video.play('any', { audioOnly: true }, 'mplayer');
+
+  // Play audio of any quality on mplayer.
+});
+```
+
 ## video.setLogLevel(level)
 
 - `level` can be one of the following:
@@ -527,10 +562,18 @@ getLinkFromUser();
 
 # CLI (ytdl)
 
-## Example
+## Examples
 
+- Download only audio of any quality from "https://www.youtube.com/watch?v=fJ9rUzIMcZQ".
 ```bash
 ytdl -d -l "https://www.youtube.com/watch?v=fJ9rUzIMcZQ" -fn "rhapsody.mp3" -ao
+```
+
+- Play "https://www.youtube.com/watch?v=fJ9rUzIMcZQ", 360p, in your local media player.
+```bash
+ytdl -p -l "https://www.youtube.com/watch?v=fJ9rUzIMcZQ" -q "360p" --set-player "mplayer"
+
+# Add -ao to play only audio from your command line.
 ```
 
 ## Usage
@@ -538,16 +581,18 @@ ytdl -d -l "https://www.youtube.com/watch?v=fJ9rUzIMcZQ" -fn "rhapsody.mp3" -ao
 Usage: ytdl [options]
 
 Options:
-  -V, --version               output the version number
-  -l, --link <url>            set the url for the YouTube video
-  -i, --info                  info about YouTube link
-  -d, --download              download from YouTube link
-  -fn, --filename <filename>  filename of downloaded content
-  -q, --quality <quality>     quality of downloaded content
-  -s, --size                  get the size of the video to be downloaded
-  -ao, --audio-only           download only audio stream
-  -vo, --video-only           download only video stream
-  -h, --help                  display help for command
+  -V, --version                output the version number
+  -l, --link <url>             set the url for the YouTube video
+  -i, --info                   info about YouTube link
+  -d, --download               download from YouTube link
+  -p, --play                   play YouTube media in your media player
+  --set-player <media-player>  set the media player
+  -fn, --filename <filename>   filename of downloaded content
+  -q, --quality <quality>      quality of downloaded content
+  -s, --size                   get the size of the video to be downloaded
+  -ao, --audio-only            download only audio stream
+  -vo, --video-only            download only video stream
+  -h, --help                   display help for command
 ```
 
 # Contributing

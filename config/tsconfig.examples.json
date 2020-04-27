@@ -7,6 +7,7 @@
     "files": [
         "../examples/ytdl.example.js",
         "../examples/stream.example.js",
+        "../examples/play.example.js",
         "../examples/ytdl.example.ts"
     ]
 }

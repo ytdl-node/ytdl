@@ -13,6 +13,8 @@ function setOptions(program: commander.Command): void {
         .option('-l, --link <url>', 'set the url for the YouTube video')
         .option('-i, --info', 'info about YouTube link')
         .option('-d, --download', 'download from YouTube link')
+        .option('-p, --play', 'play YouTube media in your media player')
+        .option('--set-player <media-player>', 'set the media player')
         .option('-fn, --filename <filename>', 'filename of downloaded content')
         .option('-q, --quality <quality>', 'quality of downloaded content')
         .option('-s, --size', 'get the size of the video to be downloaded')
@@ -38,6 +40,7 @@ async function parseOptions(program: commander.Command): Promise<void> {
             program.download
             || program.info
             || program.size
+            || program.play
         )
         && !program.link
     ) {
@@ -70,6 +73,10 @@ async function parseOptions(program: commander.Command): Promise<void> {
         logger.info(`Video Title: ${title}`);
         logger.info(`Video Time: ${time} seconds`);
         logger.info(`Video Description:\n ${description}`);
+    }
+
+    if (program.play) {
+        ytdl.play(quality, options, program.setPlayer);
     }
 
     if (program.download) {
