@@ -11,5 +11,5 @@ CONTRIBUTING.md
 examples
 config
 .gitignore
-.tsconfig.json
+tsconfig.json
 src
