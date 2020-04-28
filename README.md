@@ -615,6 +615,7 @@ Usage: ytdl [options]
 Options:
   -V, --version                output the version number
   -l, --link <url>             set the url for the YouTube video
+  -n, --name <name>            search by name instead of link
   -i, --info                   info about YouTube link
   -d, --download               download from YouTube link
   -p, --play                   play YouTube media in your media player
