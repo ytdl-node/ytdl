@@ -11,6 +11,7 @@ import packageJson from '../package.json';
 function setOptions(program: commander.Command): void {
     program
         .option('-l, --link <url>', 'set the url for the YouTube video')
+        .option('-n, --name <name>', 'search by name instead of link')
         .option('-i, --info', 'info about YouTube link')
         .option('-d, --download', 'download from YouTube link')
         .option('-p, --play', 'play YouTube media in your media player')
@@ -42,13 +43,18 @@ async function parseOptions(program: commander.Command): Promise<void> {
             || program.size
             || program.play
         )
-        && !program.link
+        && !(program.link || programOpts.name)
     ) {
-        logger.error('Link not specified, use -l or --link to specify.');
+        logger.error('Link or name not specified, use -l or --link to specify link, -n or --name to specify name.');
         return;
     }
 
-    const ytdl = await Ytdl.init(program.link);
+    let ytdl;
+    if (program.link) {
+        ytdl = await Ytdl.init(program.link);
+    } else if (programOpts.name) {
+        ytdl = await Ytdl.fromName(programOpts.name);
+    }
     ytdl.setLogLevel('info');
 
     const options = {
