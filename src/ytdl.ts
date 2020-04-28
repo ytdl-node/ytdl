@@ -6,6 +6,7 @@ import mergeStreams from './utils/mergeStreams';
 import deleteFile from './utils/deleteFile';
 import { createLogger } from './utils/logger';
 import Player from './utils/player';
+import getLinkFromName from './utils/getLinkFromName';
 
 export default class Ytdl {
     readonly link: string;
@@ -34,6 +35,14 @@ export default class Ytdl {
     public static async init(link: string): Promise<Ytdl> {
         const videoData = await VideoData.fromLink(link);
         return new Ytdl(link, videoData);
+    }
+
+    /**
+     * Returns a `Ytdl` object.
+     * @param name Stores the name of the video to be searched
+     */
+    public static async fromName(name: string) {
+        return Ytdl.init(await getLinkFromName(name));
     }
 
     /**

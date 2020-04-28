@@ -12,6 +12,14 @@ export default function init(link: string): Promise<Ytdl> {
     return Ytdl.init(link);
 }
 
+/**
+ * Returns an object of type Ytdl, with member functions for downloading, streaming, info, etc.
+ * @param name Stores the name of the video to be searched
+ */
+export function fromName(name: string): Promise<Ytdl> {
+    return Ytdl.fromName(name);
+}
+
 export * from './cli';
 
 export {
