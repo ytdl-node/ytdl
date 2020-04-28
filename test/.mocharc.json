@@ -1,0 +1,6 @@
+{
+    "timeout": 10000,
+    "exit": true,
+    "require": ["source-map-support/register", "ts-node/register"],
+    "full-trace": true
+}

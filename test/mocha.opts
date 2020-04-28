@@ -1,6 +1,0 @@
---require source-map-support/register
---full-trace
---timeout 10000
---exit
---require ts-node/register
-**/*.test.ts

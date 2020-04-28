@@ -16,7 +16,7 @@
     "scripts": {
         "build": "npm run clean && tsc",
         "clean": "rm -rf ./dist",
-        "test": "mocha --opts test/mocha.opts",
+        "test": "mocha --config test/.mocharc.json test/**/*.ts",
         "lint": "eslint \"src/**/*.{ts,js,jsx}\" \"test/**/*.ts\" \"examples/**/*.{ts,js}\"",
         "pack-src": "ncc build src/index.ts -o dist/src",
         "pack-cli": "ncc build bin/ytdl -o dist/cli && mv dist/cli/index.js dist/cli/ytdl",
