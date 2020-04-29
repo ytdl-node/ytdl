@@ -354,6 +354,9 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 });
 ```
 
+- The `Player` object returned can be used to log the name of the player being used.
+- In this example, `mplayer` is being used.
+
 ```javascript
 async function playLocal() {
   const video = await ytdl.init('https://www.youtube.com/watch?v=A7ry4cx6HfY');
