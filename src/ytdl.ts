@@ -196,7 +196,7 @@ export default class Ytdl {
         qualityLabel: string | number,
         options?: { audioOnly?: boolean, videoOnly?: boolean },
         player?: string,
-    ) {
+    ): Promise<Player> {
         let url: string;
         if (typeof qualityLabel === 'string') {
             url = this.info.fetchFormatData(qualityLabel, options).url;
@@ -215,5 +215,6 @@ export default class Ytdl {
             mediaPlayer = new VideoPlayer(player);
         }
         mediaPlayer.play(this.videoDownloader.url, await this.videoDownloader.stream());
+        return mediaPlayer;
     }
 }

@@ -5,11 +5,17 @@ import Player from './player';
 
 const Speaker = require('speaker');
 
-
 export default class AudioPlayer implements Player {
     url: string;
 
     stream: ReadStream;
+
+    player: string;
+
+    constructor() {
+        this.url = '';
+        this.player = 'ytdl-mp3';
+    }
 
     /**
      * Play video given a url and a stream.
