@@ -44,7 +44,7 @@ export default class VideoPlayer implements Player {
      * @param stream Media stream
      */
     public play(url: string, stream: ReadStream) {
-        stream.destroy(); // Video player does not support streams rn
+        stream.destroy(); // Video player does not support streams right now
         const subprocess = spawn(this.player, [url], { stdio: 'ignore' });
         if (!subprocess) {
             throw new Error(`Unable to spawn subprocess with ${this.player}`);
