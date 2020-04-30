@@ -7,6 +7,8 @@
 > Note: You need [ffmpeg](https://ffmpeg.org/download.html) to be installed on your computer for complete functionality. Without it, you won't be able to some formats/qualities of videos.
 <br />
 
+> Note: To use the inbuilt mp3 player `ytdl-mp3` on Linux distros, `<alsa/asoundlib.h>` header file must be present. The preinstall script logs a warning if it is not present. Ubuntu/Debian users require to install the `libasound2-dev` package (`sudo apt-get install libasound2-dev`), if not present already; before installing the library.
+
 # Contents
 
 - [Installation](#installation)
