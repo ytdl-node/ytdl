@@ -210,7 +210,11 @@ export default class Ytdl {
         let mediaPlayer: Player;
 
         if (options.audioOnly && !player) {
-            mediaPlayer = new AudioPlayer();
+            try {
+                mediaPlayer = new AudioPlayer();
+            } catch (e) {
+                mediaPlayer = new VideoPlayer();
+            }
         } else {
             mediaPlayer = new VideoPlayer(player);
         }

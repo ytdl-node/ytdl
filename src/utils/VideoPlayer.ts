@@ -20,7 +20,7 @@ export default class VideoPlayer implements Player {
 
     media: string;
 
-    constructor(player: string) {
+    constructor(player?: string) {
         this.setPlayer(player);
     }
 

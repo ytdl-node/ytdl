@@ -1,9 +1,8 @@
+/* eslint global-require: "off" */
 import { ReadStream } from 'fs';
 import ffmpeg from 'fluent-ffmpeg';
 
 import Player from './player';
-
-const Speaker = require('speaker');
 
 export default class AudioPlayer implements Player {
     url: string;
@@ -12,9 +11,13 @@ export default class AudioPlayer implements Player {
 
     player: string;
 
+    Speaker: any;
+
     constructor() {
         this.url = '';
         this.player = 'ytdl-mp3';
+
+        this.Speaker = require('speaker');
     }
 
     /**
@@ -25,6 +28,6 @@ export default class AudioPlayer implements Player {
     public play(url: string, stream: ReadStream) {
         this.url = url;
         this.stream = stream;
-        ffmpeg(stream).toFormat('s16le').pipe(new Speaker());
+        ffmpeg(stream).toFormat('s16le').pipe(new this.Speaker());
     }
 }
