@@ -14,7 +14,6 @@ export default class VideoPlayer implements Player {
         'play',
         'omxplayer',
         'aplay',
-        'cmdmp3',
     ];
 
     player: string = '';
