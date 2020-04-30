@@ -23,6 +23,7 @@ export function createLogger(level: string) {
     }
 
     const logger = winston.createLogger({
+        level,
         transports: [
             new winston.transports.Console({
                 level,
