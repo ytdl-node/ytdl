@@ -129,7 +129,7 @@ export default class VideoData {
         try {
             config = JSON.parse(jsonStr.slice(0, jsonStr.lastIndexOf(';ytplayer.load')));
         } catch (err) {
-            if (err.code === 'SyntaxError') {
+            if (err.name === 'SyntaxError') {
                 return this.getVideoInfo(videoId);
             }
             throw err;
