@@ -1,4 +1,6 @@
 /* eslint global-require: "off" */
+/* eslint import/no-extraneous-dependencies: "off" */
+
 import { ReadStream } from 'fs';
 import ffmpeg from 'fluent-ffmpeg';
 
