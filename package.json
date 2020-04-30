@@ -23,7 +23,8 @@
         "pack-cli": "ncc build bin/ytdl -o dist/cli && mv dist/cli/index.js dist/cli/ytdl",
         "pack": "npm run clean && npm run build && npm run pack-cli",
         "start": "ts-node src/index.ts",
-        "prepare": "npm run build"
+        "prepare": "npm run build",
+        "preinstall": "node ./preinstall.js"
     },
     "bin": {
         "ytdl": "bin/ytdl"
