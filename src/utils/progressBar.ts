@@ -23,8 +23,12 @@ export default class ProgressBar {
         this.update(this.current);
     }
 
-    public update(current: number): string {
-        this.current += current;
+    /**
+     * Function updates the progress bar, adding # to proceed.
+     * @param newLength Stores the length to be updated by
+     */
+    public update(newLength: number): string {
+        this.current += newLength;
         const currentProgress = this.current / this.total;
         const filledBarLength: number = Number((currentProgress * this.barLength).toFixed(0));
         const emptyBarLength = this.barLength - filledBarLength;
@@ -37,6 +41,12 @@ export default class ProgressBar {
         return 'filling';
     }
 
+    /**
+     * Draws the bar on stdout
+     * @param filledBarLength Stores length of filled bar
+     * @param emptyBarLength Stores length of remaining bar
+     * @param percentageProgress Stores progress in percentage
+     */
     private draw(
         filledBarLength: number,
         emptyBarLength: number,
@@ -66,6 +76,11 @@ export default class ProgressBar {
         }
     }
 
+    /**
+     * Writes a series of characters of length `length`.
+     * @param length Stores the length of the bar
+     * @param char Stores the character using which the bar is to be made
+     */
     private static getBar(length: number, char: string): string {
         let bar = '';
         for (let i = 0; i < length; i += 1) {
