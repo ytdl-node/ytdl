@@ -90,7 +90,7 @@ export default class Ytdl {
 
             this.logger.info(`Fetching ${content}...`);
             if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
-                this.videoDownloader = new VideoDownloader(url);
+                this.videoDownloader = new VideoDownloader(url, this.logger);
             }
 
             await this.videoDownloader.download(filename);
@@ -133,7 +133,7 @@ export default class Ytdl {
         if (url) {
             this.logger.info('Fetching content...');
             if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
-                this.videoDownloader = new VideoDownloader(url);
+                this.videoDownloader = new VideoDownloader(url, this.logger);
             }
 
             await this.videoDownloader.download(filename);
@@ -162,7 +162,7 @@ export default class Ytdl {
         }
 
         if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
-            this.videoDownloader = new VideoDownloader(url);
+            this.videoDownloader = new VideoDownloader(url, this.logger);
         }
 
         return this.videoDownloader.stream(headers);
@@ -180,7 +180,7 @@ export default class Ytdl {
         }
 
         if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
-            this.videoDownloader = new VideoDownloader(url);
+            this.videoDownloader = new VideoDownloader(url, this.logger);
         }
 
         return this.videoDownloader.stream(headers);
@@ -205,7 +205,7 @@ export default class Ytdl {
         }
 
         if (!this.videoDownloader) {
-            this.videoDownloader = new VideoDownloader(url);
+            this.videoDownloader = new VideoDownloader(url, this.logger);
         }
         let mediaPlayer: Player;
 
