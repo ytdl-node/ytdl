@@ -52,8 +52,8 @@ export default class ProgressBar {
         emptyBarLength: number,
         percentageProgress: string,
     ): void {
-        const filledBar = ProgressBar.getBar(filledBarLength, '#');
-        const emptyBar = ProgressBar.getBar(emptyBarLength, ' ');
+        const filledBar = '#'.repeat(filledBarLength);
+        const emptyBar = '.'.repeat(emptyBarLength);
 
         process.stdout.clearLine(0);
         process.stdout.cursorTo(0);
@@ -74,18 +74,5 @@ export default class ProgressBar {
                 }
             }
         }
-    }
-
-    /**
-     * Writes a series of characters of length `length`.
-     * @param length Stores the length of the bar
-     * @param char Stores the character using which the bar is to be made
-     */
-    private static getBar(length: number, char: string): string {
-        let bar = '';
-        for (let i = 0; i < length; i += 1) {
-            bar += char;
-        }
-        return bar;
     }
 }
