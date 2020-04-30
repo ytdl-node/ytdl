@@ -82,7 +82,8 @@ async function parseOptions(program: commander.Command): Promise<void> {
     }
 
     if (program.play) {
-        ytdl.play(quality, options, program.setPlayer);
+        const player = await ytdl.play(quality, options, program.setPlayer);
+        logger.info(`Playing on ${player.player}.`);
     }
 
     if (program.download) {
