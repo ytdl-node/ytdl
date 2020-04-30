@@ -124,7 +124,16 @@ export default class VideoData {
         );
 
         const jsonStr = between(body.data, 'ytplayer.config = ', '</script>');
-        const config = JSON.parse(jsonStr.slice(0, jsonStr.lastIndexOf(';ytplayer.load')));
+        let config;
+
+        try {
+            config = JSON.parse(jsonStr.slice(0, jsonStr.lastIndexOf(';ytplayer.load')));
+        } catch (err) {
+            if (err.code === 'SyntaxError') {
+                return this.getVideoInfo(videoId);
+            }
+            throw err;
+        }
 
         let playerResponse = JSON.parse(config.args.player_response);
 
