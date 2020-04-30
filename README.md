@@ -7,8 +7,6 @@
 > Note: You need [ffmpeg](https://ffmpeg.org/download.html) to be installed on your computer for complete functionality. Without it, you won't be able to some formats/qualities of videos.
 <br />
 
-> Note: For proper working of the play without downloading functionality, Ubuntu/Debian users require to install the `libasound2-dev` package (`sudo apt-get install libasound2-dev`), if not present already; before installing the library.
-
 # Contents
 
 - [Installation](#installation)
