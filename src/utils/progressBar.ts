@@ -1,4 +1,5 @@
 import { Logger } from 'winston';
+import * as readline from 'readline';
 
 export default class ProgressBar {
     total: number;
@@ -55,8 +56,8 @@ export default class ProgressBar {
         const filledBar = '#'.repeat(filledBarLength);
         const emptyBar = '.'.repeat(emptyBarLength);
 
-        process.stdout.clearLine(0);
-        process.stdout.cursorTo(0);
+        readline.clearLine(process.stdout, 0);
+        readline.cursorTo(process.stdout, 0);
 
         if (this.logger) {
             const { error, warn, ...acceptedLevels } = this.logger.levels;
