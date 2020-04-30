@@ -1,6 +1,6 @@
 {
     "name": "@ytdl/ytdl",
-    "version": "1.4.4",
+    "version": "1.4.5",
     "description": "A CLI/Library written in typescript/javascript, which allows you to download/play videos from YouTube onto your system.",
     "keywords": [
         "youtube",
@@ -16,14 +16,15 @@
     "main": "dist/src/index.js",
     "scripts": {
         "build": "npm run clean && tsc",
-        "clean": "rm -rf ./dist",
+        "clean": "rimraf ./dist",
         "test": "mocha --config test/.mocharc.json test/**/*.ts",
         "lint": "eslint \"src/**/*.{ts,js,jsx}\" \"test/**/*.ts\" \"examples/**/*.{ts,js}\"",
         "pack-src": "ncc build src/index.ts -o dist/src",
         "pack-cli": "ncc build bin/ytdl -o dist/cli && mv dist/cli/index.js dist/cli/ytdl",
         "pack": "npm run clean && npm run build && npm run pack-cli",
         "start": "ts-node src/index.ts",
-        "prepare": "npm run build"
+        "prepare": "npm run build",
+        "preinstall": "node ./preinstall.js"
     },
     "bin": {
         "ytdl": "bin/ytdl"
@@ -71,5 +72,8 @@
         "commander": "^5.0.0",
         "fluent-ffmpeg": "^2.1.2",
         "winston": "^3.2.1"
+    },
+    "optionalDependencies": {
+        "speaker": "^0.5.1"
     }
 }

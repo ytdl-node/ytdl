@@ -12,6 +12,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - run: |
+        sudo apt-get update
+        sudo apt-get install libasound2-dev # For alsa/asoundlib.h header needed for npm install
+
     - name: npm install, build and test
       run: |
         npm install

@@ -77,12 +77,13 @@ async function parseOptions(program: commander.Command): Promise<void> {
 
         logger.info(`Video ID: ${id}`);
         logger.info(`Video Title: ${title}`);
-        logger.info(`Video Time: ${time} seconds`);
+        logger.info(`Video Time: ${time}`);
         logger.info(`Video Description:\n ${description}`);
     }
 
     if (program.play) {
-        ytdl.play(quality, options, program.setPlayer);
+        const player = await ytdl.play(quality, options, program.setPlayer);
+        logger.info(`Playing on ${player.player}.`);
     }
 
     if (program.download) {

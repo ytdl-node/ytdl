@@ -7,6 +7,8 @@ import deleteFile from './utils/deleteFile';
 import { createLogger } from './utils/logger';
 import Player from './utils/player';
 import getLinkFromName from './utils/getLinkFromName';
+import VideoPlayer from './utils/VideoPlayer';
+import AudioPlayer from './utils/AudioPlayer';
 
 export default class Ytdl {
     readonly link: string;
@@ -88,7 +90,7 @@ export default class Ytdl {
 
             this.logger.info(`Fetching ${content}...`);
             if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
-                this.videoDownloader = new VideoDownloader(url);
+                this.videoDownloader = new VideoDownloader(url, this.logger);
             }
 
             await this.videoDownloader.download(filename);
@@ -131,7 +133,7 @@ export default class Ytdl {
         if (url) {
             this.logger.info('Fetching content...');
             if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
-                this.videoDownloader = new VideoDownloader(url);
+                this.videoDownloader = new VideoDownloader(url, this.logger);
             }
 
             await this.videoDownloader.download(filename);
@@ -160,7 +162,7 @@ export default class Ytdl {
         }
 
         if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
-            this.videoDownloader = new VideoDownloader(url);
+            this.videoDownloader = new VideoDownloader(url, this.logger);
         }
 
         return this.videoDownloader.stream(headers);
@@ -178,7 +180,7 @@ export default class Ytdl {
         }
 
         if (!this.videoDownloader || !(this.videoDownloader.url === url)) {
-            this.videoDownloader = new VideoDownloader(url);
+            this.videoDownloader = new VideoDownloader(url, this.logger);
         }
 
         return this.videoDownloader.stream(headers);
@@ -190,11 +192,11 @@ export default class Ytdl {
      * @param options Stores special options such as audioOnly or videoOnly
      * @param player Stores the media player (default: cvlc)
      */
-    public play(
+    public async play(
         qualityLabel: string | number,
         options?: { audioOnly?: boolean, videoOnly?: boolean },
         player?: string,
-    ) {
+    ): Promise<Player> {
         let url: string;
         if (typeof qualityLabel === 'string') {
             url = this.info.fetchFormatData(qualityLabel, options).url;
@@ -202,8 +204,21 @@ export default class Ytdl {
             url = this.info.fetchFormatDataByItag(qualityLabel).url;
         }
 
-        const media: string = this.videoDownloader ? this.videoDownloader.url : url;
-        const mediaPlayer: Player = new Player(media, player);
-        mediaPlayer.play();
+        if (!this.videoDownloader) {
+            this.videoDownloader = new VideoDownloader(url, this.logger);
+        }
+        let mediaPlayer: Player;
+
+        if (options.audioOnly && !player) {
+            try {
+                mediaPlayer = new AudioPlayer();
+            } catch (e) {
+                mediaPlayer = new VideoPlayer();
+            }
+        } else {
+            mediaPlayer = new VideoPlayer(player);
+        }
+        mediaPlayer.play(this.videoDownloader.url, await this.videoDownloader.stream());
+        return mediaPlayer;
     }
 }

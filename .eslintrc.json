@@ -20,7 +20,8 @@
         "project": [
             "./tsconfig.json",
             "./config/tsconfig.examples.json",
-            "./config/tsconfig.test.json"
+            "./config/tsconfig.test.json",
+            "./config/tsconfig.preinstall.json"
         ]
     },
     "rules": {
@@ -52,6 +53,12 @@
             },
             "parserOptions": {
                 "ecmaVersion": 2019
+            }
+        },
+        {
+            "files": "./preinstall.js",
+            "rules": {
+                "no-console": "off"
             }
         }
     ]

@@ -5,6 +5,9 @@
 **ytdl** provides a library to integrate a Youtube Downloader for `Node.js` projects, and a CLI to download content from [Youtube](https://www.youtube.com). **ytdl** can also stream audio/video from YouTube, **without downloading**, directly to your locally installed media player!
 
 > Note: You need [ffmpeg](https://ffmpeg.org/download.html) to be installed on your computer for complete functionality. Without it, you won't be able to some formats/qualities of videos.
+<br />
+
+> Note: To use the inbuilt mp3 player `ytdl-mp3` on Linux distros, `<alsa/asoundlib.h>` header file must be present. The preinstall script logs a warning if it is not present. Ubuntu/Debian users require to install the `libasound2-dev` package (`sudo apt-get install libasound2-dev`), if not present already; before installing the library.
 
 # Contents
 
@@ -317,9 +320,16 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 - Play audio or video from YouTube in your local media player.
 - `quality` may be an `itag` or among the ones mentioned [here](#quality-string).
 - Options are of [this](#options-object) format. This is ignored if parameter `quality` is an `itag`.
+- The function returns a `Player` object, with attributes `player` and `play(url, stream)`.
+
+### Audio
+- By default, audio is played on a cross-platform player integrated with ytdl.
+- However, if the parameter `player` is passed, it is played on the specified media player.
+
+### Video
+- `cvlc` is the default video player.
 - Allowed media players are: `cvlc`, `vlc`, `mplayer`, `afplay`, `mpg123`, `mpg321`, `play`, `omxplayer`, `aplay`, `cmdmp3`.
 
-> Default player is `cvlc`.
 > The media player set must be on your [PATH](https://en.wikipedia.org/wiki/PATH_(variable)) or in your Environment Variables. On UNIX based systems, you can check if your media player is on your PATH by using the which command, e.g. `which mplayer`.
 
 ```javascript
@@ -327,9 +337,9 @@ const ytdl = require('@ytdl/ytdl').default;
 
 async function play() {
   const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
-  video.play('any', { audioOnly: true }, 'mplayer');
+  video.play('any', { audioOnly: true });
 
-  // Play audio of any quality on mplayer.
+  // Play audio of any quality on ytdl-mp3 player.
 }
 
 play();
@@ -341,9 +351,36 @@ play();
 const ytdl = require('@ytdl/ytdl').default;
 
 ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
-  video.play('any', { audioOnly: true }, 'mplayer');
+  video.play('any', { audioOnly: true });
 
-  // Play audio of any quality on mplayer.
+  // Play audio of any quality on ytdl-mp3 player.
+});
+```
+
+- The `Player` object returned can be used to log the name of the player being used.
+- In this example, `mplayer` is being used.
+
+```javascript
+async function playLocal() {
+  const video = await ytdl.init('https://www.youtube.com/watch?v=A7ry4cx6HfY');
+  const player = await video.play('any', { audioOnly: true }, 'mplayer');
+  console.log(`Player: ${player.player}`);
+
+  // Logs the player on which media is being played.
+}
+
+playLocal();
+```
+
+### OR
+
+```javascript
+ytdl.init('https://www.youtube.com/watch?v=A7ry4cx6HfY').then((video) => {
+  video.play('any', { audioOnly: true }, 'mplayer').then((player) => {
+      console.log(`Player: ${player.player}`);
+
+      // Logs the player on which media is being played.
+  });
 });
 ```
 
