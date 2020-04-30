@@ -16,7 +16,7 @@
     "main": "dist/src/index.js",
     "scripts": {
         "build": "npm run clean && tsc",
-        "clean": "rm -rf ./dist",
+        "clean": "rimraf ./dist",
         "test": "mocha --config test/.mocharc.json test/**/*.ts",
         "lint": "eslint \"src/**/*.{ts,js,jsx}\" \"test/**/*.ts\" \"examples/**/*.{ts,js}\"",
         "pack-src": "ncc build src/index.ts -o dist/src",
@@ -71,7 +71,9 @@
         "cheerio": "^1.0.0-rc.3",
         "commander": "^5.0.0",
         "fluent-ffmpeg": "^2.1.2",
-        "speaker": "^0.5.1",
         "winston": "^3.2.1"
+    },
+    "optionalDependencies": {
+        "speaker": "^0.5.1"
     }
 }

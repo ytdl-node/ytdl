@@ -10,8 +10,7 @@ if (process.platform === 'linux') {
     }
 
     if (exitStatus !== 0) {
-        console.error(`'alsa/asoundlib.h' is absent. For Ubuntu/Debian operating systems, install using the following command:
+        console.warn(`WARN: 'alsa/asoundlib.h' is absent. For Ubuntu/Debian operating systems, install using the following command:
         \nsudo apt-get update && sudo apt-get install libasound2-dev\n`);
-        process.exit(1);
     }
 }
