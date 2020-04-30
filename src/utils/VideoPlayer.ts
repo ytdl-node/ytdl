@@ -11,8 +11,6 @@ export default class VideoPlayer implements Player {
         'vlc',
         'mplayer',
         'afplay',
-        'mpg123',
-        'mpg321',
         'play',
         'omxplayer',
         'aplay',
