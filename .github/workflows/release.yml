@@ -30,7 +30,9 @@ jobs:
           echo "versionChanged- ${{steps.check.outputs.versionChanged}}"
           echo "releaseVersion- ${{steps.check.outputs.releaseVersion}}"
 
-      - run: sudo apt-get install libasound2-dev # For alsa/asoundlib.h header needed for npm install
+      - run: |
+          sudo apt-get update
+          sudo apt-get install libasound2-dev # For alsa/asoundlib.h header needed for npm install
       
       - name: Pack
         if: steps.check.outputs.versionChanged == 'true'
