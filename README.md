@@ -31,6 +31,8 @@ npm install @ytdl/ytdl
 
 ### Via npm (recommended)
 
+> Note: **DO NOT** use sudo to install global packages! The correct way to do it is to tell npm where to install it's global packages: `npm config set prefix ~/.local`. Make sure `~/.local/bin` is added to `PATH`.
+
 ```bash
 npm install @ytdl/ytdl -g
 ```
