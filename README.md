@@ -79,10 +79,10 @@ echo "Add $(pwd)/bin to PATH"
 ## Example
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default; // Alternate: require('@ytdl/ytdl').init;
+const ytdl = require('@ytdl/ytdl');
 
 async function videoDownloader() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   await video.download('360p', 'ytdl.mp4');
 }
 
@@ -93,9 +93,9 @@ videoDownloader();
 
 ```javascript
 // Without using async-await.
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
-ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   video.download('360p', 'ytdl.mp4');
 });
 ```
@@ -139,10 +139,10 @@ const quality = 'low';
 ## video.download(quality, path[, options])
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
 async function videoDownloader() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   await video.download('360p', 'ytdl.mp4');
 }
 
@@ -153,9 +153,9 @@ videoDownloader();
 
 ```javascript
 // Without using async-await.
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
-ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   video.download('360p', 'ytdl.mp4');
 });
 ```
@@ -171,10 +171,10 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 ### audioOnly:
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
 async function videoDownloader() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   await video.download('medium', 'audio.mp3', { audioOnly: true });
 
   // quality: 'low', 'medium', 'high', 'any'
@@ -188,10 +188,10 @@ videoDownloader();
 > Note: There will be no sound.
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
 async function videoDownloader() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   await video.download('720p', 'video.mp4', { videoOnly: true });
 
   // quality: '144p', '360p', '480p', '720p', '1080p'
@@ -203,10 +203,10 @@ videoDownloader();
 ## video.downloadByItag(url, itag, path)
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
 async function videoDownloader() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   await video.downloadByItag(396, 'ytdl.mp4');
 }
 
@@ -217,9 +217,9 @@ videoDownloader();
 
 ```javascript
 // Without using async-await.
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
-ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   video.downloadByItag(396, 'ytdl.mp4');
 });
 ```
@@ -232,11 +232,11 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 > Note: The download function merges separate audio-only and video-only stream when a combined stream is unavailable. This function however will return the appropriate stream if and only if it is available. You may require to pass options, having properties `audioOnly` and `videoOnly` to get the desired stream. E.G. `video.stream('480p', { videoOnly: true })`.
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 const fs = require('fs');
 
 async function download() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   const stream = await video.stream('360p');
   // The variable stream now holds a Node.js stream.
   // Sample use of stream is as follows:
@@ -255,10 +255,10 @@ download();
 
 ```javascript
 // Without using async-await.
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 const fs = require('fs');
 
-ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   video.stream('360p').then((stream) => {
     // The variable stream now holds a Node.js stream.
     // Sample use of stream is as follows:
@@ -277,11 +277,11 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 - Same functionality as [`video.stream(quality)`](#videostreamquality-options-headers), uses `itag` instead of `quality`.
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 const fs = require('fs');
 
 async function download() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   const stream = await video.stream(18);
   // The variable stream now holds a Node.js stream.
   // Sample use of stream is as follows:
@@ -300,10 +300,10 @@ download();
 
 ```javascript
 // Without using async-await.
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 const fs = require('fs');
 
-ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   video.streamByItag(18).then((stream) => {
     // The variable stream now holds a Node.js stream.
     // Sample use of stream is as follows:
@@ -335,10 +335,10 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 > The media player set must be on your [PATH](https://en.wikipedia.org/wiki/PATH_(variable)) or in your Environment Variables. On UNIX based systems, you can check if your media player is on your PATH by using the which command, e.g. `which mplayer`.
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
 async function play() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   video.play('any', { audioOnly: true });
 
   // Play audio of any quality on ytdl-mp3 player.
@@ -350,9 +350,9 @@ play();
 ### OR
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
-ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   video.play('any', { audioOnly: true });
 
   // Play audio of any quality on ytdl-mp3 player.
@@ -400,10 +400,10 @@ ytdl.init('https://www.youtube.com/watch?v=A7ry4cx6HfY').then((video) => {
 - E.G., a log level of debug will also enable `verbose, http, info, warn, error`.
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
 async function videoDownloader() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
 
   // This line will enable logging info to console while downloading content.
   video.setLogLevel('info');
@@ -421,10 +421,10 @@ videoDownloader();
 - Options may be passed only with `quality`, else it will be ignored.
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
 async function videoSize() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   
   const size = video.info.size('360p'); // can pass options: { audioOnly: boolean, videoOnly: boolean }
   const sizeItag = video.info.size(396);
@@ -439,9 +439,9 @@ videoSize();
 ### OR
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
-ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   const size = video.info.size('360p'); // can pass options: { audioOnly: boolean, videoOnly: boolean}
   const sizeItag = video.info.size(396);
 
@@ -453,10 +453,10 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 ## video.info.all()
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
 async function videoInfo() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   
   const { id, title, time, description } = video.info.all();
   console.log(`Video Title: ${title}`);
@@ -469,9 +469,9 @@ videoInfo();
 
 ```javascript
 // Without using async-await.
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
-ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   const { id, title, time, description } = video.info.all();
   console.log(`Video Title: ${title}`);
 });
@@ -485,10 +485,10 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 - options are same as in [video.download](#options).
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
 async function getData() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   
   const { url, fmt } = video.info.fetchFormatData('360p');
   console.log(`Download url: ${url}`);
@@ -501,7 +501,7 @@ getData();
 ### OR
 
 ```javascript
-ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   const { url, fmt } = video.info.fetchFormatData('360p');
   console.log(`Download url: ${url}`);
   console.log(`Format data: ${fmt}`);
@@ -513,10 +513,10 @@ ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
 - Same as `video.info.fetchFormatData(quality)`; except, it fetches data by itag instead of quality.
 
 ```javascript
-const ytdl = require('@ytdl/ytdl').default;
+const ytdl = require('@ytdl/ytdl');
 
 async function getData() {
-  const video = await ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
+  const video = await ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ');
   
   const { url, fmt } = video.info.fetchFormatDataByItag(18);
   console.log(`Download url: ${url}`);
@@ -529,7 +529,7 @@ getData();
 ### OR
 
 ```javascript
-ytdl('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
+ytdl.init('https://www.youtube.com/watch?v=fJ9rUzIMcZQ').then((video) => {
   const { url, fmt } = video.info.fetchFormatDataByItag(18);
   console.log(`Download url: ${url}`);
   console.log(`Format data: ${fmt}`);
