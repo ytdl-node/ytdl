@@ -1,8 +1,11 @@
 import Ytdl from './ytdl';
-
 import mergeStreams from './utils/mergeStreams';
 import getDownloadLink from './utils/getDownloadLink';
 import fetch from './videoDownloader';
+
+const npmPath = require('npm-path');
+
+npmPath.setSync();
 
 /**
  * Returns an object of type Ytdl, with member functions for downloading, streaming, info, etc.
