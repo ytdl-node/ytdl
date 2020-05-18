@@ -1,6 +1,6 @@
 {
     "name": "@ytdl/ytdl",
-    "version": "1.4.8",
+    "version": "1.4.9",
     "description": "A CLI/Library written in typescript/javascript, which allows you to download/play videos from YouTube onto your system.",
     "keywords": [
         "youtube",
@@ -24,7 +24,8 @@
         "pack": "npm run clean && npm run build && npm run pack-cli",
         "start": "ts-node src/index.ts",
         "prepare": "npm run build",
-        "preinstall": "node ./preinstall.js"
+        "preinstall": "node ./preinstall.js",
+        "postinstall": "node ./postinstall.js"
     },
     "bin": {
         "ytdl": "bin/ytdl"
@@ -69,8 +70,11 @@
     "dependencies": {
         "axios": "^0.19.2",
         "cheerio": "^1.0.0-rc.3",
+        "cli-progress": "^3.8.2",
         "commander": "^5.0.0",
+        "ffbinaries": "^1.1.4",
         "fluent-ffmpeg": "^2.1.2",
+        "npm-path": "^2.0.4",
         "winston": "^3.2.1"
     },
     "optionalDependencies": {
