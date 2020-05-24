@@ -4,7 +4,7 @@
 
 **ytdl** provides a library to integrate a Youtube Downloader for `Node.js` projects, and a CLI to download content from [Youtube](https://www.youtube.com). **ytdl** can also stream audio/video from YouTube, **without downloading**, directly to your locally installed media player!
 
-> Note: You need [ffmpeg](https://ffmpeg.org/download.html) to be installed on your computer for complete functionality. Without it, you won't be able to some formats/qualities of videos.
+> Note: You need [ffmpeg](https://ffmpeg.org/download.html) to be installed on your computer for complete functionality. Without it, you won't be able to some formats/qualities of videos. If ffmpeg is absent, ytdl will prompt you for installation, it is recommended that you install it.
 <br />
 
 > Note: To use the inbuilt mp3 player `ytdl-mp3` on Linux distros, `<alsa/asoundlib.h>` header file must be present. The preinstall script logs a warning if it is not present. Ubuntu/Debian users require to install the `libasound2-dev` package (`sudo apt-get install libasound2-dev`), if not present already; before installing the library.
