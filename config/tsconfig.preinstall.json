@@ -5,6 +5,7 @@
         "checkJs": true,
     },
     "files": [
-        "../preinstall.js"
+        "../preinstall.js",
+        "../postinstall.js"
     ]
 }

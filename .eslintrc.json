@@ -56,7 +56,7 @@
             }
         },
         {
-            "files": "./preinstall.js",
+            "files": ["./preinstall.js", "./postinstall.js"],
             "rules": {
                 "no-console": "off"
             }

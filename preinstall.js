@@ -3,12 +3,12 @@ const { execSync } = require('child_process');
 if (process.platform === 'linux') {
     let exitStatus;
     try {
-        const output=execSync('echo "#include <alsa/asoundlib.h>" | gcc -H -o /dev/null -x c - 2>&1 | head -n1').toString();
-	if (output.indexOf('error') > -1) {
-		exitStatus = 1;
-	} else {
-        	exitStatus = 0;
-	}
+        const output = execSync('echo "#include <alsa/asoundlib.h>" | gcc -H -o /dev/null -x c - 2>&1 | head -n1').toString();
+        if (output.indexOf('error') > -1) {
+            exitStatus = 1;
+        } else {
+            exitStatus = 0;
+        }
     } catch (err) {
         exitStatus = err.status;
     }
