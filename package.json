@@ -40,7 +40,7 @@
         "url": "git+https://github.com/ytdl-node/ytdl.git"
     },
     "author": "",
-    "license": "ISC",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/ytdl-node/ytdl/issues"
     },
