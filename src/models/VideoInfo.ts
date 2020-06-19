@@ -41,6 +41,7 @@ export interface Format {
     readonly qualityLabel?: string;
     readonly audioQuality?: string;
     readonly cipher?: string;
+    readonly signatureCipher?: string;
 }
 
 /**
@@ -66,6 +67,7 @@ export interface AdaptiveFormat {
     readonly approxDurationMs: string;
     readonly colorInfo?: object;
     readonly cipher?: string;
+    readonly signatureCipher?: string;
 }
 
 /**

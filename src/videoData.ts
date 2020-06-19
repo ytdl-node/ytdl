@@ -205,7 +205,9 @@ export default class VideoData {
             if (format.url) {
                 return format.url;
             }
-            const link = Object.fromEntries(new URLSearchParams(format.cipher));
+            const link = Object.fromEntries(
+                new URLSearchParams(format.cipher || format.signatureCipher),
+            );
 
             const sig = tokens && link.s ? decipher(tokens, link.s) : null;
             return `${link.url}&${link.sp || 'sig'}=${sig}`;
@@ -266,7 +268,9 @@ export default class VideoData {
                 if (format.url) {
                     url = format.url;
                 } else {
-                    const link = Object.fromEntries(new URLSearchParams(format.cipher));
+                    const link = Object.fromEntries(
+                        new URLSearchParams(format.cipher || format.signatureCipher),
+                    );
 
                     const sig = tokens && link.s ? decipher(tokens, link.s) : null;
                     url = `${link.url}&${link.sp || 'sig'}=${sig}`;
