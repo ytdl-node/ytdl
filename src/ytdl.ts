@@ -21,7 +21,7 @@ export default class Ytdl {
 
     /**
      * Creates a `Ytdl` object with `link` and `videoData`.
-     * @param link Stores the vYouTube link
+     * @param link Stores the YouTube link
      * @param videoData Stores a videoData object
      */
     constructor(link: string, videoData: VideoData) {
