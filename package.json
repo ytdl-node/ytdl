@@ -1,6 +1,6 @@
 {
     "name": "@ytdl/ytdl",
-    "version": "1.4.15",
+    "version": "1.4.16",
     "description": "A CLI/Library written in typescript/javascript, which allows you to download/play videos from YouTube onto your system.",
     "keywords": [
         "youtube",
@@ -48,7 +48,6 @@
     "devDependencies": {
         "@types/axios": "^0.14.0",
         "@types/chai": "^4.2.11",
-        "@types/cheerio": "^0.22.18",
         "@types/commander": "^2.12.2",
         "@types/eslint": "^6.1.9",
         "@types/fluent-ffmpeg": "^2.1.14",
@@ -69,7 +68,6 @@
     },
     "dependencies": {
         "axios": "^0.19.2",
-        "cheerio": "^1.0.0-rc.3",
         "cli-progress": "^3.8.2",
         "commander": "^5.0.0",
         "ffbinaries": "^1.1.4",

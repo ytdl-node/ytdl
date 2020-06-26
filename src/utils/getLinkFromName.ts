@@ -1,5 +1,4 @@
 import axios from 'axios';
-import cheerio from 'cheerio';
 import { URLSearchParams } from 'url';
 
 /**
@@ -12,7 +11,8 @@ export default async function getLinkFromName(name: string) {
     const searchURL = `https://www.youtube.com/results?${searchParams.toString()}`;
 
     const searchPage = await axios.get(searchURL);
-    const $ = cheerio.load(searchPage.data);
-    const firstWatchLink = $('.yt-uix-tile-link').attr('href');
-    return `https://youtube.com${firstWatchLink}`;
+
+    const firstWatchLink = searchPage.data.split('/watch?v=')[1].split('"')[0];
+
+    return `https://youtube.com/watch?v=${firstWatchLink}`;
 }

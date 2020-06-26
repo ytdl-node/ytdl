@@ -561,43 +561,6 @@ ytdl.fromName('Another Day').then((video) => {
 });
 ```
 
-## ytdl.fetch(url)
-
-- This function may be used to fetch any data from a website and store it in a file (path).
-
-```javascript
-const ytdl = require('@ytdl/ytdl');
-const fs = require('fs');
-
-const downloader = new ytdl.fetch('https://raw.githubusercontent.com/ytdl-node/ytdl/master/README.md');
-async function download() {
-  await downloader.download('ytdl-README.md');
-  // This returns a promise
-  // The link could also be an audio/video file.
-}
-
-async function downloadFromStream() {
-  const stream = await downloader.stream();
-  // This returns a Node.js stream
-  // This stream may be utilized in many ways, E.G.:
-  stream.pipe(fs.createWriteStream('ytdl-README-from-stream.md'));
-}
-
-download();
-downloadFromStream();
-```
-
-## ytdl.mergeStreams(videoFile, audioFile, outputFile)
-
-- This will add the audio to the video file.
-
-```javascript
-const ytdl = require('@ytdl/ytdl');
-
-ytdl.mergeStreams('video.mp4', 'audio.mp3', 'output.mp4');
-// This returns a Promise.
-```
-
 ## ytdl.cli()
 
 - This will create a CLI for YTDL.
@@ -608,20 +571,6 @@ ytdl.mergeStreams('video.mp4', 'audio.mp3', 'output.mp4');
 const ytdl = require('@ytdl/ytdl');
 
 ytdl.cli(process.argv);
-```
-
-## ytdl.getDownloadLink()
-
-- This will prompt the user to enter a download link (can be used for CLI).
-
-```javascript
-const ytdl = require('@ytdl/ytdl');
-
-async function getLinkFromUser() {
-  const link = await ytdl.getDownloadLink();
-}
-
-getLinkFromUser();
 ```
 
 # CLI (ytdl)
